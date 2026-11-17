@@ -24,6 +24,32 @@ Everything is a human-readable file on GitHub:
 | Known data problems, and how each was settled | [`docs/data-problems.md`](https://github.com/Manifestigations/Dataset/blob/main/docs/data-problems.md) |
 | The data in plain JSON + a JSON schema | `json/` + `schema/` — regenerate with `npm run build` |
 
+## Use this data in your own tools
+
+The committed `json/`, `csv/` and `schema/` outputs are fetchable directly,
+no install, no npm token — pin to a release tag (`/v2026.12/`) for a
+reproducible snapshot, or use `/main/` for the latest:
+
+| File | URL (main branch) |
+| --- | --- |
+| Manifest (version, checksums, raw URLs) | [`json/manifest.json`](https://raw.githubusercontent.com/Manifestigations/Dataset/main/json/manifest.json) |
+| 2026 daily cells + weekly series + denominators | [`json/reference.json`](https://raw.githubusercontent.com/Manifestigations/Dataset/main/json/reference.json) |
+| Historic episodes (weekly `Row`s) | [`json/episodes.json`](https://raw.githubusercontent.com/Manifestigations/Dataset/main/json/episodes.json) |
+| Source catalogue (169 sources, 15 groups) | [`json/sources.json`](https://raw.githubusercontent.com/Manifestigations/Dataset/main/json/sources.json) |
+| 2026 facts, long format (pandas) | [`csv/facts_2026.csv`](https://raw.githubusercontent.com/Manifestigations/Dataset/main/csv/facts_2026.csv) |
+| Episodes, long format (pandas) | [`csv/episodes_long.csv`](https://raw.githubusercontent.com/Manifestigations/Dataset/main/csv/episodes_long.csv) |
+| JSON schemas (one per type, self-contained) | [`schema/`](https://github.com/Manifestigations/Dataset/tree/main/schema) |
+| Data dictionary (grain, fields, flags) | [`docs/data-dictionary.md`](docs/data-dictionary.md) |
+
+```sh
+curl -O https://raw.githubusercontent.com/Manifestigations/Dataset/main/csv/facts_2026.csv
+```
+
+```python
+import pandas as pd
+facts = pd.read_csv("facts_2026.csv")            # date, metric, low, high, q
+```
+
 ## How a figure works
 
 - A cell is a **point or a range**. A figure published as "between 175,000 and

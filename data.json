@@ -1,0 +1,14 @@
+{
+  "name": "france-autumn-2026-protests",
+  "title": "The 2026 Autumn Protests in France — reference dataset",
+  "description": "Daily and weekly sourced figures on the 2026 Autumn protests (turnout, strikers, arrests, injuries, blockades, damages, policing cost) and six earlier French movements for comparison. Every figure carries its source.",
+  "version": "0.1.0",
+  "homepage": "https://github.com/Manifestigations/Dataset",
+  "resources": [
+    { "name": "reference", "path": "json/reference.json", "format": "json" },
+    { "name": "episodes", "path": "json/episodes.json", "format": "json" },
+    { "name": "sources", "path": "json/sources.json", "format": "json" },
+    { "name": "facts_2026", "path": "csv/facts_2026.csv", "format": "csv" },
+    { "name": "episodes_long", "path": "csv/episodes_long.csv", "format": "csv" }
+  ]
+}

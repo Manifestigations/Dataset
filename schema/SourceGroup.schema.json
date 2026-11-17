@@ -1,0 +1,59 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "id": {
+      "$ref": "#/definitions/GroupId"
+    },
+    "title": {
+      "$ref": "#/definitions/Bi"
+    },
+    "blurb": {
+      "$ref": "#/definitions/Bi"
+    }
+  },
+  "required": [
+    "id",
+    "title",
+    "blurb"
+  ],
+  "additionalProperties": false,
+  "definitions": {
+    "GroupId": {
+      "type": "string",
+      "enum": [
+        "official",
+        "press",
+        "blockades",
+        "cost",
+        "overseas",
+        "ref2026",
+        "mai68",
+        "cpe",
+        "gj",
+        "strikes",
+        "nahel",
+        "retraites",
+        "rn2024",
+        "bloquons",
+        "media"
+      ]
+    },
+    "Bi": {
+      "type": "object",
+      "properties": {
+        "en": {
+          "type": "string"
+        },
+        "fr": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "en",
+        "fr"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

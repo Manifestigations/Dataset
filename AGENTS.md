@@ -37,9 +37,6 @@ sources exist in `src/sources/<group>.ts`; re-run the three commands.
 `SourceGroup` to `src/sources/groups.ts`; create `src/sources/<group>.ts`;
 register it in `src/sources/index.ts`.
 
-**Settle a data problem** — record the decision in `docs/data-problems.md`,
-then apply it to the cells.
-
 ## Release
 
 `.github/workflows/release-package.yml` publishes

@@ -1,0 +1,172 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "anyOf": [
+    {
+      "type": "object",
+      "properties": {
+        "k": {
+          "type": "string",
+          "const": "obs"
+        },
+        "date": {
+          "type": "string"
+        },
+        "metric": {
+          "$ref": "#/definitions/MetricKey"
+        }
+      },
+      "required": [
+        "k",
+        "date",
+        "metric"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "k": {
+          "type": "string",
+          "const": "policing"
+        },
+        "low": {
+          "type": "number"
+        },
+        "high": {
+          "type": "number"
+        },
+        "date": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "k",
+        "low",
+        "high",
+        "date"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "k": {
+          "type": "string",
+          "const": "heli"
+        },
+        "hoursLow": {
+          "type": "number"
+        },
+        "hoursHigh": {
+          "type": "number"
+        },
+        "date": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "k",
+        "hoursLow",
+        "hoursHigh",
+        "date"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "k": {
+          "type": "string",
+          "const": "cumulative"
+        },
+        "days": {
+          "type": "number"
+        },
+        "added": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "k",
+        "days",
+        "added"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "k": {
+          "type": "string",
+          "const": "week"
+        },
+        "p": {
+          "$ref": "#/definitions/WeekNoteParts"
+        }
+      },
+      "required": [
+        "k",
+        "p"
+      ],
+      "additionalProperties": false
+    }
+  ],
+  "description": "A note is a reference to copy, never the copy itself.",
+  "definitions": {
+    "MetricKey": {
+      "type": "string",
+      "enum": [
+        "turnout",
+        "strikers",
+        "arrests",
+        "forcesInjured",
+        "forcesInjuredStock",
+        "protesterInjured",
+        "damagesCost",
+        "policingCost",
+        "heliCost",
+        "blockades"
+      ]
+    },
+    "WeekNoteParts": {
+      "type": "object",
+      "properties": {
+        "days": {
+          "type": "number"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "national",
+            "regional"
+          ]
+        },
+        "peak": {
+          "type": "string"
+        },
+        "noNational": {
+          "type": "boolean"
+        },
+        "excluded": {
+          "type": "number"
+        },
+        "floored": {
+          "type": "boolean"
+        },
+        "clipped": {
+          "type": "boolean"
+        },
+        "vacation": {
+          "type": "boolean",
+          "description": "The week overlaps the Toussaint holiday — the metric did not exist."
+        }
+      },
+      "required": [
+        "days",
+        "kind"
+      ],
+      "additionalProperties": false,
+      "description": "Structured weekly-aggregate note — rendered per locale by notes.ts."
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "anyOf": [
+    {
+      "type": "number"
+    },
+    {
+      "type": "array",
+      "items": {
+        "type": "number"
+      },
+      "minItems": 2,
+      "maxItems": 2
+    }
+  ],
+  "description": "A single published figure, or a published range [low, high].\n\nStorage never collapses a range: no midpoint, and never an average of two publishers. `low` is the figure its source stands behind, `high` the widest count any source supports, and both travel to the renderer so a caption can print the range a chart can only hint at.\n\n`midOf()` below does collapse, for plotting. The rule is about storage: anything that quotes a number rather than drawing one must read the band.",
+  "definitions": {}
+}

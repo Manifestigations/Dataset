@@ -159,11 +159,10 @@ A new group means extending `GroupId` in `src/sources/types.ts`, adding its
 ### 2.5 Check and commit
 
 ```bash
-npm run validate   # data-integrity checks; the build refuses to publish a bundle that fails them
+node scripts/build.ts
 npm run typecheck
-npm run build      # optional: sanity-check the JSON + schema output
-
-git add src
+npm run validate
+git add src json schema csv
 git commit -m "data: 2026 arrests for 8 Nov corrected to 412 (prefecture)"
 ```
 
@@ -180,7 +179,8 @@ regenerated at release time, so there is nothing else to stage.
 - [ ] Flags describe the data, not the drawing.
 - [ ] Gaps left empty; derived cells flagged `e` with the arithmetic in the note.
 - [ ] Any new human-facing string exists in both `en` and `fr`.
-- [ ] `npm run validate` and `npm run typecheck` pass.
+- [ ] `npm run typecheck` passes; `npm run validate` passes.
+- [ ] `node scripts/build.ts` was run and `json/`, `schema/`, `csv/` are committed.
 - [ ] `docs/data-problems.md` updated if you settled a known data problem.
 
 We will not merge: a figure with no source, a silently interpolated gap, a

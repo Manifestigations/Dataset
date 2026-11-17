@@ -1,0 +1,36 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "at": {
+      "type": "string",
+      "description": "ISO date of the estimate. Census date where a census is the source."
+    },
+    "france": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "description": "France entière (five overseas departments). null = absent from vintage."
+    },
+    "metro": {
+      "type": "number",
+      "description": "Metropolitan France. Always present."
+    },
+    "aged15_64": {
+      "type": "number",
+      "description": "Resident population aged 15–64 — published nationally only."
+    },
+    "active": {
+      "type": "number",
+      "description": "Population active au sens du BIT, annual average, not a same-day stock."
+    }
+  },
+  "required": [
+    "at",
+    "france",
+    "metro"
+  ],
+  "additionalProperties": false,
+  "definitions": {}
+}

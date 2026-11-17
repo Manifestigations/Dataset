@@ -1,0 +1,243 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "v": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "band": {
+      "anyOf": [
+        {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "q": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/Flag"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "note": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/NoteRef"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "detach": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "v",
+    "band",
+    "q",
+    "note",
+    "detach"
+  ],
+  "additionalProperties": false,
+  "definitions": {
+    "Flag": {
+      "type": "string",
+      "enum": [
+        "n",
+        "r",
+        "p",
+        "f",
+        "e",
+        "c",
+        "w",
+        "x"
+      ],
+      "description": "n = published point · r = regional only · p = partial · f = floor e = derived/modelled · c = stock or actions-total · w = weekly aggregate \"x\" = a wider measure than the metric's definition (perturbés, closed)."
+    },
+    "NoteRef": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "k": {
+              "type": "string",
+              "const": "obs"
+            },
+            "date": {
+              "type": "string"
+            },
+            "metric": {
+              "$ref": "#/definitions/MetricKey"
+            }
+          },
+          "required": [
+            "k",
+            "date",
+            "metric"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "k": {
+              "type": "string",
+              "const": "policing"
+            },
+            "low": {
+              "type": "number"
+            },
+            "high": {
+              "type": "number"
+            },
+            "date": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "k",
+            "low",
+            "high",
+            "date"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "k": {
+              "type": "string",
+              "const": "heli"
+            },
+            "hoursLow": {
+              "type": "number"
+            },
+            "hoursHigh": {
+              "type": "number"
+            },
+            "date": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "k",
+            "hoursLow",
+            "hoursHigh",
+            "date"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "k": {
+              "type": "string",
+              "const": "cumulative"
+            },
+            "days": {
+              "type": "number"
+            },
+            "added": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "k",
+            "days",
+            "added"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "k": {
+              "type": "string",
+              "const": "week"
+            },
+            "p": {
+              "$ref": "#/definitions/WeekNoteParts"
+            }
+          },
+          "required": [
+            "k",
+            "p"
+          ],
+          "additionalProperties": false
+        }
+      ],
+      "description": "A note is a reference to copy, never the copy itself."
+    },
+    "MetricKey": {
+      "type": "string",
+      "enum": [
+        "turnout",
+        "strikers",
+        "arrests",
+        "forcesInjured",
+        "forcesInjuredStock",
+        "protesterInjured",
+        "damagesCost",
+        "policingCost",
+        "heliCost",
+        "blockades"
+      ]
+    },
+    "WeekNoteParts": {
+      "type": "object",
+      "properties": {
+        "days": {
+          "type": "number"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "national",
+            "regional"
+          ]
+        },
+        "peak": {
+          "type": "string"
+        },
+        "noNational": {
+          "type": "boolean"
+        },
+        "excluded": {
+          "type": "number"
+        },
+        "floored": {
+          "type": "boolean"
+        },
+        "clipped": {
+          "type": "boolean"
+        },
+        "vacation": {
+          "type": "boolean",
+          "description": "The week overlaps the Toussaint holiday — the metric did not exist."
+        }
+      },
+      "required": [
+        "days",
+        "kind"
+      ],
+      "additionalProperties": false,
+      "description": "Structured weekly-aggregate note — rendered per locale by notes.ts."
+    }
+  }
+}

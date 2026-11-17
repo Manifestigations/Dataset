@@ -6,23 +6,46 @@
   "engines": {
     "node": ">=22.18"
   },
+  "files": [
+    "json",
+    "schema",
+    "csv",
+    "dist",
+    "data.json",
+    "CITATION.cff",
+    "README.md",
+    "LICENSE"
+  ],
+  "exports": {
+    ".": "./dist/data/data.js",
+    "./json/*": "./json/*",
+    "./csv/*": "./csv/*",
+    "./schema/*": "./schema/*"
+  },
   "scripts": {
     "check:casualties": "node scripts/check-casualties.ts",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "build": "tsx scripts/build.ts",
+    "validate": "node scripts/validate.ts",
+    "check": "npm run typecheck && npm run validate",
+    "check:stale": "npm run build && git diff --exit-code -- json schema csv || (echo 'Stale bundle: run npm run build and commit json/, schema/, csv/' && exit 1)"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@types/node": "^26.6.6",
+    "ajv": "^8.20.0",
     "esbuild": "^0.28.2",
     "eslint": "^10.15.0",
     "eslint-config-prettier": "^10.1.8",
     "globals": "^17.14.0",
     "prettier": "^3.10.1",
     "prettier-plugin-organize-imports": "^4.3.0",
+    "ts-json-schema-generator": "^2.9.0",
+    "tsx": "^4.23.15",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.73.0"
   },

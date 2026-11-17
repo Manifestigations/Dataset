@@ -1,0 +1,77 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "group": {
+      "$ref": "#/definitions/GroupId"
+    },
+    "label": {
+      "type": "string",
+      "description": "Publisher and headline, verbatim. Never translated."
+    },
+    "url": {
+      "type": "string"
+    },
+    "date": {
+      "type": "string",
+      "description": "ISO start date. Absent for continuously published sources and standing pages."
+    },
+    "dateEnd": {
+      "type": "string",
+      "description": "End of a publication span; rendered as \"10 Sep–11 Sep 2025\"."
+    },
+    "what": {
+      "$ref": "#/definitions/Bi",
+      "description": "What this page takes from the source."
+    }
+  },
+  "required": [
+    "id",
+    "group",
+    "label",
+    "url",
+    "what"
+  ],
+  "additionalProperties": false,
+  "definitions": {
+    "GroupId": {
+      "type": "string",
+      "enum": [
+        "official",
+        "press",
+        "blockades",
+        "cost",
+        "overseas",
+        "ref2026",
+        "mai68",
+        "cpe",
+        "gj",
+        "strikes",
+        "nahel",
+        "retraites",
+        "rn2024",
+        "bloquons",
+        "media"
+      ]
+    },
+    "Bi": {
+      "type": "object",
+      "properties": {
+        "en": {
+          "type": "string"
+        },
+        "fr": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "en",
+        "fr"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

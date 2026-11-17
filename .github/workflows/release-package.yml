@@ -1,0 +1,40 @@
+name: release-package
+
+on:
+  push:
+    tags: ["v*"]   # release tags vx.y.z — publish the npm package
+
+jobs:
+  stale-bundle:
+    # also runs on PRs to main: fail if the committed bundle is behind src/
+    if: ${{ github.event_name == 'pull_request' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 26
+      - run: npm ci
+      - run: npm run build
+      - run: |
+          git diff --exit-code -- json schema csv || \
+            { echo "::error::json/ schema/ csv/ are stale — run 'node scripts/build.ts' and commit the output"; exit 1; }
+
+  publish:
+    needs: stale-bundle
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 26
+          registry-url: https://npm.pkg.github.com
+      - run: npm ci
+      - run: npm run build
+      - run: npm run validate
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "string",
+  "enum": [
+    "n",
+    "r",
+    "p",
+    "f",
+    "e",
+    "c",
+    "w",
+    "x"
+  ],
+  "description": "n = published point · r = regional only · p = partial · f = floor e = derived/modelled · c = stock or actions-total · w = weekly aggregate \"x\" = a wider measure than the metric's definition (perturbés, closed).",
+  "definitions": {}
+}
