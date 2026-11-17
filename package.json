@@ -1,0 +1,23 @@
+{
+  "name": "@manifestigations/dataset",
+  "private": true,
+  "type": "module",
+  "description": "The core dataset and data models that will be visualised in the other apps",
+  "engines": { "node": ">=22.18" },
+  "scripts": {
+    "check:casualties": "node scripts/check-casualties.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^26.6.6",
+    "esbuild": "^0.28.2",
+    "eslint": "^10.15.0",
+    "eslint-config-prettier": "^10.1.8",
+    "globals": "^17.14.0",
+    "prettier": "^3.10.1",
+    "prettier-plugin-organize-imports": "^4.3.0",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.73.0"
+  }
+}
