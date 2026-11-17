@@ -1,7 +1,7 @@
 # Dataset — the 2026 Autumn protests in France
 
-> *Le dataset de référence des manifestations de l'automne 2026 : mobilisations,
-> réponse de l'appareil d'État, mouvements de comparaison.*
+> _Le dataset de référence des manifestations de l'automne 2026 : mobilisations,
+> réponse de l'appareil d'État, mouvements de comparaison._
 
 The core dataset for the 2026 Autumn protests in France (student protests /
 Gilets Jaunes × Gen Z). Every figure carries its source, quoted verbatim —
@@ -10,85 +10,126 @@ nothing here is averaged, imputed, or "approximately." The
 draws its charts from this data; **this repository is the source of truth**,
 the site only displays it.
 
+Everything is TypeScript you can read on GitHub. There is no build step to run
+and no package to install in order to _read_ the data — the values are literals
+in the files below.
+
 ## Read the data without installing anything
 
-Everything is a human-readable file on GitHub:
+| You want                                                                                                                           | Look in                                                                                                                                                                                                                                                                                                                                                                                           |
+| ---------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| The 2026 figures, day by day (turnout, strikers, arrests, injuries, blockaded schools, damages, cost of policing)                  | [`src/data/facts.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/facts.ts) — `FACTS`, one key per ISO date, each cell `{ low, high, q? }`                                                                                                                                                                                                                                     |
+| The derived daily and weekly series, the window and the school-holiday band                                                        | [`src/data/projections.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/projections.ts) (daily), [`src/data/aggregate.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/aggregate.ts) (weekly), [`src/data/calendar.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/calendar.ts) (`START`/`END`, `WEEKS`, `HOLIDAY_START`/`HOLIDAY_END`) |
+| Deployments, force levels, the cost rate, helicopter hours                                                                         | [`src/data/policing.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/policing.ts), [`src/data/helicopters.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/helicopters.ts)                                                                                                                                                                                  |
+| Denominators (populations)                                                                                                         | [`src/data/population.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/population.ts)                                                                                                                                                                                                                                                                                          |
+| Past movements for comparison (Mai 68, CPE, Gilets Jaunes, Nahel, pensions 2023, « Bloquons tout », students 2026 — one file each) | [`src/data/episodes/`](https://github.com/Manifestigations/Dataset/tree/main/src/data/episodes)                                                                                                                                                                                                                                                                                                   |
+| The catalogue of every source (who published what, on which date)                                                                  | [`src/data/sources/`](https://github.com/Manifestigations/Dataset/tree/main/src/data/sources) — one file per group                                                                                                                                                                                                                                                                                |
+| The casualty data, its severities, observations and estimators                                                                     | [`src/data/casualties/`](https://github.com/Manifestigations/Dataset/tree/main/src/data/casualties)                                                                                                                                                                                                                                                                                               |
+| The types everything is written against                                                                                            | [`src/model/index.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/model/index.ts)                                                                                                                                                                                                                                                                                                  |
+| Why a figure was chosen, and what was rejected                                                                                     | [`src/data/data.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/data.ts) — the verification record, then the barrel                                                                                                                                                                                                                                                           |
+| Known data problems, and how each was settled                                                                                      | [`content/data-problems.md`](https://github.com/Manifestigations/Protest-Data-Observatory/blob/main/content/data-problems.md) — kept in the Observatory repo, because it is prose about method                                                                                                                                                                                                    |
 
-| You want | Look in |
-| --- | --- |
-| The 2026 figures, day by day (turnout, strikers, arrests, injuries, blockaded schools, damages, cost of policing) | [`src/reference/data.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/reference/data.ts) — raw observations in `FACTS`, one key per ISO date |
-| Past movements for comparison (Mai 68, CPE, Gilets Jaunes, Nahel, the 2023 reform strikes, bloquons, students 2026 — one file each) | [`src/episodes/`](https://github.com/Manifestigations/Dataset/tree/main/src/episodes) |
-| The catalogue of every source (who published what, on which date) | [`src/sources/`](https://github.com/Manifestigations/Dataset/tree/main/src/sources) |
-| Explanations attached to specific cells | [`src/reference/notes.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/reference/notes.ts) |
-| Denominators (populations) | [`src/reference/population.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/reference/population.ts) |
-| Known data problems, and how each was settled | [`docs/data-problems.md`](https://github.com/Manifestigations/Dataset/blob/main/docs/data-problems.md) |
-| The data in plain JSON + a JSON schema | `json/` + `schema/` — regenerate with `npm run build` |
+Every path above goes through [`src/data/data.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/data.ts)
+as its public entry point for the 2026 layer: that file only re-exports, so
+importing from it keeps import paths stable while the modules underneath move.
 
-## Use this data in your own tools
+## How a figure is stored
 
-The committed `json/`, `csv/` and `schema/` outputs are fetchable directly,
-no install, no npm token — pin to a release tag (`/v2026.12/`) for a
-reproducible snapshot, or use `/main/` for the latest:
+Two shapes, one per data kind. Both live in TypeScript, both are checked by
+`npm run typecheck`.
 
-| File | URL (main branch) |
-| --- | --- |
-| Manifest (version, checksums, raw URLs) | [`json/manifest.json`](https://raw.githubusercontent.com/Manifestigations/Dataset/main/json/manifest.json) |
-| 2026 daily cells + weekly series + denominators | [`json/reference.json`](https://raw.githubusercontent.com/Manifestigations/Dataset/main/json/reference.json) |
-| Historic episodes (weekly `Row`s) | [`json/episodes.json`](https://raw.githubusercontent.com/Manifestigations/Dataset/main/json/episodes.json) |
-| Source catalogue (169 sources, 15 groups) | [`json/sources.json`](https://raw.githubusercontent.com/Manifestigations/Dataset/main/json/sources.json) |
-| 2026 facts, long format (pandas) | [`csv/facts_2026.csv`](https://raw.githubusercontent.com/Manifestigations/Dataset/main/csv/facts_2026.csv) |
-| Episodes, long format (pandas) | [`csv/episodes_long.csv`](https://raw.githubusercontent.com/Manifestigations/Dataset/main/csv/episodes_long.csv) |
-| JSON schemas (one per type, self-contained) | [`schema/`](https://github.com/Manifestigations/Dataset/tree/main/schema) |
-| Data dictionary (grain, fields, flags) | [`docs/data-dictionary.md`](docs/data-dictionary.md) |
+**2026 daily cells** — `FACTS` is a record keyed by ISO date; each present
+metric is an `Obs`, and a point figure has `low === high`:
 
-```sh
-curl -O https://raw.githubusercontent.com/Manifestigations/Dataset/main/csv/facts_2026.csv
+```ts
+// src/data/facts.ts
+export const FACTS: Readonly<Record<string, Partial<Record<MetricKey, Obs>>>> =
+  {
+    "2026-09-28": {
+      arrests: { low: 164, high: 164 },
+      protesterInjured: { low: 1, high: 1, q: "f" },
+      blockades: { low: 27, high: 27 },
+    },
+  };
 ```
 
-```python
-import pandas as pd
-facts = pd.read_csv("facts_2026.csv")            # date, metric, low, high, q
+`Obs` is `{ low, high, q? }` (`src/data/types.ts`). The daily and weekly series
+(`Pt` = `{ v, band, q, note, detach }`, `Series = Pt[]`) are **computed** from
+`FACTS` in `projections.ts` and `aggregate.ts` — never hand-edited.
+
+**Historical weeks** — a `Row` is one week of an `Episode`:
+
+```ts
+// src/data/episodes/nahel.ts
+{ w: 0, from: "2023-06-26", to: "2023-07-02", p: [8_000, 50_000], flag: { p: "e" } },
+{ w: 1, from: "2023-07-03", to: "2023-07-09", a: 108, f: 1 },
 ```
 
-## How a figure works
+`Row` (`src/model/index.ts`): `w` runs sequentially from 0, `from`/`to` are ISO,
+`p` turnout · `a` arrests · `f` forces injured · `i` protesters injured, each a
+`Band` = `number | [low, high]`, with optional per-metric `flag` and `noteRef`.
+A missing metric means "no published figure" — never zero.
 
-- A cell is a **point or a range**. A figure published as "between 175,000 and
-  197,000" stays a range — never a midpoint, never an average of two outlets.
-  (A midpoint is only ever used as a *drawing* convention so a line can go
-  somewhere; anything that *quotes* a number must print the band.)
-- A cell can carry a **flag**:
+## Flags
 
-  | Flag | Meaning |
-  | ---- | ------- |
-  | `n` | published national point figure (the default; may be omitted) |
-  | `r` | regional only — one city, one prefecture |
-  | `p` | partial coverage |
-  | `f` | floor: "at least N" |
-  | `e` | derived or modelled — the arithmetic is stated in a note |
-  | `c` | cumulative stock, or a subset of a larger published total |
-  | `w` | weekly aggregate |
-  | `x` | a wider measure than the metric's strict definition (e.g. "perturbés") |
+| Flag | Meaning                                                                 | Detached |
+| ---- | ----------------------------------------------------------------------- | -------- |
+| `n`  | published national point figure (the default; may be omitted)           | no       |
+| `r`  | regional only — one city, one prefecture                                | **yes**  |
+| `p`  | partial coverage                                                        | **yes**  |
+| `f`  | floor: "at least N"                                                     | no       |
+| `e`  | derived or modelled — the arithmetic is stated                          | **yes**  |
+| `c`  | cumulative stock, or a subset of a larger published total               | **yes**  |
+| `w`  | weekly aggregate                                                        | no       |
+| `x`  | a wider measure than the metric's strict definition (perturbés, closed) | no       |
 
-- **Empty means "no published figure"** — never zero, never interpolated.
-- **A count and an estimate are different data.** This dataset is explicit
-  about which one it holds.
+`isDetached(q)` in `src/model/index.ts` is the single definition of "must not be
+joined to the national line": `r`, `p`, `e`, `c`. `bandOf()` flattens a band to
+`[low, high]`; `midOf()` is the plotting midpoint only — a drawing convention,
+never an estimate, never to be averaged.
+
+## Invariants (do not violate)
+
+- A published range stays a range. Never average two publishers; never
+  midpoint a band.
+- Never change a flag to make a series continuous (`r`, `p`, `e`, `c` are
+  detached by definition).
+- Never interpolate a gap. Absent cell = no published figure.
+- Never add a `c` cell to the total it is a subset of.
+- A source's `label` is the publisher + headline **verbatim**, never
+  translated.
 - Human-facing strings exist in both `en` and `fr`; the French is authored,
   not translated.
 
 ```mermaid
 erDiagram
+    FACTS {
+        string date PK "ISO, one key per day"
+        Obs turnout "optional"
+        Obs strikers "optional"
+        Obs arrests "optional"
+        Obs forcesInjured "optional"
+        Obs protesterInjured "optional"
+        Obs damagesCost "optional"
+        Obs blockades "optional"
+    }
+    OBS {
+        number low "the figure its source stands behind"
+        number high "the widest count any source supports"
+        Flag q "optional; n by default"
+    }
     EPISODE {
-        EpisodeId id PK "may68 · cpe · gj · nahel · pensions · bt · students26"
+        EpisodeId id PK
         string start "ISO date"
         string end "ISO date"
     }
-    WEEK_ROW {
-        int w PK "row index, sequential from 0"
-        string from "ISO, start of week"
-        string to "ISO, end of week"
+    ROW {
+        int w PK "sequential from 0"
+        string from "ISO"
+        string to "ISO"
         int act "optional"
         boolean partial "optional"
-        Band p "turnout — number or [low, high]"
+        Band p "turnout"
         Band a "arrests"
         Band f "forces injured"
         Band i "protesters injured"
@@ -96,7 +137,7 @@ erDiagram
         NoteRef noteRef "per-metric, optional"
     }
     SOURCE_GROUP {
-        GroupId id PK "official · press · cost · gj · …"
+        GroupId id PK "official · press · blockades · cost · overseas · ref2026 · mai68 · cpe · gj · strikes · nahel · retraites · rn2024 · bloquons · media"
         Bi title
         Bi blurb
     }
@@ -109,59 +150,56 @@ erDiagram
         string dateEnd "ISO, optional"
         Bi what "what this page takes from the source"
     }
-    METRIC_KEY {
-        string key "turnout · strikers · arrests · forcesInjured<br/>forcesInjuredStock · protesterInjured · damagesCost<br/>policingCost · heliCost · blockades"
-    }
 
-    EPISODE ||--o{ WEEK_ROW : "weeks: Row[]"
+    FACTS ||--o{ OBS : "one per present metric"
+    EPISODE ||--o{ ROW : "weeks: Row[]"
     SOURCE_GROUP ||--o{ SOURCE : "contains"
-    WEEK_ROW }o--o{ METRIC_KEY : "p/a/f/i map to MetricKey; superset keys carried by separate modules"
 ```
-
-## Invariants (do not violate)
-
-- A published range stays a range. Never average two publishers; never
-  midpoint a band.
-- Never change a flag to make a series continuous (`r`, `p`, `e`, `c` are
-  detached by definition).
-- Never interpolate a gap. Absent cell = no published figure.
-- A source's `label` is the publisher + headline **verbatim**, never
-  translated.
 
 ## Contributing
 
-- **Report a figure** (no code, no install — a GitHub account is enough):
-  open an issue in this repository — see
-  [CONTRIBUTING, §1](CONTRIBUTING.md#1-reporting-a-figure-no-code-no-install).
-- **Edit the data** (Node ≥ 22.18, no framework knowledge required — you are
-  editing literal values in TypeScript files):
-  [CONTRIBUTING, §2](CONTRIBUTING.md#2-editing-data).
+- **Report a figure** (no code, no install — a GitHub account is enough): open
+  an issue here, using the
+  [report-a-figure form](https://github.com/Manifestigations/Dataset/issues/new?template=report-a-figure.yml).
+  See [CONTRIBUTING, §1](CONTRIBUTING.md#1-reporting-a-figure-no-code-no-install).
+- **Edit the data** (Node ≥ 22.18; you are editing literal values in TypeScript
+  files): [CONTRIBUTING, §2](CONTRIBUTING.md#2-editing-data).
 
 ## How one number gets in
 
 ```mermaid
 flowchart TD
   A["A new figure appears in the wild"] --> B{"Source already in<br/>src/data/sources/ ?"}
-  B -- "no" --> B1["Add a Source via src() / both()<br/>label = verbatim publisher + headline"]
+  B -- "no" --> B1["Add a Source to the group's file<br/>label = verbatim publisher + headline"]
   B -- "yes" --> C
-  B1 --> C["Add the Band to the right week's Row<br/>2026: src/data/* · historic: src/data/episodes/movement.ts"]
+  B1 --> C["Add the cell<br/>2026: src/data/facts.ts · historic: src/data/episodes/&lt;movement&gt;.ts"]
   C --> D{"Does the cell need explaining?"}
-  D -- "yes" --> D1["Attach a noteRef<br/>wording lives in src/data/notes.ts, never in the cell"]
+  D -- "yes" --> D1["Attach a noteRef; the wording lives with the site's copy, not in the cell"]
   D -- "no" --> E["Plain national count → flag n (or omit)"]
   D1 --> F["Set the right Flag<br/>only if it is not a plain national count"]
   F --> G
-  E --> G["npm run check:casualties && npm run typecheck"]
-  G --> H["Merge to main · tag release vYYYY.n"]
+  E --> G["npm run typecheck && npm run check:casualties"]
+  G --> H["Commit src/ · merge to main · tag vYYYY.n"]
   H --> I["Follow-up PR in Protest-Data-Observatory:<br/>bump vendor/dataset, rebuild docs/"]
 ```
-> The loop you must **not** do: averaging two publishers, mid-pointing a band, interpolating a gap, or
-> re-flagging a point to make a series continuous.
 
-## Releases
+> The loop you must **not** do: averaging two publishers, mid-pointing a band,
+> interpolating a gap, re-flagging a point to make a series continuous, or
+> adding a `c` cell to the total it is a subset of.
 
-A pull request commits **`src/` only**. CI
-(`.github/workflows/release-package.yml`) publishes the validated `json/`
-bundle and `schema/` as the npm package `@manifestigations/protest-data`
-(GitHub Packages).
+## What this repository does not (yet) do
+
+Stated plainly, because the previous version of this file promised it:
+
+- There is **no `json/` bundle and no `schema/`**, no `npm run build`, and no
+  `validate` script. The data is consumed as TypeScript source.
+- There is **no published npm package**. `package.json` is
+  `"name": "@manifestigations/dataset"`, `"private": true`.
+- CI runs `.github/workflows/style.yml` only (typecheck, lint, formatting).
+  `npm run check:casualties` is the one data-integrity check in the repo today,
+  and it covers the casualty data.
+
+If the JSON export + JSON-schema + published package is wanted, it is a good
+target — but it has to be built before it is documented.
 
 See `LICENSE` for terms of use.
