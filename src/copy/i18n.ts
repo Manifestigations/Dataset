@@ -36,7 +36,11 @@ export function buildFormats(tag: string): void {
       year: "numeric",
       ...UTC,
     }),
-    short: new Intl.DateTimeFormat(tag, { day: "numeric", month: "short", ...UTC }),
+    short: new Intl.DateTimeFormat(tag, {
+      day: "numeric",
+      month: "short",
+      ...UTC,
+    }),
     day: new Intl.DateTimeFormat(tag, { day: "numeric", ...UTC }),
   };
 }
@@ -147,9 +151,6 @@ export function fmtSpan(
   return "—";
 }
 
-const MINUTE = 60_000;
-const HOUR = 60 * MINUTE;
-
 /**
  * Share, for tooltips: "12%" at 10 and above, "4.5%" below, so a small share
  * never reads as "0%".
@@ -177,11 +178,6 @@ const DICT: Record<Lang, Record<string, string>> = {
 };
 
 const warned = new Set<string>();
-function warnOnce(key: string, message: string): void {
-  if (warned.has(key)) return;
-  warned.add(key);
-  console.warn(`[i18n] ${message}`);
-}
 
 /** Key lookup for the data layer. With a key → the dictionary string. */
 export function t(

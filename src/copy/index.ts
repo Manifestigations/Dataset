@@ -1,4 +1,4 @@
-export * from "./types.ts";
+export * from "./format.ts";
 export * from "./interpolate.ts";
 export * from "./markers.ts";
-export * from "./format.ts";
+export * from "./types.ts";

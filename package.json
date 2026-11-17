@@ -3,9 +3,15 @@
   "private": true,
   "type": "module",
   "description": "The core dataset and data models that will be visualised in the other apps",
-  "engines": { "node": ">=22.18" },
+  "engines": {
+    "node": ">=22.18"
+  },
   "scripts": {
     "check:casualties": "node scripts/check-casualties.ts",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
