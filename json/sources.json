@@ -907,6 +907,49 @@
       "date": "2026-11-07"
     },
     {
+      "id": "dpjj-etude-flash-lycee-2026",
+      "group": "official",
+      "label": "Ministère de la Justice — DPJJ/SEREV, « Etude flash sur le profil des mineurs déférés dans le cadre du mouvement lycéen », 30 octobre 2026",
+      "url": "https://www.justice.gouv.fr/sites/default/files/2026-11/etude_mouvement_lyceen_2026.pdf",
+      "what": {
+        "en": "the composition of the 1,504 minors referred in the lycée movement to 9 October 2026: sex, age, nationality, birthplace, parental social class, schooling, prior record — and the study's own warning that this population is not the movement.",
+        "fr": "la composition des 1 504 mineurs déférés dans le cadre du mouvement lycéen jusqu'au 9 octobre 2026 : sexe, âge, nationalité, lieu de naissance, CSP des parents, scolarité, antécédents — et l'avertissement de l'étude : cette population n'est pas le mouvement."
+      },
+      "date": "2026-10-30"
+    },
+    {
+      "id": "police-nationale-8mars-2026",
+      "group": "official",
+      "label": "Police nationale, « 8 mars : l'égalité professionnelle femmes/hommes, une priorité dans la police nationale »",
+      "url": "https://www.police-nationale.interieur.gouv.fr/actualite/8-mars-legalite-professionnelle-femmeshommes-priorite-dans-police-nationale",
+      "what": {
+        "en": "47,441 women of 152,197 police nationale staff — the denominator the CRS share is read against.",
+        "fr": "47 441 femmes sur 152 197 personnels de la police nationale — le dénominateur auquel se lit la part des CRS."
+      },
+      "date": "2026-03-08"
+    },
+    {
+      "id": "gendarmerie-recrutement-2025",
+      "group": "official",
+      "label": "Gendarmerie nationale, « Concours sous-officier de gendarmerie : attractivité confirmée, sélectivité renforcée »",
+      "url": "https://www.gendarmerie.interieur.gouv.fr/gendinfo/actualites/2025/concours-sous-officier-de-gendarmerie-attractivite-confirmee-selectivite-renforcee",
+      "what": {
+        "en": "24 % women among the successful sous-officier candidates of one round — an intake, not a corps.",
+        "fr": "24 % de femmes parmi les candidats admis au concours de sous-officier d'une session — un flux d'entrée, non un corps."
+      },
+      "date": "2025-05-19"
+    },
+    {
+      "id": "insee-securite-societe-2019",
+      "group": "official",
+      "label": "INSEE, « Sécurité et société » — forces de sécurité, données 2019",
+      "url": "https://www.insee.fr/fr/statistiques/5763601?sommaire=5763633",
+      "what": {
+        "en": "the mean age (38.5) and the share of women (21 %) across the police nationale and the gendarmerie together.",
+        "fr": "l'âge moyen (38,5 ans) et la part de femmes (21 %) dans la police nationale et la gendarmerie réunies."
+      }
+    },
+    {
       "id": "la1ere-lyceens",
       "group": "overseas",
       "label": "Outre-mer La 1ère — ce que l’on sait du mouvement des lycéens, de la Réunion à la Guyane",
@@ -1784,6 +1827,50 @@
         "fr": "que plus de 210 élèves avaient été blessés, « certains par la police », aux côtés de 88 personnels dont une quarantaine de chefs d’établissement — la population derrière l’étiquette « educationDeclared »."
       },
       "date": "2026-10-12"
+    },
+    {
+      "id": "liberation-checknews-crs-femmes-2018",
+      "group": "press",
+      "label": "Libération / CheckNews, « Quel est le pourcentage de femmes chez les CRS ? »",
+      "url": "https://www.liberation.fr/checknews/2018/09/24/quel-est-le-pourcentage-de-femmes-chez-les-crs_1679475/",
+      "what": {
+        "en": "357 women of 11,039 CRS officers, 3.23 %, in 2018 — the oldest CRS-specific count we hold.",
+        "fr": "357 femmes sur 11 039 CRS, soit 3,23 %, en 2018 — le plus ancien décompte spécifique aux CRS que nous détenons."
+      },
+      "date": "2018-09-24"
+    },
+    {
+      "id": "police-nationale-net-crs-femmes",
+      "group": "press",
+      "label": "police-nationale.net, « Les compagnies républicaines de sécurité » (compilation non officielle)",
+      "url": "https://www.police-nationale.net/compagnies-republicaines-securite/",
+      "what": {
+        "en": "an unofficial compilation putting women at about 4 % of the ~11,000 CRS in 2021 and under 5 % in 2024. Secondary source: cite it as such.",
+        "fr": "une compilation non officielle situant les femmes à environ 4 % des ~11 000 CRS en 2021 et sous 5 % en 2024. Source secondaire : la citer comme telle."
+      },
+      "date": "2026-07-24"
+    },
+    {
+      "id": "ifop-lci-lycees-2026-10",
+      "group": "press",
+      "label": "Ifop pour LCI, « Les Français et le mouvement des lycées » — rapport, octobre 2026",
+      "url": "https://www.ifopgroup.com/wp-content/uploads/2026/10/122835-rapport-manifestation-lycees-1.pdf",
+      "what": {
+        "en": "support for the lycée movement by age and sex: 74 % of 18–24s, 48 % overall, 53 % of women against 43 % of men. SUPPORT, not participation.",
+        "fr": "le soutien au mouvement lycéen par âge et par sexe : 74 % des 18-24 ans, 48 % au total, 53 % des femmes contre 43 % des hommes. SOUTIEN, non participation."
+      },
+      "date": "2026-10-08"
+    },
+    {
+      "id": "ipsos-cesi-lycees-2026-10",
+      "group": "press",
+      "label": "Ipsos bva-CESI, « Lycéens : un mouvement qui divise mais des revendications soutenues »",
+      "url": "https://www.ipsos.com/fr-fr/lyceens-un-mouvement-qui-divise-mais-des-revendications-soutenues",
+      "what": {
+        "en": "a second pollster on the same question: 62 % approval under 35, 43 % at 60+, 54 % overall. Kept separate from Ifop, never averaged with it.",
+        "fr": "un second institut sur la même question : 62 % d'approbation chez les moins de 35 ans, 43 % chez les 60 ans et plus, 54 % au total. Conservé à part d'Ifop, jamais moyenné."
+      },
+      "date": "2026-10-09"
     },
     {
       "id": "wiki-automne-2026",

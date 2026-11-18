@@ -896,4 +896,49 @@ export const PRESS_SOURCES: readonly Source[] = [
     ),
     "2026-10-12",
   ),
+
+  src(
+    "liberation-checknews-crs-femmes-2018",
+    "press",
+    "Libération / CheckNews, « Quel est le pourcentage de femmes chez les CRS ? »",
+    "https://www.liberation.fr/checknews/2018/09/24/quel-est-le-pourcentage-de-femmes-chez-les-crs_1679475/",
+    both(
+      "357 women of 11,039 CRS officers, 3.23 %, in 2018 — the oldest CRS-specific count we hold.",
+      "357 femmes sur 11 039 CRS, soit 3,23 %, en 2018 — le plus ancien décompte spécifique aux CRS que nous détenons.",
+    ),
+    "2018-09-24",
+  ),
+  src(
+    "police-nationale-net-crs-femmes",
+    "press",
+    "police-nationale.net, « Les compagnies républicaines de sécurité » (compilation non officielle)",
+    "https://www.police-nationale.net/compagnies-republicaines-securite/",
+    both(
+      "an unofficial compilation putting women at about 4 % of the ~11,000 CRS in 2021 and under 5 % in 2024. Secondary source: cite it as such.",
+      "une compilation non officielle situant les femmes à environ 4 % des ~11 000 CRS en 2021 et sous 5 % en 2024. Source secondaire : la citer comme telle.",
+    ),
+    "2026-07-24",
+  ),
+  src(
+    "ifop-lci-lycees-2026-10",
+    "press",
+    "Ifop pour LCI, « Les Français et le mouvement des lycées » — rapport, octobre 2026",
+    "https://www.ifopgroup.com/wp-content/uploads/2026/10/122835-rapport-manifestation-lycees-1.pdf",
+    both(
+      "support for the lycée movement by age and sex: 74 % of 18–24s, 48 % overall, 53 % of women against 43 % of men. SUPPORT, not participation.",
+      "le soutien au mouvement lycéen par âge et par sexe : 74 % des 18-24 ans, 48 % au total, 53 % des femmes contre 43 % des hommes. SOUTIEN, non participation.",
+    ),
+    "2026-10-08",
+  ),
+  src(
+    "ipsos-cesi-lycees-2026-10",
+    "press",
+    "Ipsos bva-CESI, « Lycéens : un mouvement qui divise mais des revendications soutenues »",
+    "https://www.ipsos.com/fr-fr/lyceens-un-mouvement-qui-divise-mais-des-revendications-soutenues",
+    both(
+      "a second pollster on the same question: 62 % approval under 35, 43 % at 60+, 54 % overall. Kept separate from Ifop, never averaged with it.",
+      "un second institut sur la même question : 62 % d'approbation chez les moins de 35 ans, 43 % chez les 60 ans et plus, 54 % au total. Conservé à part d'Ifop, jamais moyenné.",
+    ),
+    "2026-10-09",
+  ),
 ];

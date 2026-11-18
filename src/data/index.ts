@@ -116,6 +116,7 @@ export * from "./student-weeks.ts";
 // @ts-expect-error FIXME For some reason TS thinks there are two exports named
 // `POPULATION`, but there aren't.
 export * from "./casualties/index.ts";
+export * from "./demographics/index.ts";
 export * from "./episodes/index.ts";
 
 export * from "./sources/index.ts";

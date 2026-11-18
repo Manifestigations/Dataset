@@ -103,4 +103,48 @@ export const OFFICIAL_SOURCES: readonly Source[] = [
     ),
     "2026-11-07",
   ),
+
+  src(
+    "dpjj-etude-flash-lycee-2026",
+    "official",
+    "Ministère de la Justice — DPJJ/SEREV, « Etude flash sur le profil des mineurs déférés dans le cadre du mouvement lycéen », 30 octobre 2026",
+    "https://www.justice.gouv.fr/sites/default/files/2026-11/etude_mouvement_lyceen_2026.pdf",
+    both(
+      "the composition of the 1,504 minors referred in the lycée movement to 9 October 2026: sex, age, nationality, birthplace, parental social class, schooling, prior record — and the study's own warning that this population is not the movement.",
+      "la composition des 1 504 mineurs déférés dans le cadre du mouvement lycéen jusqu'au 9 octobre 2026 : sexe, âge, nationalité, lieu de naissance, CSP des parents, scolarité, antécédents — et l'avertissement de l'étude : cette population n'est pas le mouvement.",
+    ),
+    "2026-10-30",
+  ),
+  src(
+    "police-nationale-8mars-2026",
+    "official",
+    "Police nationale, « 8 mars : l'égalité professionnelle femmes/hommes, une priorité dans la police nationale »",
+    "https://www.police-nationale.interieur.gouv.fr/actualite/8-mars-legalite-professionnelle-femmeshommes-priorite-dans-police-nationale",
+    both(
+      "47,441 women of 152,197 police nationale staff — the denominator the CRS share is read against.",
+      "47 441 femmes sur 152 197 personnels de la police nationale — le dénominateur auquel se lit la part des CRS.",
+    ),
+    "2026-03-08",
+  ),
+  src(
+    "gendarmerie-recrutement-2025",
+    "official",
+    "Gendarmerie nationale, « Concours sous-officier de gendarmerie : attractivité confirmée, sélectivité renforcée »",
+    "https://www.gendarmerie.interieur.gouv.fr/gendinfo/actualites/2025/concours-sous-officier-de-gendarmerie-attractivite-confirmee-selectivite-renforcee",
+    both(
+      "24 % women among the successful sous-officier candidates of one round — an intake, not a corps.",
+      "24 % de femmes parmi les candidats admis au concours de sous-officier d'une session — un flux d'entrée, non un corps.",
+    ),
+    "2025-05-19",
+  ),
+  src(
+    "insee-securite-societe-2019",
+    "official",
+    "INSEE, « Sécurité et société » — forces de sécurité, données 2019",
+    "https://www.insee.fr/fr/statistiques/5763601?sommaire=5763633",
+    both(
+      "the mean age (38.5) and the share of women (21 %) across the police nationale and the gendarmerie together.",
+      "l'âge moyen (38,5 ans) et la part de femmes (21 %) dans la police nationale et la gendarmerie réunies.",
+    ),
+  ),
 ];

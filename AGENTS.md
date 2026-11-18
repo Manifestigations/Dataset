@@ -96,6 +96,13 @@ the data contradicts itself, not that the check is too strict.
 `content/data-problems.md` in the **Observatory** repo (it is prose about
 method and lives there), then apply it to the cells.
 
+**Change a demographic figure** — edit `src/data/demographics/{protesters,forces}.ts`;
+keep the `population` string truthful when the base changes; keep `basis`
+honest (`document` = read from the source, `reported` = second-hand); a figure
+that does not exist goes in `DEMOGRAPHIC_GAPS` with a `cause`, never in a row
+as 0; a variable that is not ethnicity goes in `ETHNICITY_PROXIES` with its
+caveat; `npm run typecheck`.
+
 ## Gotchas
 
 - `src/data/data.ts` imports nothing at runtime; its comment block is the

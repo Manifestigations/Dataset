@@ -88,6 +88,7 @@ is consumed as TypeScript source. The checks you have are `typecheck`, `lint`,
 | Casualty cells, observations, estimators          | `src/data/casualties/{cases,inputs,estimate}.ts`                                                                                                      |
 | A known, unresolved data problem                  | `content/data-problems.md` in the [Observatory repo](https://github.com/Manifestigations/Protest-Data-Observatory/blob/main/content/data-problems.md) |
 | Why a figure was chosen                           | the verification record at the top of `src/data/data.ts` (read-only history)                                                                          |
+| A demographic share, or a demographic gap         | `src/data/demographics/`                                                                                                                              |
 
 ### 2.3 Add or correct a cell
 
@@ -142,6 +143,12 @@ Rules for both:
   continuous — fix the note instead. A `c` cell is never added to the total it
   is a subset of.
 
+- **Demographic figures are not rows.** A share carries its `population` (what
+  was counted), its `base` (`all` / `subset` / `poll`) and its denominator `n`
+  where published. A figure that does not exist is a `DemoGap` with a `cause`
+  (`not-collected`, `not-published`, `not-split`, `not-found`) — never a 0, never
+  an empty cell. `poll` figures measure support, not participation, and must say
+  so in their `population` string.d
 - A day or week with no published figure stays empty. Do not interpolate.
 - If the cell needs explaining, attach a `noteRef` — an id, not wording. The
   explanation itself is authored with the site's copy, in both languages; it is

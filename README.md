@@ -22,6 +22,7 @@ in the files below.
 | The derived daily and weekly series, the window and the school-holiday band                                                        | [`src/data/projections.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/projections.ts) (daily), [`src/data/aggregate.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/aggregate.ts) (weekly), [`src/data/calendar.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/calendar.ts) (`START`/`END`, `WEEKS`, `HOLIDAY_START`/`HOLIDAY_END`) |
 | Deployments, force levels, the cost rate, helicopter hours                                                                         | [`src/data/policing.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/policing.ts), [`src/data/helicopters.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/helicopters.ts)                                                                                                                                                                                  |
 | Denominators (populations)                                                                                                         | [`src/data/population.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/population.ts)                                                                                                                                                                                                                                                                                          |
+| Who protests, who polices: age, sex, nationality and the **absence** of ethnic statistics                                          | [`src/data/demographics/`](https://github.com/Manifestigations/Dataset/tree/main/src/data/demographics) — `DemoRow` per source and population, `DemoGap` for what does not exist, `DemoProxy` for what is not ethnicity                                                                                                                                                                           |
 | Past movements for comparison (Mai 68, CPE, Gilets Jaunes, Nahel, pensions 2023, « Bloquons tout », students 2026 — one file each) | [`src/data/episodes/`](https://github.com/Manifestigations/Dataset/tree/main/src/data/episodes)                                                                                                                                                                                                                                                                                                   |
 | The catalogue of every source (who published what, on which date)                                                                  | [`src/data/sources/`](https://github.com/Manifestigations/Dataset/tree/main/src/data/sources) — one file per group                                                                                                                                                                                                                                                                                |
 | The casualty data, its severities, observations and estimators                                                                     | [`src/data/casualties/`](https://github.com/Manifestigations/Dataset/tree/main/src/data/casualties)                                                                                                                                                                                                                                                                                               |
@@ -35,7 +36,7 @@ importing from it keeps import paths stable while the modules underneath move.
 
 ## How a figure is stored
 
-Two shapes, one per data kind. Both live in TypeScript, both are checked by
+Three shapes, one per data kind. All live in TypeScript and are checked by
 `npm run typecheck`.
 
 **2026 daily cells** — `FACTS` is a record keyed by ISO date; each present
@@ -64,6 +65,27 @@ export const FACTS: Readonly<Record<string, Partial<Record<MetricKey, Obs>>>> =
 { w: 0, from: "2023-06-26", to: "2023-07-02", p: [8_000, 50_000], flag: { p: "e" } },
 { w: 1, from: "2023-07-03", to: "2023-07-09", a: 108, f: 1 },
 ```
+
+**Demographic shares** — a `DemoRow` is one source's composition of one named
+population. A share never travels without its base, and an absent figure is a
+`DemoGap` with a cause, never a zero:
+
+```ts
+// src/data/demographics/protesters.ts
+{
+  id: "dpjj-lycee-2026-sex",
+  side: "protesters",
+  source: "dpjj-etude-flash-lycee-2026",
+  period: { from: "2026-09-18", to: "2026-10-09" },
+  population: { en: "Minors referred to a prosecutor…", fr: "Mineurs déférés…" },
+  shares: [{ dim: "sex", bucket: "filles", value: 7, n: [101, 1504], base: "all" }],
+  basis: "document",
+}
+```
+
+Rows are **not** summable and **not** a time series: they are different
+populations on different dates. `base` says what the percentage is a percentage
+of; `poll` means support, not participation.
 
 `Row` (`src/model/index.ts`): `w` runs sequentially from 0, `from`/`to` are ISO,
 `p` turnout · `a` arrests · `f` forces injured · `i` protesters injured, each a
