@@ -1,4 +1,4 @@
-import type { Episode } from "../../model";
+import type { Episode } from "../../model/index.ts";
 
 /* ── CPE 2006 ───────────────────────────────────────────────────────────────
    The worst-documented episode for enforcement: the CAJ total (4,500 arrests,

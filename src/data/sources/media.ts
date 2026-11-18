@@ -1,4 +1,4 @@
-import type { Source } from "./types";
+import type { Source } from "./types.ts";
 
 export const MEDIA_SOURCES: readonly Source[] = [
   {

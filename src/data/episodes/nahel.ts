@@ -1,4 +1,4 @@
-import type { Episode } from "../../model";
+import type { Episode } from "../../model/index.ts";
 
 /* ── Nahel 2023 ─────────────────────────────────────────────────────────────
    Under-counted by march numbers: most gatherings were banned, and the crowd

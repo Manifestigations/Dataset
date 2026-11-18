@@ -2,22 +2,22 @@
  *  sources.ts, whose own header comment ("158 sources, 13 groups") was stale on
  *  both counts. Bump these only alongside the array they describe. */
 
-import { BLOCKADES_SOURCES } from "./blockades";
-import { BLOQUONS_SOURCES } from "./bloquons";
-import { COST_SOURCES } from "./cost";
-import { CPE_SOURCES } from "./cpe";
-import { GJ_SOURCES } from "./gj";
-import { MAI68_SOURCES } from "./mai68";
-import { MEDIA_SOURCES } from "./media";
-import { NAHEL_SOURCES } from "./nahel";
-import { OFFICIAL_SOURCES } from "./official";
-import { OVERSEAS_SOURCES } from "./overseas";
-import { PRESS_SOURCES } from "./press";
-import { REF2026_SOURCES } from "./ref2026";
-import { RETRAITES_SOURCES } from "./retraites";
-import { RN2024_SOURCES } from "./rn2024";
-import { STRIKES_SOURCES } from "./strikes";
-import type { GroupId, Source } from "./types";
+import { BLOCKADES_SOURCES } from "./blockades.ts";
+import { BLOQUONS_SOURCES } from "./bloquons.ts";
+import { COST_SOURCES } from "./cost.ts";
+import { CPE_SOURCES } from "./cpe.ts";
+import { GJ_SOURCES } from "./gj.ts";
+import { MAI68_SOURCES } from "./mai68.ts";
+import { MEDIA_SOURCES } from "./media.ts";
+import { NAHEL_SOURCES } from "./nahel.ts";
+import { OFFICIAL_SOURCES } from "./official.ts";
+import { OVERSEAS_SOURCES } from "./overseas.ts";
+import { PRESS_SOURCES } from "./press.ts";
+import { REF2026_SOURCES } from "./ref2026.ts";
+import { RETRAITES_SOURCES } from "./retraites.ts";
+import { RN2024_SOURCES } from "./rn2024.ts";
+import { STRIKES_SOURCES } from "./strikes.ts";
+import type { GroupId, Source } from "./types.ts";
 
 export const SOURCES: readonly Source[] = [
   ...BLOCKADES_SOURCES,

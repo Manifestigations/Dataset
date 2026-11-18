@@ -1,4 +1,4 @@
-import type { Episode } from "../../model";
+import type { Episode } from "../../model/index.ts";
 
 /* ── Retirement reform 2023 ─────────────────────────────────────────────────
    Crowds only: no national weekly arrest or injury series was published for

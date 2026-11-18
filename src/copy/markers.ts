@@ -14,7 +14,7 @@
  * never import a *value* from there. Types only; they are erased.
  */
 
-import type { Bi, Lang } from "./types";
+import type { Bi, Lang } from "./types.ts";
 
 /** Display order: national, then narrowest to widest. */
 export type FlagKey = "n" | "r" | "p" | "f" | "e" | "c" | "w" | "x";

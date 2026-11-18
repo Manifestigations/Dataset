@@ -1,21 +1,9 @@
 {
   "name": "@manifestigations/protest-data",
-  "generatedAt": "2026-11-17T21:55:47.781Z",
-  "license": "SEE-LICENSE",
-  "counts": {
-    "episodes": 7,
-    "sources": 183,
-    "factDates": 27
-  },
+  "version": "0.1.0",
   "files": {
     "episodes.json": "sha256:7500090e46f1543e7e0d8f22f7a466682fd785684d47b96622fc7c3136058c60",
-    "reference.json": "sha256:d8b7e487c547812b6b1f05c81306f0e13e14967d660fd219cd4a73422319a301",
+    "reference.json": "sha256:b75b1ffecd9c8f3e80820a9dd21a61bede25809c832b24847a9814551ce7f426",
     "sources.json": "sha256:2b20ebee3fcbfe352407924af906c327febddc2d9a9abcbd193f12e01f7f1eb6"
-  },
-  "rawUrls": {
-    "episodes.json": "https://raw.githubusercontent.com/Manifestigations/Dataset/main/json/episodes.json",
-    "reference.json": "https://raw.githubusercontent.com/Manifestigations/Dataset/main/json/reference.json",
-    "sources.json": "https://raw.githubusercontent.com/Manifestigations/Dataset/main/json/sources.json",
-    "manifest.json": "https://raw.githubusercontent.com/Manifestigations/Dataset/main/json/manifest.json"
   }
 }

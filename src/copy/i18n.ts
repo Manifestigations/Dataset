@@ -6,8 +6,8 @@
  * DICT entries. Everything display-copy lives in the Observatory.
  */
 
-import { fill } from "./interpolate";
-import type { Bi, Lang } from "./types";
+import { fill } from "./interpolate.ts";
+import type { Bi, Lang } from "./types.ts";
 
 const UTC = { timeZone: "UTC" } as const;
 

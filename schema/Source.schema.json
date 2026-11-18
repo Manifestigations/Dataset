@@ -1,42 +1,45 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "type": "object",
-  "properties": {
-    "id": {
-      "type": "string"
-    },
-    "group": {
-      "$ref": "#/definitions/GroupId"
-    },
-    "label": {
-      "type": "string",
-      "description": "Publisher and headline, verbatim. Never translated."
-    },
-    "url": {
-      "type": "string"
-    },
-    "date": {
-      "type": "string",
-      "description": "ISO start date. Absent for continuously published sources and standing pages."
-    },
-    "dateEnd": {
-      "type": "string",
-      "description": "End of a publication span; rendered as \"10 Sep–11 Sep 2025\"."
-    },
-    "what": {
-      "$ref": "#/definitions/Bi",
-      "description": "What this page takes from the source."
-    }
-  },
-  "required": [
-    "id",
-    "group",
-    "label",
-    "url",
-    "what"
-  ],
-  "additionalProperties": false,
+  "$ref": "#/definitions/Source",
   "definitions": {
+    "Source": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "group": {
+          "$ref": "#/definitions/GroupId"
+        },
+        "label": {
+          "type": "string",
+          "description": "Publisher and headline, verbatim. Never translated."
+        },
+        "url": {
+          "type": "string"
+        },
+        "date": {
+          "type": "string",
+          "description": "ISO start date. Absent for continuously published sources and standing pages."
+        },
+        "dateEnd": {
+          "type": "string",
+          "description": "End of a publication span; rendered as \"10 Sep–11 Sep 2025\"."
+        },
+        "what": {
+          "$ref": "#/definitions/Bi",
+          "description": "What this page takes from the source."
+        }
+      },
+      "required": [
+        "id",
+        "group",
+        "label",
+        "url",
+        "what"
+      ],
+      "additionalProperties": false
+    },
     "GroupId": {
       "type": "string",
       "enum": [

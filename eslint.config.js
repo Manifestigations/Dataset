@@ -6,7 +6,7 @@ import tseslint from "typescript-eslint";
 
 export default defineConfig(
   {
-    ignores: ["node_modules/"],
+    ignores: ["node_modules/", "dist/"],
   },
   {
     name: "project/javascript-basics",

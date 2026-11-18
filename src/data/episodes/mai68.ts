@@ -1,4 +1,4 @@
-import type { Episode } from "../../model";
+import type { Episode } from "../../model/index.ts";
 
 /* ── May 1968 ───────────────────────────────────────────────────────────────
    The street crowd was measured ad hoc: prefecture counts, "surface occupée"

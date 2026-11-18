@@ -1,4 +1,4 @@
-import type { Episode } from "../../model";
+import type { Episode } from "../../model/index.ts";
 
 /* ── Bloquons tout 2025 ─────────────────────────────────────────────────────
    The label first appears on social media in May 2025; the first national

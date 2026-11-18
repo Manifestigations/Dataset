@@ -1,13 +1,13 @@
 name: release-package
 
 on:
+  pull_request:
+    branches: [main]
   push:
-    tags: ["v*"]   # release tags vx.y.z — publish the npm package
+    tags: ["v*"]
 
 jobs:
   stale-bundle:
-    # also runs on PRs to main: fail if the committed bundle is behind src/
-    if: ${{ github.event_name == 'pull_request' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

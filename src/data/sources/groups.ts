@@ -1,4 +1,4 @@
-import type { SourceGroup } from "./types";
+import type { SourceGroup } from "./types.ts";
 
 export const GROUPS: readonly SourceGroup[] = [
   {

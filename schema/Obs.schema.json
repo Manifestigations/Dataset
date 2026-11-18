@@ -1,23 +1,26 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "type": "object",
-  "properties": {
-    "low": {
-      "type": "number"
-    },
-    "high": {
-      "type": "number"
-    },
-    "q": {
-      "$ref": "#/definitions/Flag"
-    }
-  },
-  "required": [
-    "low",
-    "high"
-  ],
-  "additionalProperties": false,
+  "$ref": "#/definitions/Obs",
   "definitions": {
+    "Obs": {
+      "type": "object",
+      "properties": {
+        "low": {
+          "type": "number"
+        },
+        "high": {
+          "type": "number"
+        },
+        "q": {
+          "$ref": "#/definitions/Flag"
+        }
+      },
+      "required": [
+        "low",
+        "high"
+      ],
+      "additionalProperties": false
+    },
     "Flag": {
       "type": "string",
       "enum": [

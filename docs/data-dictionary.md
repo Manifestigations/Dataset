@@ -2,20 +2,20 @@
 
 ## Grain
 
-| File | Grain | Shape |
-| --- | --- | --- |
-| `reference.json → facts` | 2026, **daily** | `{ [ISO date]: { [MetricKey]: Obs } }`, `Obs = { low, high, q? }` |
-| `reference.json → weekly` | 2026, **weekly** (pre-aggregated) | `Series = Pt[]`, `Pt = { v, band, q, note, detach }` |
-| `episodes.json` | historic movements, **weekly** | `Episode = { id, start, end, weeks: Row[] }` |
-| `sources.json` | one row per source | `Source = { id, group, label, url, date?, dateEnd?, what }` |
+| File                      | Grain                             | Shape                                                             |
+| ------------------------- | --------------------------------- | ----------------------------------------------------------------- |
+| `reference.json → facts`  | 2026, **daily**                   | `{ [ISO date]: { [MetricKey]: Obs } }`, `Obs = { low, high, q? }` |
+| `reference.json → weekly` | 2026, **weekly** (pre-aggregated) | `Series = Pt[]`, `Pt = { v, band, q, note, detach }`              |
+| `episodes.json`           | historic movements, **weekly**    | `Episode = { id, start, end, weeks: Row[] }`                      |
+| `sources.json`            | one row per source                | `Source = { id, group, label, url, date?, dateEnd?, what }`       |
 
 ## Value semantics
 
 - `low == high` → point figure; `low < high` → a published range. Storage never
-  collapses a range; `midOf` is a *drawing* convention only.
+  collapses a range; `midOf` is a _drawing_ convention only.
 - A missing key is "no published figure" — never zero, never interpolated.
 - `q` / `flag` carry the flags from the README table (`n r p f e c w x`);
-  `r p e c` are *detached* — never joined to a national line.
+  `r p e c` are _detached_ — never joined to a national line.
 - Weekly aggregation: `turnout`/`strikers`/`blockades` = week's peak (a level,
   not a sum); `arrests`/`forcesInjured`/`protesterInjured` = week's sum.
 

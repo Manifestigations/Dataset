@@ -1,38 +1,54 @@
 {
   "name": "@manifestigations/dataset",
-  "private": true,
-  "type": "module",
-  "description": "The core dataset and data models that will be visualised in the other apps",
-  "engines": {
-    "node": ">=22.18"
+  "version": "0.1.0",
+  "description": "The 2026 Autumn protests in France: sourced daily figures, historical movements, the source catalogue and the JSON bundle.",
+  "license": "SEE LICENSE IN LICENSE",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Manifestigations/Dataset.git"
   },
-  "files": [
-    "json",
-    "schema",
-    "csv",
-    "dist",
-    "data.json",
-    "CITATION.cff",
-    "README.md",
-    "LICENSE"
-  ],
-  "exports": {
-    ".": "./dist/data/data.js",
-    "./json/*": "./json/*",
-    "./csv/*": "./csv/*",
-    "./schema/*": "./schema/*"
+  "type": "module",
+  "sideEffects": false,
+  "engines": {
+    "node": ">=22.18.0"
   },
   "scripts": {
+    "typecheck": "tsc -p tsconfig.json",
+    "build": "node scripts/build.ts && tsc -p tsconfig.build.json",
+    "validate": "node scripts/validate.ts",
+    "watch": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
     "check:casualties": "node scripts/check-casualties.ts",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "typecheck": "tsc --noEmit",
-    "build": "tsx scripts/build.ts",
-    "validate": "node scripts/validate.ts",
     "check": "npm run typecheck && npm run validate",
-    "check:stale": "npm run build && git diff --exit-code -- json schema csv || (echo 'Stale bundle: run npm run build and commit json/, schema/, csv/' && exit 1)"
+    "check:stale": "npm run build && git diff --exit-code -- json schema csv || (echo 'Stale bundle: run npm run build and commit json/, schema/, csv/' && exit 1)",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm run typecheck && npm run validate && npm run build"
+  },
+  "files": [
+    "dist",
+    "json",
+    "schema",
+    "docs",
+    "README.md",
+    "LICENSE"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./json/*": "./json/*",
+    "./schema/*": "./schema/*",
+    "./docs/*": "./docs/*",
+    "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "@manifestigations:registry": "https://npm.pkg.github.com",
+    "registry": "https://npm.pkg.github.com"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
@@ -45,7 +61,6 @@
     "prettier": "^3.10.1",
     "prettier-plugin-organize-imports": "^4.3.0",
     "ts-json-schema-generator": "^2.9.0",
-    "tsx": "^4.23.15",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.73.0"
   },

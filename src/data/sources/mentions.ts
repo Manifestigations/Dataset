@@ -1,5 +1,5 @@
-import { both } from "./record";
-import type { Mention } from "./types";
+import { both } from "./record.ts";
+import type { Mention } from "./types.ts";
 
 export const MENTIONS: readonly Mention[] = [
   {

@@ -1,4 +1,4 @@
-import type { Episode, Flag, Row } from "../../model";
+import type { Episode, Flag, Row } from "../../model/index.ts";
 
 /* ── Gilets jaunes ──────────────────────────────────────────────────────────
    One Ministry count per Saturday act, so no range is plotted: the episode is
