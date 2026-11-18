@@ -1,7 +1,8 @@
 /* -------------------------------------------------------------- 2026 rows */
 
 import { METRICS, type Episode, type Row } from "../../model/index.ts";
-import { END, STUDENT_WEEKS, type StudentWeek } from "../data.ts";
+import { END, type StudentWeek } from "../index.ts";
+import { STUDENT_WEEKS } from "../student-weeks.ts";
 
 /** STUDENT_WEEKS already carries bands, flags and note refs; this is a copy, not
  *  a recalculation — the fallback table and the index patch are gone.

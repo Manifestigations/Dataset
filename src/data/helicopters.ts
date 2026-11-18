@@ -4,7 +4,7 @@
    ════════════════════════════════════════════════════════════════════════════ */
 
 import { bandOf, type Band } from "../model/index.ts";
-import { DAILY, DATES, type Pt, type Series } from "./data.ts";
+import { DAILY, DATES, type Pt, type Series } from "./index.ts";
 
 /** €/h — requisition tariff; reproduces the 2019 yellow-vest precedent. */
 export const RATE_REQUISITION = 1_412;

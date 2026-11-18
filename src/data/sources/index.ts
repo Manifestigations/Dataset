@@ -75,3 +75,6 @@ export const SOURCES_BY_GROUP: ReadonlyMap<GroupId, readonly Source[]> =
     for (const bucket of buckets.values()) bucket.sort(byPublicationDate);
     return buckets;
   })();
+
+export * from "./groups.ts";
+export * from "./types.ts";
