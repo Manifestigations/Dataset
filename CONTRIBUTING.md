@@ -25,6 +25,15 @@ asks for exactly this. Include:
 | The source               | a URL, a report title and page, or outlet and date. Paywalled or PDF is not an obstacle: say so and we will fetch it |
 | Who published it         | and whether it is a **count** or an **estimate** — the data distinguishes the two                                    |
 
+If you are reporting something from the illegal-act register — an act alleged
+against someone, a charge, a hearing — add two fields, because the register
+cannot be filled without them:
+
+| Field                 | What we need                                                                                                                                                                    |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Which side            | protesters, the police, or a far-right group. If it is a far-right group, the **word the source used** ("ultra-right", "identitarian", "far-right") and who used it             |
+| Where the case stands | alleged, a complaint filed, an investigation open, a charge, a trial, a verdict, an acquittal, a dismissal, or prescribed. A court's own step, not a journalist's summary of it |
+
 Also welcome as issues here:
 
 - a movement missing from the historical comparison, or a group of sources to
@@ -53,7 +62,7 @@ them. Cite the range, not one of its bounds — "between 175,000 and 197,000"
 is the result; a single bound is half a truth. Say what the data does not
 show: gaps are listed, they are not zero. Point to the page's Sources
 section so the number can be checked without trusting us.
-r
+
 ---
 
 ## 2. Editing data
@@ -74,28 +83,33 @@ npm run build
 This is a data package, not a site, and the built data is consumed as TypeScript source.
 The build process also generates CSV and JSON copies of the dataset, for consumption in other
 tools.
-The available checks are `typecheck`, `lint`, `format:check` and `check:casualties`.
+The available checks are `typecheck`, `lint`, `format:check`, `check:casualties`,
+`check:costs` and `check:illegal`. `npm run check` runs all three data checks.
 
 ### 2.2 Find the right file
 
-| You are changing                                                         | File                                                                                                                                                  |
-| ------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| An autumn 2026 figure (any day)                                          | `src/data/facts.ts` — `FACTS`, one key per ISO date                                                                                                   |
-| A disruptive act in a category (road blockade, péage gratuit, sabotage…) | `src/data/disruptive/acts.ts` — one `ActRow` per (date, category); school blockades are derived, not written here                                     |
-| An autumn 2026 deployment, force level, cost rate                        | `src/data/policing.ts`                                                                                                                                |
-| A denominator (population)                                               | `src/data/population.ts`                                                                                                                              |
-| The window, the week grid, the school holidays                           | `src/data/calendar.ts`                                                                                                                                |
-| A historical movement                                                    | `src/data/episodes/<movement>.ts` (one file per movement)                                                                                             |
-| A source (URL, headline, date, what it supports)                         | `src/data/sources/<group>.ts`                                                                                                                         |
-| A group of sources                                                       | `src/data/sources/{types,groups,index}.ts`                                                                                                            |
-| Casualty cells, observations, estimators                                 | `src/data/casualties/{cases,inputs,estimate}.ts`                                                                                                      |
-| A known, unresolved data problem                                         | `content/data-problems.md` in the [Observatory repo](https://github.com/Manifestigations/Protest-Data-Observatory/blob/main/content/data-problems.md) |
-| Why a figure was chosen                                                  | the verification record at the top of `src/data/data.ts` (read-only history)                                                                          |
-| A demographic share, or a demographic gap                                | `src/data/demographics/                                                                                                                               |
+| You are changing                                                                                  | File                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| An autumn 2026 figure (any day)                                                                   | `src/data/facts.ts` — `FACTS`, one key per ISO date                                                                                                                     |
+| A disruptive act in a category (road blockade, péage gratuit, sabotage…)                          | `src/data/disruptive/acts.ts` — one `ActRow` per (date, category); school blockades are derived, not written here                                                       |
+| An act alleged during the movement (against protesters, against the police, by a far-right group) | `src/data/illegal/acts.ts` — `ILLEGAL_ACTS`, one `ActRecord` per claim                                                                                                  |
+| A police tactic read against the laws of war                                                      | `src/data/illegal/acts.ts` — `NORMATIVE`, one record per tactic and norm                                                                                                |
+| A court sitting (rooms, dockets, tracks)                                                          | `src/data/illegal/sittings.ts` — `SITTINGS`, one `Sitting` per court per day                                                                                            |
+| A qualification, or the sides it can be brought against                                           | `src/data/illegal/vocabulary.ts` (`ChargeId`, closed) then `src/data/illegal/charges.ts` (`sides`, `family`, `articles`) — **and** a label in the Observatory, see §2.3 |
+| An autumn 2026 deployment, force level, cost rate                                                 | `src/data/policing.ts`                                                                                                                                                  |
+| A denominator (population)                                                                        | `src/data/population.ts`                                                                                                                                                |
+| The window, the week grid, the school holidays                                                    | `src/data/calendar.ts`                                                                                                                                                  |
+| A historical movement                                                                             | `src/data/episodes/<movement>.ts` (one file per movement)                                                                                                               |
+| A source (URL, headline, date, what it supports)                                                  | `src/data/sources/<group>.ts`                                                                                                                                           |
+| A group of sources                                                                                | `src/data/sources/{types,groups,index}.ts`                                                                                                                              |
+| Casualty cells, observations, estimators                                                          | `src/data/casualties/{cases,inputs,estimate}.ts`                                                                                                                        |
+| A known, unresolved data problem                                                                  | `content/data-problems.md` in the [Observatory repo](https://github.com/Manifestigations/Protest-Data-Observatory/blob/main/content/data-problems.md)                   |
+| Why a figure was chosen                                                                           | the verification record at the top of `src/data/index.ts` (read-only history)                                                                                           |
+| A demographic share, or a demographic gap                                                         | `src/data/demographics/`                                                                                                                                                |
 
 ### 2.3 Add or correct a cell
 
-Three shapes, one per data kind.
+Four shapes, one per data kind.
 
 **2026 figures** — day-keyed cells in `FACTS`. Each cell is an `Obs`,
 `{ low, high, q? }`, where `q` is the flag and a point figure has
@@ -124,7 +138,90 @@ The daily and weekly series are _computed_ from `FACTS` in `projections.ts` and
 
 `p` turnout · `a` arrests · `f` forces injured · `i` protesters injured.
 
-Rules for all three:
+**Illegal-act records** — one `ActRecord` per claim, never per day and never a
+total. A record is a case, with its own procedural state:
+
+```ts
+// in src/data/illegal/acts.ts, inside ILLEGAL_ACTS
+{
+  id: "act-2026-10-24-rouen-01",
+  date: "2026-10-24",
+  place: { commune: "Rouen", dep: "76", scope: "local" },
+  side: "far-right",
+  attribution: { term: "identitarian", by: "court" },
+  charges: ["violences-volontaires"],
+  track: "criminal",
+  status: "investigation",
+  count: { s: "n", v: 1, unit: "persons" },
+  steps: [
+    { date: "2026-10-24", kind: "incident", source: "lemonde-2026-10-26" },
+    { date: "2026-10-26", kind: "investigation", court: "parquet de Rouen",
+      source: "lemonde-2026-10-26" },
+  ],
+  sources: ["lemonde-2026-10-26"],
+  noteRef: { k: "act", id: "act-2026-10-24-rouen-01" },
+},
+```
+
+Rules for the register, and `npm run check:illegal` enforces every one:
+
+- **No daily aggregate, ever.** The register is not a `MetricKey` and must not
+  become one. A count per day counts press coverage.
+- **`charges` is a list.** Usually one entry; two when one course of conduct was
+  charged twice. Write `charges: []` — never omit the field — when no
+  qualification has been published, and note that an empty list is only legal
+  below `charged`. Every entry must be available against the record's `side`
+  (`isChargeOf`), so a charge whose `sides` omits the record's side is a bug in
+  one of the two files.
+- **The status is a ladder**, in this order: `alleged` · `complaint` ·
+  `investigation` · `charged` · `tried` · `convicted` · `acquitted` ·
+  `dismissed` · `prescribed` · `unknown`. Every status from `complaint` upwards
+  needs the matching step in `steps`, and `convicted`/`acquitted` need a verdict
+  step reading `guilty` / `not-guilty`.
+- **A figure with a home elsewhere is a link, not a copy.** If the act's count is
+  already in `facts.ts` or `casualties/`, set `refs.fact` or `refs.casualties`
+  and **omit** `count`. The two together are rejected: a restated figure drifts
+  from its source.
+- **A far-right record carries `attribution`**, and no other record does. The
+  `term` is the word the source used, not a label of ours; `by` is who used it.
+  The type union refuses a far-right record without it.
+- **A counterfactual is never an allegation.** `NORMATIVE` records a police
+  tactic read against the law of armed conflict: `status: "hypothetical"`, a
+  `caveat` id, no `steps`, no `refs.sitting`, and never summed with
+  `ILLEGAL_ACTS`.
+- **Two records on one date in one commune are numbered by documented time of
+  day**; a record whose time was not published sorts last. The same id twice is
+  the one error a reader cannot see and `check:illegal` will.
+- **The `noteRef` wording lives in the Observatory**, in both languages, in
+  `src/copy/{en,fr}/chart.ts` under `actNotes`, keyed by the record id. A note
+  explains provenance and procedure; it never restates the status or the count.
+
+A sitting is its own record, not a field on an act:
+
+```ts
+// in src/data/illegal/sittings.ts, inside SITTINGS
+{
+  id: "sit-2026-10-20-paris",
+  date: "2026-10-20",
+  court: "Tribunal judiciaire de Paris",
+  place: { commune: "Paris", dep: "75", scope: "local" },
+  modes: ["comparution-immediate", "crpc"],
+  rooms: { s: "n", v: 5, unit: "establishments" },
+  roomsUsual: { s: "n", v: 2, unit: "establishments" },
+  dockets: [
+    { mode: "comparution-immediate", cases: { s: "a", v: 50, unit: "cases" } },
+    { mode: "crpc", cases: { s: "a", v: 20, unit: "cases" } },
+  ],
+  nullityRisk: true,
+  sources: ["lemonde-2026-10-21-en"],
+  noteRef: { k: "act", id: "sit-2026-10-20-paris" },
+},
+```
+
+One docket per track, never one figure across tracks. The act links back with
+`refs.sitting`; the sitting never lists acts, so the relationship has one home.
+
+Rules for all four:
 
 - Keep ISO dates (`YYYY-MM-DD`).
 - Keep the published range as a range. Do not compute a midpoint.
@@ -172,20 +269,32 @@ Rules for all three:
   explanation itself is authored with the site's copy, in both languages; it is
   not stored in this repository.
 
+A new `ChargeId` is a two-repository change and lands in both or not at all:
+the id in `vocabulary.ts`, its `sides`/`family`/`articles` in `charges.ts`,
+**and** a `CHARGE_LABELS` entry in `Protest-Data-Observatory:src/copy/legal.ts`.
+That map is `Record<ChargeId, Bi>`, so an id without a label is a type error in
+the Observatory. Never invent a `ChargeId` in a record: if the qualification is
+not in the union, the record waits.
+
 ### 2.4 Add the source
 
 Add an entry to `src/data/sources/<group>.ts` following the entries next to it,
 using the `src()` / `both()` helpers from `src/data/sources/record.ts`. The
 fields (from `src/data/sources/types.ts`) are:
 
-| Field              | Rule                                                                                                                                                         |
-| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `id`               | short unique handle, e.g. `wiki-nahel`                                                                                                                       |
-| `group`            | one of `official`, `press`, `blockades`, `cost`, `overseas`, `ref2026`, `mai68`, `cpe`, `gj`, `strikes`, `nahel`, `retraites`, `rn2024`, `bloquons`, `media` |
-| `label`            | publisher + headline **verbatim** — never translated                                                                                                         |
-| `url`              | the page cited                                                                                                                                               |
-| `date` / `dateEnd` | ISO; omit `date` for standing pages                                                                                                                          |
-| `what`             | bilingual — what this page takes from the source                                                                                                             |
+| Field              | Rule                                                                                                                                                                  |
+| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`               | short unique handle, e.g. `wiki-nahel`                                                                                                                                |
+| `group`            | one of `official`, `press`, `blockades`, `cost`, `overseas`, `ref2026`, `mai68`, `cpe`, `gj`, `strikes`, `nahel`, `retraites`, `rn2024`, `bloquons`, `media`, `legal` |
+| `label`            | publisher + headline **verbatim** — never translated                                                                                                                  |
+| `url`              | the page cited                                                                                                                                                        |
+| `date` / `dateEnd` | ISO; omit `date` for standing pages                                                                                                                                   |
+| `what`             | bilingual — what this page takes from the source                                                                                                                      |
+
+`legal` is the group for prosecutors' communiqués, court reporting and the
+sources behind the illegal-act register. A record's `sources` and every
+`steps[].source` must name an id that resolves; `check:illegal` fails on an
+unknown one.
 
 A new group means extending `GroupId` in `src/data/sources/types.ts`, adding its
 `SourceGroup` (bilingual `title` and `blurb`) to `GROUPS` in
@@ -198,15 +307,17 @@ registering it in `src/data/sources/index.ts`.
 npm run typecheck
 npm run lint
 npm run format:check
-npm run check:casualties   # casualty cross-checks; run it if you touched casualties/
+npm run check:casualties   # if you touched casualties/
+npm run check:costs        # if you touched costs.ts
+npm run check:illegal      # if you touched illegal/
 
 git add -A
 git commit -m "data: 2026 arrests for 8 Nov corrected to 412 (prefecture)"
 ```
 
-There is no generated output to stage: everything is source. A
-`check:casualties` failure means the casualty data contradicts itself, not that
-the check is too strict — fix the data.
+There is no generated output to stage: everything is source. A check failure
+means the data contradicts itself, not that the check is too strict — fix the
+data.
 
 ---
 
@@ -221,15 +332,24 @@ the check is too strict — fix the data.
 - [ ] Any new human-facing string exists in both `en` and `fr`.
 - [ ] `npm run typecheck`, `npm run lint`, `npm run format:check` pass.
 - [ ] `npm run check:casualties` passes if casualty data changed.
+- [ ] `npm run check:costs` passes if a cost record changed.
+- [ ] `npm run check:illegal` passes if anything under `src/data/illegal/`
+      changed.
 - [ ] `content/data-problems.md` (Observatory repo) updated if you settled a
       known data problem.
 - [ ] Every `ActRow.sources` id resolves in `src/data/sources/`; a derived
       blockade row cites only the publisher that issued that day's balance.
 - [ ] A category row's `unit` and definition match what its source actually
       counted (premises, acts, establishments, incidents — and `touchés` ≠ `pillés`).
+- [ ] No illegal-act record carries both `count` and a `refs` figure.
+- [ ] A new `ChargeId` has its `CHARGE_LABELS` entry in the Observatory, or the
+      Observatory does not compile.
+- [ ] No daily aggregate of the illegal-act register, in this repo or in the
+      site.
 
 We will not merge: a figure with no source, a silently interpolated gap, a
-translated source label, or a flag removed to smooth a line.
+translated source label, a flag removed to smooth a line, or a charge id added
+in one repository only.
 
 ---
 
@@ -241,6 +361,7 @@ Descriptive, often lowercase:
 data: 2026 arrests for 8 Nov corrected to 412 (prefecture)
 data: 18 Oct blockades added, Paris-only, flagged "r"
 sources: add prefecture bulletin of 12 Nov under press
+illegal: Rouen 24 Oct record, investigation opened 26 Oct
 ```
 
 State data changes explicitly (`data:`, which figure, which date, which

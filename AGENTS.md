@@ -31,6 +31,27 @@ README used to name, does not exist on `main`.)
   `src/data/costs-checks.ts` holds its invariants.
 - `scripts/check-costs.ts` — the cost cross-checks (`npm run check:costs`).
 - `src/data/types.ts` — `Obs`, `Pt`, `Series`.
+- `src/data/illegal/` — **the case-level register**, the one part of this repo
+  that is not keyed by date and metric:
+  - `types.ts` — `Side` (three values), `Attribution`, `ActRecord` (a union:
+    the far-right variant requires `attribution`), `NormativeRecord`,
+    `ActStatus`/`ACT_STATUSES`, `Step`, `Count`, `Refs`, `Sitting`,
+    `HearingMode`.
+  - `vocabulary.ts` — closed unions: `ChargeId`, `ChargeFamily`, `TacticId`,
+    `NormId`, `CaveatId`.
+  - `charges.ts` — `CHARGES`, each id with `sides: readonly Side[]`, `family`,
+    optional `articles`; helpers `CHARGE_OF`, `chargesOf`, `isChargeOf`.
+  - `acts.ts` — `ILLEGAL_ACTS` (one `ActRecord` per claim) and `NORMATIVE`
+    (counterfactual police tactics; always `status: "hypothetical"` + a `caveat`).
+  - `sittings.ts` — `SITTINGS`, one `Sitting` per court per day: `modes`,
+    `rooms`, `roomsUsual`, one docket per track, `nullityRisk`.
+  - `norms.ts`, `tactics.ts` — the counterfactual vocabularies.
+  - `index.ts` — the barrel plus `actsOf`, `censusByStatus`, `byDay`,
+    `linkedToFact`, `linkedToCasualty`, `sittingsOn`, `sittingOf`,
+    `actsAtSitting`. `Census` counts **records**, never people or crimes, and
+    always reports `unquantified` next to the total.
+- `scripts/check-illegal.ts` — the register's invariants
+  (`npm run check:illegal`). A failure means the register contradicts itself.
 - `src/data/episodes/<movement>.ts` — one `Episode` per historical movement:
   `mai68.ts`, `cpe.ts`, `gilets-jaunes.ts`, `nahel.ts`, `retraites.ts`,
   `bloquons.ts`, `students.ts`; registered as `EPISODES` in
@@ -39,6 +60,7 @@ README used to name, does not exist on `main`.)
   `types.ts` holds `GroupId` and `Source`, `groups.ts` holds `GROUPS` (bilingual
   title + blurb per group), `record.ts` holds the `src()` / `both()` helpers,
   `index.ts` re-exports everything. `mentions.ts` holds the page-mention table.
+  `legal.ts` holds the register's sources (prosecutors, court reporting).
 - `src/data/casualties/` — `cases.ts` (the cells), `inputs.ts` (the
   observations they rest on), `estimate.ts` (the estimators), `checks.ts` (the
   invariants), plus levels/universe/vocabulary, all re-exported from `index.ts`
@@ -49,6 +71,8 @@ README used to name, does not exist on `main`.)
   title + definition + unit), `acts.ts` (the hand-written rows), `index.ts`
   (`ACT_ROWS` = hand-written + school blockades derived from `FACTS.blockades`,
   plus `actsOn`, `actSeriesOf`, `assertSingleUnit`, `dayActionCategories`).
+  Distinct from `illegal/`: an `ActRow` counts disruptive acts by category, an
+  `ActRecord` records a legal proceeding. Do not merge them.
 - `src/model/index.ts` — pure types and definitions; everything depends on it:
   `Flag`, `Band`, `Metric`, `MetricKey`, `Row`, `Episode`, `EpisodeId`,
   `NoteRef`, `isDetached`, `bandOf`, `midOf`.
@@ -65,12 +89,14 @@ README used to name, does not exist on `main`.)
 ## Commands
 
 ```bash
-npm install          # Node ≥ 22.18 (the scripts run under Node's type stripping)
-npm run typecheck    # tsc --noEmit
-npm run lint         # eslint .
+npm install # Node ≥ 22.18 (the scripts run under Node's type stripping)
+npm run typecheck # tsc --noEmit
+npm run lint # eslint .
 npm run format:check # prettier --check .
 npm run check:casualties
 npm run check:costs # cost invariants: payer sums, iFRAP arithmetic, no per-person total
+npm run check:illegal # the illegal-act register: ids, statuses, charges, refs, sittings
+npm run check # all three data checks
 ```
 
 ## Task recipes
@@ -80,13 +106,47 @@ cell's `{ low, high, q? }`; keep the published range a range; keep or fix `q`
 (omit it for a plain national count); if the cell needs explaining, attach a
 `noteRef` (type `NoteRef`) — the wording lives with the site's copy, not here;
 add or fix the `Source` in `src/data/sources/<group>.ts`; state the change in
-the verification record at the top of `src/data/data.ts` if it corrects an
+the verification record at the top of `src/data/index.ts` if it corrects an
 earlier pass. Run `npm run typecheck` and `npm run check:casualties`.
 
 **Change a historical series** — edit `src/data/episodes/<movement>.ts`: a
 `Row` per week, `w` sequential from 0, `from`/`to` ISO, each metric a `Band`
 (`number | [low, high]`), optional `flag`/`noteRef` per metric. Ensure the
 supporting sources exist. Re-run the checks.
+
+**Add an illegal-act record** — append an `ActRecord` to
+`src/data/illegal/acts.ts`. The id is `act-<YYYY-MM-DD>-<commune>-<nn>` and its
+date must match `date`; two records on one date in one commune are numbered by
+documented time of day, and a record whose time was not published sorts last.
+`charges` is a **list** — `[]` when no qualification has been published, and
+from `charged` upwards a non-empty list whose every entry satisfies
+`isChargeOf(charge, side)`. `steps` must support `status` and be in date order.
+If the act's figure already exists in `facts.ts` or `casualties/`, set
+`refs.fact` / `refs.casualties` and **omit `count`** — the pair is rejected. A
+`side: "far-right"` record requires `attribution: { term, by }`, using the
+source's own word. Then add the note key to the Observatory:
+`src/copy/{en,fr}/chart.ts` → `actNotes[record.id]`. Run
+`npm run check:illegal` and `npm run typecheck`.
+
+**Add a court sitting** — append a `Sitting` to `src/data/illegal/sittings.ts`.
+One record per court per day; `modes` lists every track that sat; `dockets` has
+one entry per track and never a single figure across tracks; `roomsUsual` is the
+court's ordinary complement, so `rooms` reads as a multiple. Link acts to it with
+`refs.sitting`; the sitting never lists acts. Its note key goes in `actNotes`
+too, keyed by the sitting id.
+
+**Add a charge id** — this is a **two-repository** change and it lands in both
+or not at all: the id in `src/data/illegal/vocabulary.ts`, its
+`sides`/`family`/`articles` in `src/data/illegal/charges.ts`, and a
+`CHARGE_LABELS` entry in `Protest-Data-Observatory:src/copy/legal.ts`, which is
+`Record<ChargeId, Bi>` and will not compile until the label exists. Never
+invent a `ChargeId` inside a record; the record waits.
+
+**Add a counterfactual** — append to `NORMATIVE` in `src/data/illegal/acts.ts`.
+It is a police tactic read against the law of armed conflict: `side: "police"`,
+`status: "hypothetical"`, a `norm`, a `tactic`, a `caveat` that states the
+counterfactual in words, no `steps`, no `refs.sitting`, no verdict. It is never
+summed with `ILLEGAL_ACTS` and never drawn on the same axis.
 
 **Add a source** — add the entry to the group's file in `src/data/sources/`
 using the helpers in `record.ts`; `label` is publisher + headline verbatim,
@@ -151,3 +211,18 @@ with its `sources`, or, for a school blockade, add the `blockades` cell to
 - `src/data/sources/cost.ts` also ends with `export const s = [...]`, a French
   only duplicate of the seven helicopter sources. It breaks the bilingual rule
   and may be dead; do not delete it until a grep proves nothing imports `s`.
+- **`charges.ts` is not `vocabulary.ts`.** The union of legal ids is in
+  `vocabulary.ts`; the side each id can be brought against is in `charges.ts`.
+  An id present in one and not the other compiles until something calls
+  `CHARGE_OF[id]`, which is `undefined` at runtime — `check:illegal` catches it.
+- **The illegal-act register is not the disruptive register.** `disruptive/`
+  counts acts by category with a `unit`; `illegal/` records proceedings. An act
+  can appear in both, and the counter in one is never the link to the other.
+  The link, when it exists, is `refs.disruptive`.
+- **`check:illegal` cannot see the Observatory.** Whether every `{ k: "act" }`
+  has an English and a French note, and every `ChargeId` has a label, is checked
+  where those strings live. A green run here is not a green site.
+- The Observatory vendors this repository as a git submodule at
+  `vendor/dataset`. A change merged here is **not live** there until the pin is
+  bumped; conversely, a type error over there in `src/copy/legal.ts` usually
+  means the pin is older than the vocabulary.

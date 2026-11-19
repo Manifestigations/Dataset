@@ -16,23 +16,24 @@ in the files below.
 
 ## Read the data without installing anything
 
-| You want                                                                                                                           | Look in                                                                                                                                                                                                                                                                                                                                                                                           |
-| ---------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| The 2026 figures, day by day (turnout, strikers, arrests, injuries, blockaded schools, damages, cost of policing)                  | [`src/data/facts.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/facts.ts) — `FACTS`, one key per ISO date, each cell `{ low, high, q? }`                                                                                                                                                                                                                                     |
-| The derived daily and weekly series, the window and the school-holiday band                                                        | [`src/data/projections.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/projections.ts) (daily), [`src/data/aggregate.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/aggregate.ts) (weekly), [`src/data/calendar.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/calendar.ts) (`START`/`END`, `WEEKS`, `HOLIDAY_START`/`HOLIDAY_END`) |
-| Deployments, force levels, the cost rate, helicopter hours                                                                         | [`src/data/policing.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/policing.ts), [`src/data/helicopters.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/helicopters.ts)                                                                                                                                                                                  |
-| Who pays: damage by payer, the cost of the concessions, what protestors are exposed to                                             | [`src/data/costs.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/costs.ts) — `PAYER_COSTS`, one record per (payer, cost kind, stage); `COST_UNPRICED` for what no source prices                                                                                                                                                                                               |
-| Denominators (populations)                                                                                                         | [`src/data/population.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/population.ts)                                                                                                                                                                                                                                                                                          |
-| Who protests, who polices: age, sex, nationality and the **absence** of ethnic statistics                                          | [`src/data/demographics/`](https://github.com/Manifestigations/Dataset/tree/main/src/data/demographics) — `DemoRow` per source and population, `DemoGap` for what does not exist, `DemoProxy` for what is not ethnicity                                                                                                                                                                           |
-| Approval of the movement, poll by poll (approve / disapprove / indifférents, with the sample size)                                 | [`src/data/opinion.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/opinion.ts) — `OPINION_POLLS`, one `OpinionPoll` per published survey; `topline()` and `opinionAverage()`                                                                                                                                                                                                  |
-| Cross-country movements overlapping 2026 (dates, turnout, demands, outcomes)                                                       | [`src/data/comparative/`](https://github.com/Manifestigations/Dataset/tree/main/src/data/comparative) — `Movement` per country, `Action` per mobilisation day, `stats()` for peak/median/totals                                                                                                                                                                                                   |
-| Past movements for comparison (Mai 68, CPE, Gilets Jaunes, Nahel, pensions 2023, « Bloquons tout », students 2026 — one file each) | [`src/data/episodes/`](https://github.com/Manifestigations/Dataset/tree/main/src/data/episodes)                                                                                                                                                                                                                                                                                                   |
-| The catalogue of every source (who published what, on which date)                                                                  | [`src/data/sources/`](https://github.com/Manifestigations/Dataset/tree/main/src/data/sources) — one file per group                                                                                                                                                                                                                                                                                |
-| The casualty data, its severities, observations and estimators                                                                     | [`src/data/casualties/`](https://github.com/Manifestigations/Dataset/tree/main/src/data/casualties)                                                                                                                                                                                                                                                                                               |
-| Disruptive acts by day and by category (official count → widest count)                                                             | [`src/data/disruptive/`](https://github.com/Manifestigations/Dataset/tree/main/src/data/disruptive) — `ACT_ROWS`, one row per (date, category), each with a `unit`                                                                                                                                                                                                                                |
-| The types everything is written against                                                                                            | [`src/model/index.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/model/index.ts)                                                                                                                                                                                                                                                                                                  |
-| Why a figure was chosen, and what was rejected                                                                                     | [`src/data/index.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/index.ts) — the verification record, then the barrel                                                                                                                                                                                                                                                         |
-| Known data problems, and how each was settled                                                                                      | [`content/data-problems.md`](https://github.com/Manifestigations/Protest-Data-Observatory/blob/main/content/data-problems.md) — kept in the Observatory repo, because it is prose about method                                                                                                                                                                                                    |
+| You want                                                                                                                                                                        | Look in                                                                                                                                                                                                                                                                                                                                                                                           |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| The 2026 figures, day by day (turnout, strikers, arrests, injuries, blockaded schools, damages, cost of policing)                                                               | [`src/data/facts.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/facts.ts) — `FACTS`, one key per ISO date, each cell `{ low, high, q? }`                                                                                                                                                                                                                                     |
+| The derived daily and weekly series, the window and the school-holiday band                                                                                                     | [`src/data/projections.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/projections.ts) (daily), [`src/data/aggregate.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/aggregate.ts) (weekly), [`src/data/calendar.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/calendar.ts) (`START`/`END`, `WEEKS`, `HOLIDAY_START`/`HOLIDAY_END`) |
+| Deployments, force levels, the cost rate, helicopter hours                                                                                                                      | [`src/data/policing.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/policing.ts), [`src/data/helicopters.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/helicopters.ts)                                                                                                                                                                                  |
+| Who pays: damage by payer, the cost of the concessions, what protestors are exposed to                                                                                          | [`src/data/costs.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/costs.ts) — `PAYER_COSTS`, one record per (payer, cost kind, stage); `COST_UNPRICED` for what no source prices                                                                                                                                                                                               |
+| Denominators (populations)                                                                                                                                                      | [`src/data/population.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/population.ts)                                                                                                                                                                                                                                                                                          |
+| Who protests, who polices: age, sex, nationality and the **absence** of ethnic statistics                                                                                       | [`src/data/demographics/`](https://github.com/Manifestigations/Dataset/tree/main/src/data/demographics) — `DemoRow` per source and population, `DemoGap` for what does not exist, `DemoProxy` for what is not ethnicity                                                                                                                                                                           |
+| Approval of the movement, poll by poll (approve / disapprove / indifférents, with the sample size)                                                                              | [`src/data/opinion.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/opinion.ts) — `OPINION_POLLS`, one `OpinionPoll` per published survey; `topline()` and `opinionAverage()`                                                                                                                                                                                                  |
+| Cross-country movements overlapping 2026 (dates, turnout, demands, outcomes)                                                                                                    | [`src/data/comparative/`](https://github.com/Manifestigations/Dataset/tree/main/src/data/comparative) — `Movement` per country, `Action` per mobilisation day, `stats()` for peak/median/totals                                                                                                                                                                                                   |
+| Past movements for comparison (Mai 68, CPE, Gilets Jaunes, Nahel, pensions 2023, « Bloquons tout », students 2026 — one file each)                                              | [`src/data/episodes/`](https://github.com/Manifestigations/Dataset/tree/main/src/data/episodes)                                                                                                                                                                                                                                                                                                   |
+| What is alleged against whom, and where the case stands: acts against protesters, against the police, by far-right groups; the court sittings that heard the 17 October arrests | [`src/data/illegal/`](https://github.com/Manifestigations/Dataset/tree/main/src/data/illegal) — `ILLEGAL_ACTS` (one record per claim), `NORMATIVE` (a police tactic read against the laws of war), `SITTINGS` (court capacity and dockets), `CHARGES` (each `ChargeId` and the sides it can be brought against)                                                                                   |
+| The catalogue of every source (who published what, on which date)                                                                                                               | [`src/data/sources/`](https://github.com/Manifestigations/Dataset/tree/main/src/data/sources) — one file per group                                                                                                                                                                                                                                                                                |
+| The casualty data, its severities, observations and estimators                                                                                                                  | [`src/data/casualties/`](https://github.com/Manifestigations/Dataset/tree/main/src/data/casualties)                                                                                                                                                                                                                                                                                               |
+| Disruptive acts by day and by category (official count → widest count)                                                                                                          | [`src/data/disruptive/`](https://github.com/Manifestigations/Dataset/tree/main/src/data/disruptive) — `ACT_ROWS`, one row per (date, category), each with a `unit`                                                                                                                                                                                                                                |
+| The types everything is written against                                                                                                                                         | [`src/model/index.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/model/index.ts)                                                                                                                                                                                                                                                                                                  |
+| Why a figure was chosen, and what was rejected                                                                                                                                  | [`src/data/index.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/index.ts) — the verification record, then the barrel                                                                                                                                                                                                                                                         |
+| Known data problems, and how each was settled                                                                                                                                   | [`content/data-problems.md`](https://github.com/Manifestigations/Protest-Data-Observatory/blob/main/content/data-problems.md) — kept in the Observatory repo, because it is prose about method                                                                                                                                                                                                    |
 
 Every path above goes through [`src/data/index.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/index.ts)
 as its public entry point for the 2026 layer: that file only re-exports, so
@@ -128,6 +129,65 @@ categories are a subset of the day's total and must never be added to it.
 The average of `low` and `high` is nowhere in this repository. It is `midOf()`
 at render time, and it is a drawing convention.
 
+## The illegal-act register: case records, not a series
+
+`src/data/illegal/` is the only part of this repository that is not keyed by
+date and metric. It records **claims**: an act attributed to a side, the
+procedural stage it has reached, and the dated steps that got it there. A daily
+count of "illegal acts" would report the reporting rather than the acts —
+arrests cluster where journalists and lawyers were, and a day with no press
+would produce a zero that means nothing. So there is no `illegalActs`
+`MetricKey` and no daily aggregate anywhere.
+
+An `ActRecord` is one claim:
+
+| Field         | Rule                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `id`          | `act-<YYYY-MM-DD>-<commune>-<nn>`. Two records on one date in one commune are numbered by documented time of day; a record with no published time sorts last                                                                                                                                                                                                                                                                                                                                     |
+| `side`        | `police`, `protesters` or `far-right`                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| `attribution` | **required when `side` is `far-right`**, and absent otherwise. It carries `term` (the source's own word: `ultra-right`, `extreme-right`, `far-right`, `identitarian`, `revolutionary-nationalist`) and `by` (`court`, `police`, `prefecture`, `minister`, `elected-official`, `journalist`). "Police" and "protester" name a position in the event; "far-right" is a characterisation someone made, so the record says who made it and in what words. The type union makes the field unskippable |
+| `charges`     | `readonly ChargeId[]`. `[]` when no qualification has been published, and that empty list is a finding. From `charged` onwards a non-empty list is required, and every entry must be available against the record's `side` (`isChargeOf`)                                                                                                                                                                                                                                                        |
+| `status`      | the ladder, in order: `alleged` · `complaint` · `investigation` · `charged` · `tried` · `convicted` · `acquitted` · `dismissed` · `prescribed` · `unknown`. `hypothetical` exists only on `NormativeRecord`                                                                                                                                                                                                                                                                                      |
+| `steps`       | the dated audit trail behind `status`. `check:illegal` refuses a status the steps do not support, and a `convicted`/`acquitted` record needs a verdict step reading `guilty`/`not-guilty`                                                                                                                                                                                                                                                                                                        |
+| `count`       | optional, in `persons`, `acts`, `establishments` or `cases`. Four shapes: point `n`, published range `r`, documented floor `f`, source-approximated `a` ("roughly 50"), or a gap `x` with a reason                                                                                                                                                                                                                                                                                               |
+| `refs`        | links, not copies: `fact` (a date-metric cell), `casualties` (an act that produced or suffered a recorded injury), `disruptive` (a category the act is also counted in), `sitting` (the hearing that tried it)                                                                                                                                                                                                                                                                                   |
+| `noteRef`     | `{ k: "act", id }`. The wording is authored in the Observatory, never here                                                                                                                                                                                                                                                                                                                                                                                                                       |
+
+**One figure, one home.** A record whose `refs.fact` or `refs.casualties` is set
+must not carry `count`: the figure is already published in `facts.ts` or
+`casualties/`, and restating it creates a second figure that can drift.
+`check:illegal` rejects the combination.
+
+**`NORMATIVE` is a different kind of object on purpose.** It records a police
+tactic read against the law of armed conflict. Its `status` can only be
+`hypothetical`, it must carry a `caveat` id, it has no procedural steps and no
+hearing, and it is never summed with `ILLEGAL_ACTS`. A counterfactual is not an
+allegation, and the type says so.
+
+**`SITTINGS` is not a claim.** It records the conditions under which claims were
+heard — the modes that sat (`comparution-immediate`, `crpc`, `renvoi`,
+`detention-hearing`), how many rooms, the court's usual complement, and the
+docket per track. Two tracks, two counts: merging them would invent a figure
+neither source published. A sitting is never added to an act; a docket counts
+cases, and only some of those cases are records here.
+
+All of it is checked by `npm run check:illegal`. A failure means the register
+contradicts itself, not that the check is too strict.
+
+### Charges are a closed vocabulary with an open side
+
+`ChargeId` is a closed union in `src/data/illegal/vocabulary.ts`. `CHARGES` in
+`charges.ts` gives each id its `sides` — every side it can be brought against.
+Violence is violence whoever commits it, so most ids list more than one side;
+only offences defined by the status of the perpetrator (`violences-depositaire`,
+`discrimination`) list one.
+
+Adding a charge id is a **two-repository** change, and the halves fail together:
+the id, its `sides`, `family` and `articles` here, and a `CHARGE_LABELS` entry in
+`Protest-Data-Observatory:src/copy/legal.ts`. That map is typed
+`Record<ChargeId, Bi>`, so an id without a label is a type error in the
+Observatory, and a label without an id is a type error there too.
+
 ## Invariants (do not violate)
 
 - A published range stays a range. Never average two publishers; never
@@ -144,6 +204,18 @@ at render time, and it is a drawing convention.
   translated.
 - Human-facing strings exist in both `en` and `fr`; the French is authored,
   not translated.
+- **No daily aggregate of the illegal-act register.** Records are dated by the
+  act, not by the report. If a chart wants a count per day, it is counting
+  reporting coverage.
+- **A record never restates a figure it links to.** `refs.fact` and
+  `refs.casualties` mean the number lives elsewhere; `count` and a `ref` on the
+  same record is a contradiction.
+- **A far-right record carries its `attribution`.** Never apply a label of our
+  own to a group, and never normalise "identitarian", "ultra-right" and
+  "far-right" into one word.
+- **A counterfactual is always `hypothetical`** and always carries a `caveat`.
+  It never acquires a procedural step, a verdict or a hearing.
+- **A charge is a list**, and an empty list is legal only below `charged`.
 
 ```mermaid
 erDiagram
@@ -181,7 +253,7 @@ erDiagram
         NoteRef noteRef "per-metric, optional"
     }
     SOURCE_GROUP {
-        GroupId id PK "official · press · blockades · cost · overseas · ref2026 · mai68 · cpe · gj · strikes · nahel · retraites · rn2024 · bloquons · media"
+        GroupId id PK "official · press · blockades · cost · overseas · ref2026 · mai68 · cpe · gj · strikes · nahel · retraites · rn2024 · bloquons · media · legal"
         Bi title
         Bi blurb
     }
@@ -222,7 +294,6 @@ Three rules follow, and `npm run check:costs` enforces them:
 
 The empty disbursed column is a finding about publication, not a claim that
 nothing was paid.
-a
 
 ## Contributing
 
@@ -260,5 +331,10 @@ flowchart TD
 - `json/` and `schema/` exist and are maintained; `scripts/build.ts` writes the
   bundle, `scripts/validate.ts` checks it against the schemas.
 - `package.json` is `"name": "@manifestigations/dataset"`, `"private": true`.
-- CI runs `.github/workflows/style.yml`; `npm run check:casualties` is the one
-  data-integrity check, and it covers casualties only.
+- CI runs `.github/workflows/style.yml`. Three data-integrity checks exist and
+  all of them are in `npm run check`: `check:casualties` (casualty cells),
+  `check:costs` (payer sums, no per-person total), `check:illegal` (the
+  illegal-act register, its statuses, charges, refs and sittings).
+- `check:illegal` cannot see the Observatory's copy. Whether every
+  `{ k: "act" }` has an English and a French note is checked there, next to the
+  strings.
