@@ -108,6 +108,7 @@ export * from "./aggregate.ts";
 export * from "./calendar.ts";
 export * from "./facts.ts";
 export * from "./helicopters.ts";
+export * from "./opinion.ts";
 export * from "./policing.ts";
 export * from "./population.ts";
 // Must come before `episodes/index.ts`
