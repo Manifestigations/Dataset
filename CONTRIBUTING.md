@@ -213,6 +213,7 @@ the check is too strict — fix the data.
 ## 3. Pull request checklist
 
 - [ ] Every new or changed figure has a `Source` entry, and `label` is verbatim.
+- [ ] Comparative movements need a verdict and a per-demand state, because the map and the outcome tables read them directly; a movement without a stated verdict does not merge.
 - [ ] Ranges are kept as ranges; nothing averaged across publishers.
 - [ ] Flags describe the data, not the drawing.
 - [ ] Gaps left empty; derived cells flagged `e` with the arithmetic stated.

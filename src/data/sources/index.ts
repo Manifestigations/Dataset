@@ -4,6 +4,7 @@
 
 import { BLOCKADES_SOURCES } from "./blockades.ts";
 import { BLOQUONS_SOURCES } from "./bloquons.ts";
+import { COMPARATIVE_SOURCES } from "./comparative.ts";
 import { COST_SOURCES } from "./cost.ts";
 import { CPE_SOURCES } from "./cpe.ts";
 import { GJ_SOURCES } from "./gj.ts";
@@ -27,6 +28,7 @@ export const SOURCES: readonly Source[] = [
   ...GJ_SOURCES,
   ...MAI68_SOURCES,
   ...NAHEL_SOURCES,
+  ...COMPARATIVE_SOURCES,
   ...OFFICIAL_SOURCES,
   ...OVERSEAS_SOURCES,
   ...PRESS_SOURCES,
