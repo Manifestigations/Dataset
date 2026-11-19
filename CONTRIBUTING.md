@@ -223,6 +223,10 @@ the check is too strict — fix the data.
 - [ ] `npm run check:casualties` passes if casualty data changed.
 - [ ] `content/data-problems.md` (Observatory repo) updated if you settled a
       known data problem.
+- [ ] Every `ActRow.sources` id resolves in `src/data/sources/`; a derived
+      blockade row cites only the publisher that issued that day's balance.
+- [ ] A category row's `unit` and definition match what its source actually
+      counted (premises, acts, establishments, incidents — and `touchés` ≠ `pillés`).
 
 We will not merge: a figure with no source, a silently interpolated gap, a
 translated source label, or a flag removed to smooth a line.

@@ -33,7 +33,7 @@
    view and can never enter a 100% stacked one.
 */
 
-import { POLLS_SOURCES } from "./sources/polls";
+import { POLLS_SOURCES } from "./sources/polls.ts";
 
 export type OpinionBucketKey =
   | "approves"

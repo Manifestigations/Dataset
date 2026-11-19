@@ -35,6 +35,23 @@ if (!Array.isArray(episodes)) {
   });
 }
 
+/* acts.json: an array of ActRow */
+const checkAct = ajv.compile(readSchema("schema/ActRow.schema.json"));
+const acts = readJson("json/acts.json");
+if (!Array.isArray(acts)) {
+  failures.push("json/acts.json: expected a top-level array");
+} else {
+  acts.forEach((a, i) => {
+    const row = a as { date?: string; category?: string };
+    if (!checkAct(a)) {
+      failures.push(
+        `json/acts.json[${i}] (${row.date ?? "?"} ${row.category ?? "?"})\n` +
+          format(checkAct.errors),
+      );
+    }
+  });
+}
+
 /* reference.json: every 2026 fact cell is an Obs */
 const checkObs = ajv.compile(readSchema("schema/Obs.schema.json"));
 const ref = readJson("json/reference.json") as {

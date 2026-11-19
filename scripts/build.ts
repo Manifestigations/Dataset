@@ -20,6 +20,7 @@ mkdirSync("schema", { recursive: true });
 
 const bundle = {
   "episodes.json": data.EPISODES,
+  "acts.json": data.ACT_ROWS,
   "reference.json": { facts: data.FACTS, population: data.POPULATION },
   "sources.json": { sources: data.SOURCES },
 };
@@ -49,7 +50,7 @@ writeFileSync(
   ) + "\n",
 );
 
-for (const type of ["Episode", "Obs", "Source"] as const)
+for (const type of ["Episode", "ActRow", "Obs", "Source"] as const)
   writeFileSync(
     `schema/${type}.schema.json`,
     JSON.stringify(

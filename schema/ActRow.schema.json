@@ -1,0 +1,106 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/ActRow",
+  "definitions": {
+    "ActRow": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "type": "string",
+          "description": "ISO date of the act."
+        },
+        "category": {
+          "$ref": "#/definitions/ActCategory"
+        },
+        "low": {
+          "type": "number",
+          "description": "The ministry count, or the figure its source stands behind."
+        },
+        "high": {
+          "type": "number",
+          "description": "The widest count any source supports — the organiser/map count where one exists."
+        },
+        "q": {
+          "$ref": "#/definitions/Flag",
+          "description": "Omitted when the row is a plain published national count."
+        },
+        "unit": {
+          "$ref": "#/definitions/ActUnit",
+          "description": "Omitted means \"actions\" (the ministry's action de voie publique)."
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Every Source.id the band rests on: low and high may be different publishers."
+        },
+        "unattributed": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "low",
+              "high"
+            ]
+          },
+          "description": "Endpoints of the band whose publisher is not in `src/data/sources/`. Provenance, not quality — `q` is the quality flag. A row may carry one."
+        },
+        "derivedFrom": {
+          "type": "string",
+          "const": "facts.blockades",
+          "description": "Set when the row is a projection of an existing FACTS cell, not a new figure."
+        }
+      },
+      "required": [
+        "date",
+        "category",
+        "low",
+        "high",
+        "sources"
+      ],
+      "additionalProperties": false
+    },
+    "ActCategory": {
+      "type": "string",
+      "enum": [
+        "marchRally",
+        "roadBlockade",
+        "tollFree",
+        "fuelAction",
+        "transportHub",
+        "siteOccupation",
+        "schoolBlockade",
+        "sabotage",
+        "vandalism",
+        "looting",
+        "clashWithPolice",
+        "premisesHit"
+      ]
+    },
+    "Flag": {
+      "type": "string",
+      "enum": [
+        "n",
+        "r",
+        "p",
+        "f",
+        "e",
+        "c",
+        "w",
+        "x"
+      ],
+      "description": "n = published point · r = regional only · p = partial · f = floor e = derived/modelled · c = stock or actions-total · w = weekly aggregate \"x\" = a wider measure than the metric's definition (perturbés, closed)."
+    },
+    "ActUnit": {
+      "type": "string",
+      "enum": [
+        "actions",
+        "establishments",
+        "premises",
+        "incidents"
+      ],
+      "description": "What a row counts. Rows of different units are never summed."
+    }
+  }
+}

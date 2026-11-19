@@ -363,6 +363,12 @@ export const FACTS: Readonly<Record<string, Partial<Record<MetricKey, Obs>>>> =
       disruptiveActs: { low: 193, high: 193 },
     },
 
+    /* Fri 6 Nov — 41 lycées still blocked the day after the peak: the tail of
+       the school movement (figaro-06nov-live). Adds a `blockades` cell on a
+       date that had none, so the derived schoolBlockade category gains a row
+       the catalogue already supported. */
+    "2026-11-06": { blockades: { low: 41, high: 41 } },
+
     /* Sat 7 Nov — 141 actions; ~70,000 officers, 25 blindés, 15 water-cannon
        trucks; ~40,000 preventive checks; Caen campus dispersed by 50 CRS.
        146,000 ministry / 250,000 youth intersyndicate; Paris 46,000 / 75,000.

@@ -10,21 +10,26 @@
 import type { ActRow } from "./types.ts";
 
 export const ACTS: readonly ActRow[] = [
-  /* Sat 17 Oct — the ministry's communiqué of 24 Oct counts premises touched
-     on the 17th: 1,522 shops hit, against 24 pillaged on the 24th. This is a
-     count of PREMISES, not of acts, and it is a ministry figure read back on a
-     later date. The CCI France tally ("2,488 shops hit after the 17th") is a
-     different span and is not a second bound for this day. */
+  /* Sat 17 Oct — a figure about the 17th, published on the 25th, inside a
+     document about the 24th. The communiqué is "Bilan de la journée de
+     mobilisation nationale du 24 octobre 2026" (interieur-24oct-bilan, dated
+     25 Oct); the 17 Oct number appears only as its comparison line, and it is
+     "1 521 commerces touchés" against "24 commerces pillés" on the 24th.
+     "Touchés" is the ministry's broad measure and includes pillaged premises,
+     so it cannot sit under `vandalism` (degradation short of pillage) and it
+     cannot be a bound for the 24 Oct looting row. Hence `premisesHit`, a
+     superset category that is never summed with the rows it contains. */
   {
     date: "2026-10-17",
-    category: "vandalism",
+    category: "premisesHit",
     low: 1_522,
     high: 1_522,
     unit: "premises",
     sources: ["interieur-24oct-bilan"],
   },
 
-  /* Sat 24 Oct — "24 commerces pillés" in the same communiqué. */
+  /* Sat 24 Oct — "24 commerces pillés", same communiqué, same day as its
+     subject. */
   {
     date: "2026-10-24",
     category: "looting",

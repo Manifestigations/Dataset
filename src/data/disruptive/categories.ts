@@ -117,6 +117,18 @@ export const ACT_CATEGORIES: readonly ActCategoryDef[] = [
       fr: "Une confrontation : jets de projectiles, barricades édifiées, charge. Un décompte d'incidents, ni de foule ni de blessés.",
     },
   },
+  {
+    id: "premisesHit",
+    unit: "premises",
+    title: {
+      en: "Premises hit, cause unstated",
+      fr: "Locaux touchés, cause non précisée",
+    },
+    def: {
+      en: "Premises reported hit without the publisher separating degradation from pillage. A count of premises, and a superset of both rows below — never added to them.",
+      fr: "Locaux signalés touchés sans que la source sépare dégradation et pillage. Un décompte de locaux, et un sur-ensemble des deux lignes suivantes — jamais additionné à elles.",
+    },
+  },
 ];
 
 /** Lookup by id. Frozen at module load; a duplicate id throws. */

@@ -1,0 +1,159 @@
+[
+  {
+    "date": "2026-09-29",
+    "category": "schoolBlockade",
+    "low": 45,
+    "high": 45,
+    "unit": "establishments",
+    "sources": [
+      "lemonde-29sept-338",
+      "education-bilans"
+    ],
+    "derivedFrom": "facts.blockades"
+  },
+  {
+    "date": "2026-10-01",
+    "category": "schoolBlockade",
+    "low": 222,
+    "high": 640,
+    "unit": "establishments",
+    "sources": [
+      "usl-comptes"
+    ],
+    "derivedFrom": "facts.blockades",
+    "unattributed": [
+      "low"
+    ]
+  },
+  {
+    "date": "2026-10-03",
+    "category": "schoolBlockade",
+    "low": 735,
+    "high": 735,
+    "unit": "establishments",
+    "sources": [
+      "education-bilans"
+    ],
+    "derivedFrom": "facts.blockades",
+    "q": "x"
+  },
+  {
+    "date": "2026-10-06",
+    "category": "schoolBlockade",
+    "low": 891,
+    "high": 1800,
+    "unit": "establishments",
+    "sources": [
+      "franceinfo-blocages",
+      "usl-comptes"
+    ],
+    "derivedFrom": "facts.blockades",
+    "q": "x"
+  },
+  {
+    "date": "2026-10-08",
+    "category": "schoolBlockade",
+    "low": 224,
+    "high": 224,
+    "unit": "establishments",
+    "sources": [
+      "education-bilans"
+    ],
+    "derivedFrom": "facts.blockades",
+    "q": "x"
+  },
+  {
+    "date": "2026-10-10",
+    "category": "schoolBlockade",
+    "low": 40,
+    "high": 40,
+    "unit": "establishments",
+    "sources": [
+      "franceinfo-blocages"
+    ],
+    "derivedFrom": "facts.blockades",
+    "q": "f"
+  },
+  {
+    "date": "2026-10-13",
+    "category": "schoolBlockade",
+    "low": 214,
+    "high": 214,
+    "unit": "establishments",
+    "sources": [
+      "education-bilans"
+    ],
+    "derivedFrom": "facts.blockades",
+    "q": "x"
+  },
+  {
+    "date": "2026-10-17",
+    "category": "premisesHit",
+    "low": 1522,
+    "high": 1522,
+    "unit": "premises",
+    "sources": [
+      "interieur-24oct-bilan"
+    ]
+  },
+  {
+    "date": "2026-10-24",
+    "category": "looting",
+    "low": 24,
+    "high": 24,
+    "unit": "premises",
+    "sources": [
+      "interieur-24oct-bilan"
+    ]
+  },
+  {
+    "date": "2026-11-02",
+    "category": "schoolBlockade",
+    "low": 41,
+    "high": 41,
+    "unit": "establishments",
+    "sources": [
+      "education-bilans"
+    ],
+    "derivedFrom": "facts.blockades"
+  },
+  {
+    "date": "2026-11-03",
+    "category": "schoolBlockade",
+    "low": 48,
+    "high": 500,
+    "unit": "establishments",
+    "sources": [
+      "education-bilans"
+    ],
+    "derivedFrom": "facts.blockades",
+    "unattributed": [
+      "high"
+    ]
+  },
+  {
+    "date": "2026-11-05",
+    "category": "schoolBlockade",
+    "low": 81,
+    "high": 1000,
+    "unit": "establishments",
+    "sources": [
+      "usl-comptes"
+    ],
+    "derivedFrom": "facts.blockades",
+    "unattributed": [
+      "low"
+    ]
+  },
+  {
+    "date": "2026-11-06",
+    "category": "schoolBlockade",
+    "low": 41,
+    "high": 41,
+    "unit": "establishments",
+    "sources": [
+      "figaro-06nov-live"
+    ],
+    "derivedFrom": "facts.blockades"
+  }
+]

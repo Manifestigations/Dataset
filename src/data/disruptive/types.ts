@@ -18,7 +18,8 @@ export type ActCategory =
   | "sabotage"
   | "vandalism"
   | "looting"
-  | "clashWithPolice";
+  | "clashWithPolice"
+  | "premisesHit";
 
 /** What a row counts. Rows of different units are never summed. */
 export type ActUnit = "actions" | "establishments" | "premises" | "incidents";
@@ -37,6 +38,9 @@ export interface ActRow {
   readonly unit?: ActUnit;
   /** Every Source.id the band rests on: low and high may be different publishers. */
   readonly sources: readonly string[];
+  /** Endpoints of the band whose publisher is not in `src/data/sources/`.
+      Provenance, not quality — `q` is the quality flag. A row may carry one. */
+  readonly unattributed?: readonly ("low" | "high")[];
   /** Set when the row is a projection of an existing FACTS cell, not a new figure. */
   readonly derivedFrom?: "facts.blockades";
 }
