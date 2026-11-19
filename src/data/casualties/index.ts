@@ -6,6 +6,7 @@ import { assertCasualties } from "./checks.ts";
 assertCasualties();
 
 export * from "./cases.ts";
+export * from "./coding.ts";
 export * from "./estimate.ts";
 export * from "./inputs.ts";
 export * from "./levels.ts";

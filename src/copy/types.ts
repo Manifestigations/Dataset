@@ -1,3 +1,4 @@
+import type { AisRegion, Grain } from "../data/casualties/coding";
 import type { Attribution, HearingMode, Side } from "../data/illegal";
 
 export type Lang = "fr" | "en";
@@ -279,6 +280,19 @@ export interface CasualtyCopy {
   readonly showCases?: string;
   /** Singular of casesCount, if the language needs one. */
   readonly caseSingular?: string;
+
+  codingTitle: string;
+  capCoding: string;
+  noteCoding: string;
+  colLabel: string;
+  colIcd: string;
+  colAis: string;
+  colGrain: string;
+  noCode: string;
+  noAis: string;
+  aisRegion: Record<AisRegion, string>;
+  grain: Record<Grain, string>;
+  aisSeverity: (lo: number, hi: number) => string;
 }
 
 export interface ItemCopy {

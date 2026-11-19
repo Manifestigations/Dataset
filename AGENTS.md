@@ -62,10 +62,11 @@ README used to name, does not exist on `main`.)
   `index.ts` re-exports everything. `mentions.ts` holds the page-mention table.
   `legal.ts` holds the register's sources (prosecutors, court reporting).
 - `src/data/casualties/` — `cases.ts` (the cells), `inputs.ts` (the
-  observations they rest on), `estimate.ts` (the estimators), `checks.ts` (the
+  observations they rest on), `estimate.ts` (the estimators), `coding.ts` (the
+  ICD-10 / AIS codebook, one `CodeSpan` per published label), `checks.ts` (the
   invariants), plus levels/universe/vocabulary, all re-exported from `index.ts`
   as `CASES`, `SEVERITY_LEVELS`, `SEVERITY_WEEKS`, `CaseRow`, `Cell`, `SevRow`,
-  `Why`.
+  `Why`, `CODE_SPANS`, `CodeSpan`, `Grain`, `AisRegion`.
 - `src/data/disruptive/` — the disruptive-act register. `types.ts` (`ActRow`,
   `ActCategory`, `ActUnit`), `categories.ts` (`ACT_CATEGORIES`, bilingual id →
   title + definition + unit), `acts.ts` (the hand-written rows), `index.ts`
@@ -165,8 +166,25 @@ bucket the article did not print. Keep `subject` on the question asked, so
 
 **Change casualty data** — `src/data/casualties/`: cells in `cases.ts`,
 observations in `inputs.ts`, the estimator's arithmetic in `estimate.ts`, the
-invariants in `checks.ts`. `npm run check:casualties` must pass; a failure means
-the data contradicts itself, not that the check is too strict.
+invariants in `checks.ts`. A published label is a `NativeLabel` in
+`vocabulary.ts` **and** gets exactly one `CodeSpan` in `coding.ts`: a label with
+no span, a label in two spans, or a span naming an unknown label id fails the
+check. `npm run check:casualties` must pass; a failure means the data
+contradicts itself, not that the check is too strict.
+
+**Add or extend an injury coding span** — edit `CODE_SPANS` in
+`src/data/casualties/coding.ts`, never `cases.ts`: a span classifies labels, it
+carries no count of its own. `icd10` holds chapter XIX categories at the level
+the label supports and `external` holds chapter XX; one of the two must be
+non-empty. `ais` is `[lo, hi]` within 1–6, or `null` when AIS does not apply (a
+death). `regions` is one or more of the nine AIS body regions. `grain` is the
+field the rest of the site keys on — `"type"` when the label names an injury,
+`"severity"` when it names a degree — and a per-injury cost may only ever attach
+to `"type"`. `basis: "editorial"` forces `aisEdition: null`: an alignment may
+not claim an edition it was not read against. `assignment` has one member; a
+per-case diagnosis would widen it deliberately, never by accident. If the span
+introduces a new rung, its `mais` label in `LADDER` must remain reachable from
+the span's AIS range. `npm run check:casualties`.
 
 **Change a cost or concession record** — edit `PAYER_COSTS` in
 `src/data/costs.ts`. Every row is exactly one (payer, kind, stage, instrument).
@@ -226,3 +244,17 @@ with its `sources`, or, for a school blockade, add the `blockades` cell to
   `vendor/dataset`. A change merged here is **not live** there until the pin is
   bumped; conversely, a type error over there in `src/copy/legal.ts` usually
   means the pin is older than the vocabulary.
+- **An ICD-10 code in `coding.ts` is admissible for a label, not assigned to a
+  person.** `assignment` has one member (`"none"`) on purpose: no record here
+  carries a diagnosis. ISS, NISS and TRISS each need three AIS codes in three ISS
+  body regions for one person, so none is computable and none may be implied —
+  and the ISS regions (6) and the AIS regions (9) are different lists, which
+  alone makes an ISS built from a span meaningless.
+- **`grain` is not a severity.** `"severity"` spans are wide by construction:
+  the set for "blessé grave" is every injury family that reaches AIS 3. Only a
+  `"type"` span (the 10 eye losses, the 7 amputations, the 9 craniofacial
+  traumas) can ever take a per-injury figure.
+- **`destruction` is `MAIS 2–5`, not `MAIS 5`.** AIS severity for an amputation
+  depends on the level of the amputation and how much limb is gone; a thumb and
+  an upper arm are not the same injury. Collapsing the rung to 5 would make the
+  ladder contradict its own codebook.

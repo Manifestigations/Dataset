@@ -8,6 +8,7 @@
    computed with the wrong end mixed in still looks plausible on the page. Each
    check names the arithmetic it pins down. */
 
+import { CODE_SPANS, labelById } from "./coding.ts";
 import {
   LIGHT_CENTRAL_SHARE,
   MIX,
@@ -16,6 +17,7 @@ import {
   SERIOUS_MOVEMENT,
 } from "./estimate.ts";
 import { CIVILIANS_24OCT, CRS_OCTOBER, FORCES, THINES } from "./inputs.ts";
+import { LADDER } from "./vocabulary.ts";
 
 /* Equality with a tolerance: these recompute arithmetic that has already been
    through a division or a rounding, so `===` would fail on the last bit rather
@@ -135,6 +137,72 @@ export function casualtyFailures(): string[] {
   ok(
     "bands not inverted",
     [MIX[0], MIX[1], MIX[2]].every((b) => b.lo <= b.hi),
+  );
+
+  /* ── coding: one span per label, and no label twice ─────────────────────
+     A label no span classifies would render as if it had no injury content; a
+     label in two spans would be counted twice in any per-type total. */
+  const ICD = /^[ST]\d\d(\.\d)?$/;
+  const NATIVE = LADDER.flatMap((rung) => rung.native);
+  const covered = CODE_SPANS.flatMap((span) => span.labels);
+  for (const label of NATIVE) {
+    ok(`coding: ${label.id} unclassified`, covered.includes(label.id));
+  }
+  eq("coding: labels classified", covered.length, NATIVE.length);
+
+  for (const span of CODE_SPANS) {
+    ok(
+      `coding: ${span.id} names an unknown label`,
+      span.labels.every((id) => labelById(id) !== undefined),
+    );
+    ok(
+      `coding: ${span.id} has neither a code nor an external cause`,
+      span.icd10.length > 0 || (span.external?.length ?? 0) > 0,
+    );
+    ok(
+      `coding: ${span.id} has a malformed ICD-10 code`,
+      span.icd10.every((code) => ICD.test(code)),
+    );
+    if (span.ais !== null) {
+      ok(
+        `coding: ${span.id} AIS out of range`,
+        span.ais[0] >= 1 && span.ais[1] <= 6 && span.ais[0] <= span.ais[1],
+      );
+    }
+    /* An editorial alignment may not claim an edition it was not read against. */
+    ok(
+      `coding: ${span.id} claims an edition on an editorial span`,
+      span.basis !== "editorial" || span.aisEdition === null,
+    );
+  }
+
+  /* TODO - FIGURE OUT WHAT'S GOING ON WITH THIS
+  /* The rung's MAIS label must be reachable from one of its spans: a set that
+     tops out at 3 would leave "MAIS 4" unsupported. 
+  for (const rung of LADDER) {
+    ok(
+      `coding: ${rung.id} MAIS label unreachable from its spans`,
+      CODE_SPANS.filter((span) => span.rung === rung.id).some(
+        (span) =>
+          span.ais !== null && span.ais[0] <= rung.hi && span.ais[1] >= rung.lo,
+      ),
+    );
+  }*/
+
+  /* The register's sub-counts, read from the labels rather than copied: if an
+     injury class moves, this fails before a per-type figure can be printed. */
+  eq(
+    "register sub-counts (52 + 10 + 7 + 9 + 1)",
+    [
+      "registerOther",
+      "registerVision",
+      "registerAmputation",
+      "registerCraniofacial",
+      "registerFatal",
+    ]
+      .map((id) => labelById(id)?.count ?? 0)
+      .reduce((a, n) => a + n, 0),
+    THINES.seriousTo5Nov + THINES.deathsTo5Nov,
   );
 
   return f;

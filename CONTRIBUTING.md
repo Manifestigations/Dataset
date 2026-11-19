@@ -34,6 +34,13 @@ cannot be filled without them:
 | Which side            | protesters, the police, or a far-right group. If it is a far-right group, the **word the source used** ("ultra-right", "identitarian", "far-right") and who used it             |
 | Where the case stands | alleged, a complaint filed, an investigation open, a charge, a trial, a verdict, an acquittal, a dismissal, or prescribed. A court's own step, not a journalist's summary of it |
 
+If you are reporting an injury, three more things help and one of them is
+essential: **which side** the injured person was on, **which part of the body**
+and what happened to it, and — if a clinical record, a hospital or a prosecutor
+states it — the diagnosis. A severity word on its own ("blessé grave") is what
+most sources publish, and it is recorded as a severity: it cannot be turned into
+an injury type, and nothing here guesses one.
+
 Also welcome as issues here:
 
 - a movement missing from the historical comparison, or a group of sources to
@@ -103,6 +110,8 @@ The available checks are `typecheck`, `lint`, `format:check`, `check:casualties`
 | A source (URL, headline, date, what it supports)                                                  | `src/data/sources/<group>.ts`                                                                                                                                           |
 | A group of sources                                                                                | `src/data/sources/{types,groups,index}.ts`                                                                                                                              |
 | Casualty cells, observations, estimators                                                          | `src/data/casualties/{cases,inputs,estimate}.ts`                                                                                                                        |
+| A published casualty label, or its severity rung                                                  | `src/data/casualties/vocabulary.ts` — `LADDER`, one `NativeLabel` per published wording                                                                                 |
+| The ICD-10 / AIS classification of a label                                                        | `src/data/casualties/coding.ts` — `CODE_SPANS`, one span per label                                                                                                      |
 | A known, unresolved data problem                                                                  | `content/data-problems.md` in the [Observatory repo](https://github.com/Manifestigations/Protest-Data-Observatory/blob/main/content/data-problems.md)                   |
 | Why a figure was chosen                                                                           | the verification record at the top of `src/data/index.ts` (read-only history)                                                                                           |
 | A demographic share, or a demographic gap                                                         | `src/data/demographics/`                                                                                                                                                |
@@ -276,7 +285,60 @@ That map is `Record<ChargeId, Bi>`, so an id without a label is a type error in
 the Observatory. Never invent a `ChargeId` in a record: if the qualification is
 not in the union, the record waits.
 
-### 2.4 Add the source
+### 2.4 Adding a casualty label, or classifying one
+
+A published injury statement enters as a label first and as a classification
+second, and the two steps are separate files on purpose.
+
+**The label** goes in `LADDER` in `src/data/casualties/vocabulary.ts`, as a
+`NativeLabel` with three fields that matter:
+
+- `id` — a stable key. `coding.ts` points at it, and renaming one breaks the
+  span that references it. Add the id when you add the label, not later.
+- `text` — the source's own wording, transcribed. Never harmonise two papers'
+  words into one.
+- `count` — omit it when the source states a severity without a number.
+
+**The classification** goes in `CODE_SPANS` in
+`src/data/casualties/coding.ts`. Every label needs exactly one span, and
+`npm run check:casualties` fails on a label with none and on a label in two.
+
+```ts
+// in src/data/casualties/coding.ts, inside CODE_SPANS
+{
+  id: "registerHand",
+  rung: "destruction",
+  labels: ["registerHandAmputation"],
+  grain: "type",
+  icd10: ["S68.0", "S68.1", "S68.2", "S68.3", "S68.4"],
+  ais: [2, 4],
+  regions: ["upperExtremity"],
+  basis: "editorial",
+  aisEdition: null,
+  assignment: "none",
+},
+```
+
+What each field means, and the three you can get wrong:
+
+- `grain` — `"type"` when the label names an injury, `"severity"` when it names
+  a degree. A severity's set is wide by construction; anything downstream that
+  wants a per-injury figure may only read a `"type"` span.
+- `icd10` / `external` — at least one must be non-empty. A death is tabulated
+  by external cause (chapter XX), not by an injury code, so its `icd10` is `[]`
+  and `ais` is `null`.
+- `ais` — `[lo, hi]` within 1–6. A range, never a single value for a label that
+  spans levels (an amputation is `2–5`: a thumb and an upper arm are not the
+  same injury). The rung's `mais` string in `LADDER` must stay reachable from
+  one of its spans' ranges.
+- `basis` / `aisEdition` — `"editorial"` and `null` unless you actually read a
+  named AIS edition. An editorial alignment may not claim an edition.
+- `assignment` — always `"none"`. No record in this repository carries a
+  diagnosis. Widening it is a schema change with its own review, not an edit.
+
+Then `npm run check:casualties` and `npm run typecheck`.
+
+### 2.5 Add the source
 
 Add an entry to `src/data/sources/<group>.ts` following the entries next to it,
 using the `src()` / `both()` helpers from `src/data/sources/record.ts`. The
@@ -301,15 +363,15 @@ A new group means extending `GroupId` in `src/data/sources/types.ts`, adding its
 `src/data/sources/groups.ts`, creating `src/data/sources/<group>.ts`, and
 registering it in `src/data/sources/index.ts`.
 
-### 2.5 Check and commit
+### 2.6 Check and commit
 
 ```bash
 npm run typecheck
 npm run lint
 npm run format:check
 npm run check:casualties   # if you touched casualties/
-npm run check:costs        # if you touched costs.ts
-npm run check:illegal      # if you touched illegal/
+npm run check:costs # if you touched costs.ts
+npm run check:illegal # if you touched illegal/
 
 git add -A
 git commit -m "data: 2026 arrests for 8 Nov corrected to 412 (prefecture)"
@@ -346,6 +408,10 @@ data.
       Observatory does not compile.
 - [ ] No daily aggregate of the illegal-act register, in this repo or in the
       site.
+- [ ] A new `NativeLabel` has an `id` **and** a `CODE_SPANS` entry, or
+      `check:casualties` fails.
+- [ ] No `CodeSpan` is rendered or described as a diagnosis: `assignment` is
+      `"none"` on every span, and no ISS/NISS/TRISS is computed from one.
 
 We will not merge: a figure with no source, a silently interpolated gap, a
 translated source label, a flag removed to smooth a line, or a charge id added
@@ -362,6 +428,7 @@ data: 2026 arrests for 8 Nov corrected to 412 (prefecture)
 data: 18 Oct blockades added, Paris-only, flagged "r"
 sources: add prefecture bulletin of 12 Nov under press
 illegal: Rouen 24 Oct record, investigation opened 26 Oct
+casualties: code the register's labels in ICD-10 and AIS
 ```
 
 State data changes explicitly (`data:`, which figure, which date, which

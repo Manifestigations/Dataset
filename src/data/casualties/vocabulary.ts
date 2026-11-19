@@ -3,8 +3,9 @@
  * already use for "serious".
  *
  * This is NOT clinical coding and NOT an injury score. No record in this dataset
- * has an injury description, a vital sign or an ICD code, so ISS/NISS/TRISS are
- * not computable and must not be implied.
+ * has a diagnosis: coding.ts carries an admissible ICD-10 / AIS set per label,
+ * with `assignment: "none"` throughout, so no person is coded. ISS/NISS/TRISS
+ * need three codes in three regions and remain not computable — never imply them.
  *
  * Two rules, both enforced below:
  *   1. a rung is a RANGE of ordinals, never a point;
@@ -17,6 +18,8 @@ export type LadderId =
   "light" | "residual" | "serious" | "vision" | "destruction" | "fatal";
 
 export interface NativeLabel {
+  /** Stable key, referenced by coding.ts. Renaming one is a breaking change. */
+  readonly id: string;
   /** The label the source uses, transcribed. */
   readonly text: string;
   readonly count?: number;
@@ -43,6 +46,7 @@ export const LADDER: readonly LadderRung[] = [
     hi: 2,
     native: [
       {
+        id: "forcesLight",
         text: "légèrement blessé",
         count: 1_167,
         sources: ["mediapart-crs-blesses-1311"],
@@ -57,6 +61,7 @@ export const LADDER: readonly LadderRung[] = [
     unresolved: true,
     native: [
       {
+        id: "forcesResidual",
         text: "not classed light (complement of 1,167 in 1,233)",
         count: 66,
         sources: ["mediapart-crs-blesses-1311"],
@@ -70,16 +75,19 @@ export const LADDER: readonly LadderRung[] = [
     hi: 3,
     native: [
       {
+        id: "forcesSerious17",
         text: "7 blessés graves (all forces, 17 Oct)",
         count: 7,
         sources: ["bfmtv-bilan-17oct"],
       },
       {
+        id: "civiliansSerious24",
         text: "3 blessés graves sur 150 civils (24 Oct)",
         count: 3,
         sources: [],
       },
       {
+        id: "registerOther",
         text: "« autres blessures graves » (register)",
         count: 52,
         sources: ["lemonde-blessures-0511"],
@@ -92,17 +100,28 @@ export const LADDER: readonly LadderRung[] = [
     lo: 4,
     hi: 4,
     native: [
-      { text: "10 éborgnés", count: 10, sources: ["lemonde-blessures-0511"] },
+      {
+        id: "registerVision",
+        text: "10 éborgnés",
+        count: 10,
+        sources: ["lemonde-blessures-0511"],
+      },
     ],
   },
   {
     id: "destruction",
-    mais: "MAIS 5",
-    lo: 5,
+    mais: "MAIS 2–5",
+    lo: 2,
     hi: 5,
     native: [
-      { text: "7 amputations", count: 7, sources: ["lemonde-blessures-0511"] },
       {
+        id: "registerAmputation",
+        text: "7 amputations",
+        count: 7,
+        sources: ["lemonde-blessures-0511"],
+      },
+      {
+        id: "registerCraniofacial",
         text: "9 traumatismes crânio-faciaux",
         count: 9,
         sources: ["lemonde-blessures-0511"],
@@ -116,6 +135,7 @@ export const LADDER: readonly LadderRung[] = [
     hi: 6,
     native: [
       {
+        id: "registerFatal",
         text: "Christophe M., 59, Paris, 17 Oct",
         count: 1,
         sources: ["lemonde-blessures-0511"],

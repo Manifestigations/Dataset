@@ -29,7 +29,7 @@ in the files below.
 | Past movements for comparison (Mai 68, CPE, Gilets Jaunes, Nahel, pensions 2023, « Bloquons tout », students 2026 — one file each)                                              | [`src/data/episodes/`](https://github.com/Manifestigations/Dataset/tree/main/src/data/episodes)                                                                                                                                                                                                                                                                                                   |
 | What is alleged against whom, and where the case stands: acts against protesters, against the police, by far-right groups; the court sittings that heard the 17 October arrests | [`src/data/illegal/`](https://github.com/Manifestigations/Dataset/tree/main/src/data/illegal) — `ILLEGAL_ACTS` (one record per claim), `NORMATIVE` (a police tactic read against the laws of war), `SITTINGS` (court capacity and dockets), `CHARGES` (each `ChargeId` and the sides it can be brought against)                                                                                   |
 | The catalogue of every source (who published what, on which date)                                                                                                               | [`src/data/sources/`](https://github.com/Manifestigations/Dataset/tree/main/src/data/sources) — one file per group                                                                                                                                                                                                                                                                                |
-| The casualty data, its severities, observations and estimators                                                                                                                  | [`src/data/casualties/`](https://github.com/Manifestigations/Dataset/tree/main/src/data/casualties)                                                                                                                                                                                                                                                                                               |
+| The casualty data: the severity ladder, its observations and estimators, and the ICD-10 / AIS codebook behind each published label                                              | [`src/data/casualties/`](https://github.com/Manifestigations/Dataset/tree/main/src/data/casualties) — `CASES` per cell, `LADDER` per published label, `CODE_SPANS` per label's admissible ICD-10 set, AIS region and AIS range                                                                                                                                                                    |
 | Disruptive acts by day and by category (official count → widest count)                                                                                                          | [`src/data/disruptive/`](https://github.com/Manifestigations/Dataset/tree/main/src/data/disruptive) — `ACT_ROWS`, one row per (date, category), each with a `unit`                                                                                                                                                                                                                                |
 | The types everything is written against                                                                                                                                         | [`src/model/index.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/model/index.ts)                                                                                                                                                                                                                                                                                                  |
 | Why a figure was chosen, and what was rejected                                                                                                                                  | [`src/data/index.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/index.ts) — the verification record, then the barrel                                                                                                                                                                                                                                                         |
@@ -188,6 +188,47 @@ the id, its `sides`, `family` and `articles` here, and a `CHARGE_LABELS` entry i
 `Record<ChargeId, Bi>`, so an id without a label is a type error in the
 Observatory, and a label without an id is a type error there too.
 
+## Casualties: a severity ladder and a codebook
+
+`src/data/casualties/` keeps two layers apart on purpose, because they answer
+different questions and only one of them describes an injury.
+
+**The ladder** (`vocabulary.ts`, `LADDER`) maps each published label onto an
+ordinal rung aligned with MAIS, because MAIS 3+ is the threshold Eurostat and
+ONISR already use for "serious". Two rules hold it together: a rung is a
+**range** of ordinals, never a point; and "not classed light" is a **residual**,
+not "serious" — 1,233 − 1,167 = 66 unresolved cases against the ministry's 7
+serious cases in the same month is the proof that the two are different
+categories.
+
+**The codebook** (`coding.ts`, `CODE_SPANS`) gives each published label one
+`CodeSpan`: the ICD-10 categories it could stand for, its chapter XX external
+cause where it has one, and the AIS severity range it is consistent with.
+Nothing is assigned to anyone. No record in this repository carries a
+diagnosis, so `assignment` is `"none"` throughout, and every set is a
+constraint: no code inside a set is more likely than another.
+
+| Field                  | Means                                                                                                                                                                                      |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `grain`                | `"type"` when the label names an injury (`amputations`, `éborgnés`), `"severity"` when it names a degree (`légèrement blessé`, `blessés graves`). A severity's set is wide by construction |
+| `icd10`                | chapter XIX categories at the level the label supports — `S05.7` for avulsion of the eye, `S68.0`–`S68.4` for a hand amputation. Empty only for a death                                    |
+| `external`             | chapter XX. A death is tabulated by external cause, not by injury                                                                                                                          |
+| `ais`                  | `[lo, hi]` within 1–6, or `null` when AIS does not apply. AIS scores one injury; MAIS is the highest of them                                                                               |
+| `regions`              | the nine AIS body regions. A burn sits in `external`, not in the region burnt                                                                                                              |
+| `basis` / `aisEdition` | `"editorial"` and `null` for every span: this repository's own alignment, no edition consulted                                                                                             |
+
+Nine labels are published — 1,167 lightly injured, 66 not classed light, 7
+serious (forces, 17 Oct), 3 serious (civilians, 24 Oct), 52 _autres blessures
+graves_, 10 eye losses, 7 amputations, 9 craniofacial traumas, 1 death — and
+only the last four of those name an injury. The register's five sub-counts
+partition its floor: 52 + 10 + 7 + 9 + 1 = 79, the same 78 serious plus 1 death
+that `checks.ts` asserts.
+
+ISS, NISS and TRISS are not computable from this data and are never implied:
+each needs three AIS codes in three ISS body regions for one person, and nothing
+here is per-person. The ISS regions (6) and the AIS regions (9) are different
+lists, which alone makes an ISS built from a span meaningless.
+
 ## Invariants (do not violate)
 
 - A published range stays a range. Never average two publishers; never
@@ -216,6 +257,13 @@ Observatory, and a label without an id is a type error there too.
 - **A counterfactual is always `hypothetical`** and always carries a `caveat`.
   It never acquires a procedural step, a verdict or a hearing.
 - **A charge is a list**, and an empty list is legal only below `charged`.
+- **A code in `coding.ts` is admissible for a label, never assigned to a
+  person.** `assignment` has one member; no rung installed a diagnosis, and a
+  per-case record would be a schema change, not an edit.
+- **Every published label has exactly one `CodeSpan`.** A label with none, or
+  one in two spans, fails `check:casualties` — the first would render as if it
+  had no injury content, the second would be counted twice in any per-type
+  total.
 
 ```mermaid
 erDiagram
@@ -332,9 +380,10 @@ flowchart TD
   bundle, `scripts/validate.ts` checks it against the schemas.
 - `package.json` is `"name": "@manifestigations/dataset"`, `"private": true`.
 - CI runs `.github/workflows/style.yml`. Three data-integrity checks exist and
-  all of them are in `npm run check`: `check:casualties` (casualty cells),
-  `check:costs` (payer sums, no per-person total), `check:illegal` (the
-  illegal-act register, its statuses, charges, refs and sittings).
+  all of them are in `npm run check`: `check:casualties` (casualty cells and the
+  injury codebook), `check:costs` (payer sums, no per-person total),
+  `check:illegal` (the illegal-act register, its statuses, charges, refs and
+  sittings).
 - `check:illegal` cannot see the Observatory's copy. Whether every
   `{ k: "act" }` has an English and a French note is checked there, next to the
   strings.
