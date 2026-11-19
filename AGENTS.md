@@ -116,7 +116,7 @@ with its `sources`, or, for a school blockade, add the `blockades` cell to
 `facts.ts` and add nothing here: the row is derived. Never write a
 `schoolBlockade` row by hand. Keep one `unit` per total.
 
-**Add a comparative movement** — add the Movement to `europe.ts`/`world.ts`, give every action a `src`, promote each candidate source in `sources/comparative.ts` to a verified `Source`, set `verdict` and at least one `Demand` with its `state`, then `npm run typecheck`. And a warning: do not add these to `EPISODES`; its order indexes section C and the trellis ramp.
+**Add a comparative movement** — add the Movement to `europe.ts`/`world.ts`, give every action a `src`, promote each candidate source in `sources/comparative.ts` to a verified `Source`, set `verdict` and at least one `Demand` with its state, and set `episodeRef: "students26"` on the France entry so it is not duplicated, then `npm run typecheck`. And a warning: do not add these to `EPISODES`; its order indexes section C and the trellis ramp.
 
 ## Gotchas
 

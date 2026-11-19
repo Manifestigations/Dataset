@@ -90,6 +90,14 @@ export const GROUPS: readonly SourceGroup[] = [
     },
   },
   {
+    id: "comparative",
+    title: { en: "Comparative movements", fr: "Mouvements de comparaison" },
+    blurb: {
+      en: "Movements outside France that overlap the 2026 autumn: dates, turnout, enforcement and what each won.",
+      fr: "Mouvements hors de France qui recoupent l'automne 2026 : dates, participation, répression et gains obtenus.",
+    },
+  },
+  {
     id: "mai68",
     title: { en: "May 1968", fr: "Mai 68" },
     blurb: {
@@ -163,14 +171,6 @@ export const GROUPS: readonly SourceGroup[] = [
     blurb: {
       en: "Every photograph used as a hero image on this site, with the file page it comes from and the licence it carries. Each card links its credit line here; nothing is reproduced without attribution. The Freedom Press photograph is not a Commons file and carries no open licence.",
       fr: "Chaque photographie utilisée en image d’en-tête, avec la page du fichier d’origine et la licence associée. La ligne de crédit de chaque carte renvoie ici ; rien n’est reproduit sans attribution. La photographie Freedom Press n’est pas un fichier Commons et ne porte aucune licence libre.",
-    },
-  },
-  {
-    id: "comparative",
-    title: { en: "Comparative movements", fr: "Mouvements de comparaison" },
-    blurb: {
-      en: "Movements outside France that overlap the 2026 autumn: dates, turnout, enforcement and what each won.",
-      fr: "Mouvements hors de France qui recoupent l'automne 2026 : dates, participation, répression et gains obtenus.",
     },
   },
 ];

@@ -1,6 +1,7 @@
 /* ── Comparative registry ────────────────────────────────────────────────────
    NOT EPISODES. Episodes are the weekly French series; this is the cross-country
-   layer. Order is display order for the Gantt: region first, then by start date.
+   layer. Order is display order for the Gantt: by start date, oldest first, so
+   the long-running movements (Serbia, Georgia, Philippines) anchor the top.
    Sorting by start date here is correct — unlike EPISODES, whose order is frozen
    because it indexes section C's panels and the trellis ramp. */
 

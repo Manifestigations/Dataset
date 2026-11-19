@@ -1,6 +1,6 @@
-/** 169 sources across 14 groups. Totals are the parse output of the split from
- *  sources.ts, whose own header comment ("158 sources, 13 groups") was stale on
- *  both counts. Bump these only alongside the array they describe. */
+/** 178 sources across 16 groups. Totals are the parse output of the split from
+ * sources.ts, whose own header comment ("158 sources, 13 groups") was stale on
+ * both counts. Bump these only alongside the array they describe. */
 
 import { BLOCKADES_SOURCES } from "./blockades.ts";
 import { BLOQUONS_SOURCES } from "./bloquons.ts";

@@ -76,7 +76,6 @@ export interface Action {
 /** Campaign totals the source publishes for a span the actions cannot
  *  reconstruct. Overrides the computed sum, and says so. */
 export interface Published {
-  readonly p?: Band;
   readonly a?: Band;
   readonly i?: Band;
   readonly f?: Band;

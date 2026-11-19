@@ -92,12 +92,12 @@ export const MOVEMENTS_EUROPE: readonly Movement[] = [
       },
       {
         date: "2026-11-11",
-        p: 3_000_000,
+        s: 3_000_000,
         a: [50, 50],
-        flag: { p: "p", a: "f" },
+        flag: { s: "p", a: "f" },
         note: {
-          en: "First general strike in 14 years; union claim, no ministry count",
-          fr: "Première grève générale en 14 ans ; chiffre syndical, pas de comptage ministériel",
+          en: "First general strike in 14 years; union claim of strikers and marchers together, no ministry count",
+          fr: "Première grève générale en 14 ans ; chiffre syndical mêlant grévistes et manifestants, pas de comptage ministériel",
         },
         src: "cmp-guardian-es-strike",
       },
@@ -155,13 +155,12 @@ export const MOVEMENTS_EUROPE: readonly Movement[] = [
         date: "2026-10-13",
         a: [167, 167],
         f: [132, 132],
-        flag: { a: "n" },
         src: "cmp-wiki-eu-unrest",
       },
       {
         date: "2026-10-24",
         i: [300, 300],
-        flag: { i: "x", a: "f" },
+        flag: { i: "x" },
         note: {
           en: "300+ injured, both sides, not split",
           fr: "300+ blessés, les deux camps, non ventilés",
@@ -568,7 +567,7 @@ export const MOVEMENTS_EUROPE: readonly Movement[] = [
       { date: "2026-10-25", src: "cmp-wiki-eu-unrest" },
       { date: "2026-11-15", p: [400_000, 400_000], src: "cmp-wiki-eu-unrest" },
     ],
-    published: { p: [400_000, 400_000], src: "cmp-wiki-eu-unrest" },
+    published: { src: "cmp-wiki-eu-unrest" },
     src: ["cmp-wiki-eu-unrest"],
   },
 
@@ -697,7 +696,7 @@ export const MOVEMENTS_EUROPE: readonly Movement[] = [
     actions: [
       { date: "2026-10-22", p: [20_000, 30_000], src: "cmp-wiki-eu-unrest" },
     ],
-    published: { p: [20_000, 30_000], src: "cmp-wiki-eu-unrest" },
+    published: { src: "cmp-wiki-eu-unrest" },
     src: ["cmp-wiki-eu-unrest"],
   },
 
@@ -721,7 +720,17 @@ export const MOVEMENTS_EUROPE: readonly Movement[] = [
       fr: "Émeute dispersée par la police et les pompiers la même nuit ; aucune revendication publiée.",
     },
     inspiredByFrance: false,
-    demands: [],
+    demands: [
+      {
+        id: "ch-zurich-demands",
+        text: {
+          en: "No demand was published; the riot was dispersed the same night",
+          fr: "Aucune revendication publiée ; l'émeute a été dispersée la même nuit",
+        },
+        state: "unclear",
+        src: "cmp-wiki-eu-unrest",
+      },
+    ],
     actions: [{ date: "2026-10-31", src: "cmp-wiki-eu-unrest" }],
     src: ["cmp-wiki-eu-unrest"],
   },

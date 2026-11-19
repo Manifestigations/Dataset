@@ -12,8 +12,8 @@ export const OFFICIAL_SOURCES: readonly Source[] = [
     "Ministère de l’Intérieur",
     "https://www.interieur.gouv.fr/",
     both(
-      "origin of every arrest, custody and officer-injury count and of the ministry turnout figure. Published as press briefings and evening situation reports, not as a downloadable series. A continuously updated portal: the span shown is the window of the situation reports cited here, from the first national turn to the 7 Nov bilan.",
-      "origine de chaque décompte d’interpellations, de gardes à vue et de blessés parmi les forces, ainsi que du chiffre ministériel de foule. Publiés en points presse et points de situation du soir, non en séries téléchargeables. Portail mis à jour en continu : la période affichée est celle des points de situation cités, du premier tournant national au bilan du 7 nov.",
+      "origin of every arrest, custody and officer-injury count and of the ministry turnout figure, and of the 28 Sep establishment count (180 perturbed, 27 totally blocked). Published as press briefings and evening situation reports, not as a downloadable series. A continuously updated portal: the span shown is the window of the situation reports cited here, from the first national turn to the 7 Nov bilan.",
+      "origine de chaque décompte d’interpellations, de gardes à vue et de blessés parmi les forces, ainsi que du chiffre ministériel de foule, et du décompte d’établissements du 28 sept. (180 perturbés, 27 totalement bloqués). Publiés en points presse et points de situation du soir, non en séries téléchargeables. Portail mis à jour en continu : la période affichée est celle des points de situation cités, du premier tournant national au bilan du 7 nov.",
     ),
     "2026-09-28",
     "2026-11-07",

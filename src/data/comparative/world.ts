@@ -245,7 +245,7 @@ export const MOVEMENTS_WORLD: readonly Movement[] = [
         note: { en: "Nationwide action", fr: "Action nationale" },
       },
     ],
-    published: { p: [1_100, 1_100], flag: { p: "c" }, src: "cmp-wiki-ve" },
+    published: { flag: { p: "c" }, src: "cmp-wiki-ve" },
     src: ["cmp-wiki-ve"],
   },
 

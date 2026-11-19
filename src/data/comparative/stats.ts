@@ -1,4 +1,5 @@
 import { midOf, type Band, type Flag } from "../../model/index.ts";
+import { EPISODES } from "../episodes/index.ts";
 import { MOVEMENTS } from "./index.ts";
 import type { Action, ActionMetric, Movement } from "./types.ts";
 
@@ -13,12 +14,15 @@ import type { Action, ActionMetric, Movement } from "./types.ts";
    · `total` for `p` is meaningless (you cannot add crowds across days) and is
      therefore NOT computed. `total` exists for a/i/f/s, which are sums. */
 
-const METRICS: readonly ActionMetric[] = ["p", "a", "i", "f", "s"];
+/** Renamed from METRICS: src/model/index.ts already exports METRICS
+ *  (["p","a","f","i"]), and two different constants under one name is how the
+ *  next reader gets the wrong list. */
+const ACTION_METRICS: readonly ActionMetric[] = ["p", "a", "i", "f", "s"];
 
 /** Turnout is not summable: adding the crowd on 24 Oct to the crowd on 17 Oct
  *  double-counts the same people. Only these four are totals. Derived from
- *  METRICS rather than retyped, so the two lists cannot drift apart. */
-const SUMMABLE = METRICS.filter(
+ *  ACTION_METRICS rather than retyped, so the two lists cannot drift apart. */
+const SUMMABLE = ACTION_METRICS.filter(
   (m): m is Exclude<ActionMetric, "p"> => m !== "p",
 );
 
@@ -55,8 +59,21 @@ export interface MovementStats {
   readonly basis: "published" | "sum" | "none";
 }
 
+/** France carries no actions: it is read from the weekly episode, so its peak
+ *  is a WEEKLY aggregate and is flagged "w" rather than mixed silently into
+ *  action-day maxima. */
+function episodePeaks(
+  id: NonNullable<Movement["episodeRef"]>,
+): Array<{ band: Band; date: string; flag: Flag }> {
+  const ep = EPISODES.find((e) => e.id === id);
+  if (!ep) return [];
+  return ep.weeks
+    .filter((w): w is typeof w & { p: Band } => w.p !== undefined)
+    .map((w) => ({ band: w.p, date: w.from, flag: "w" as const }));
+}
+
 export function stats(m: Movement): MovementStats {
-  const peaks = m.actions
+  const own = m.actions
     .map((a) => ({ a, band: pick(a, "p") }))
     .filter((x): x is { a: Action; band: Band } => x.band !== undefined)
     .map((x) => ({
@@ -65,6 +82,12 @@ export function stats(m: Movement): MovementStats {
       mid: midOf(x.band),
       flag: x.a.flag?.p,
     }));
+
+  const fromEpisode = m.episodeRef
+    ? episodePeaks(m.episodeRef).map((x) => ({ ...x, mid: midOf(x.band) }))
+    : [];
+
+  const peaks = [...own, ...fromEpisode];
 
   const peak = peaks.length
     ? peaks.reduce((best, x) => (x.mid > best.mid ? x : best))
@@ -86,10 +109,14 @@ export function stats(m: Movement): MovementStats {
   /* Keyed by ActionMetric, not string: the loop below can only ever write
      summable keys, and the return type makes a missing one visible. */
   const total: Partial<Record<ActionMetric, Band>> = {};
+  let published = 0;
+  let summed = 0;
+
   for (const k of SUMMABLE) {
     const pub = m.published?.[k];
     if (pub !== undefined) {
       total[k] = pub;
+      published += 1;
       continue;
     }
     const bands = m.actions
@@ -101,11 +128,14 @@ export function stats(m: Movement): MovementStats {
       pairs.reduce((s, [lo]) => s + lo, 0),
       pairs.reduce((s, [, hi]) => s + hi, 0),
     ];
+    summed += 1;
   }
 
-  const basis: MovementStats["basis"] = m.published
+  /* Derived from the keys actually used, not from `m.published` existing:
+     a movement that publishes only turnout has no total at all. */
+  const basis: MovementStats["basis"] = published
     ? "published"
-    : Object.keys(total).length
+    : summed
       ? "sum"
       : "none";
 
@@ -133,8 +163,8 @@ export const MOVEMENT_STATS: ReadonlyMap<string, MovementStats> = new Map(
    The three shapes the new visualisations need, so no chart touches the raw
    registry. */
 
-/** Gantt: one bar per movement. `end` falls back to today for open movements —
- *  pass the window's end so the chart and the French episode agree. */
+/** Gantt: one bar per movement. `end` falls back to the window's end for open
+ *  movements, so the chart and the French episode agree. */
 export function gantt(until: string) {
   return MOVEMENTS.map((m) => ({
     id: m.id,
@@ -149,11 +179,22 @@ export function gantt(until: string) {
 }
 
 /** World map: three fills. A movement still mobilising is "ongoing" whatever it
- *  has already won, so a concession never repaints a live movement as settled. */
+ *  has already won, so a concession never repaints a live movement as settled.
+ *  Where a country holds several movements, "ongoing" outranks the rest — an
+ *  explicit rule, because last-write-wins depended on sort order. */
+const VERDICT_RANK = { ongoing: 3, failed: 2, succeeded: 1 } as const;
+
 export function verdicts(): Readonly<
   Record<string, "succeeded" | "failed" | "ongoing">
 > {
-  return Object.fromEntries(MOVEMENTS.map((m) => [m.geo.country, m.verdict]));
+  const out: Record<string, "succeeded" | "failed" | "ongoing"> = {};
+  for (const m of MOVEMENTS) {
+    const current = out[m.geo.country];
+    if (!current || VERDICT_RANK[m.verdict] > VERDICT_RANK[current]) {
+      out[m.geo.country] = m.verdict;
+    }
+  }
+  return out;
 }
 
 /** Choropleth: peak turnout per country. Where a country has several movements,
@@ -193,6 +234,7 @@ export function trellis() {
         mean: s.mean,
         peak: s.peak.band,
         peakDate: s.peak.date,
+        peakFlag: s.peak.flag,
         n: s.actions,
       },
     ];
