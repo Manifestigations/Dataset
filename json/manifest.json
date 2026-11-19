@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "files": {
     "episodes.json": "sha256:7500090e46f1543e7e0d8f22f7a466682fd785684d47b96622fc7c3136058c60",
-    "reference.json": "sha256:b75b1ffecd9c8f3e80820a9dd21a61bede25809c832b24847a9814551ce7f426",
-    "sources.json": "sha256:bc0cdb50d6c94759a6c48b066278ed05f73d4c64dd5ced188db64e063f6a3076"
+    "reference.json": "sha256:e4d397d9004dfeb3273a88aaf5d599ce55a1bdba2c61ecc4db1ec648cae60e76",
+    "sources.json": "sha256:75eeb133f73b442e9ec9c64a796b4b6f222f551047e611fe56cbb1100af9eb80"
   }
 }

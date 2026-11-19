@@ -278,7 +278,8 @@
         "damagesCost",
         "policingCost",
         "heliCost",
-        "blockades"
+        "blockades",
+        "disruptiveActs"
       ]
     },
     "WeekNoteParts": {
