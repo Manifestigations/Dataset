@@ -33,6 +33,8 @@
    view and can never enter a 100% stacked one.
 */
 
+import { POLLS_SOURCES } from "./sources/polls";
+
 export type OpinionBucketKey =
   | "approves"
   | "supports"
@@ -70,9 +72,8 @@ export type OpinionPoll = {
   readonly subject: OpinionSubject;
   readonly pollster: string;
   readonly client: string;
-  /** publisher + headline, verbatim */
-  readonly source: string;
-  readonly url: string;
+  /** `Source.id` in the `polls` group — label and URL live there, once. */
+  readonly sources: readonly string[];
   /** fieldwork window, ISO */
   readonly field: { readonly from: string; readonly to: string };
   /** publication date, ISO */
@@ -91,9 +92,7 @@ export const OPINION_POLLS: readonly OpinionPoll[] = [
     subject: "lycee-mobilisation",
     pollster: "Elabe",
     client: "BFMTV",
-    source:
-      "SONDAGE BFMTV. Une majorité de Français approuve le mouvement des lycéens, près de trois sur quatre jugent leurs revendications légitimes",
-    url: "https://www.bfmtv.com/politique/sondage-bfmtv-une-majorite-de-francais-approuve-le-mouvement-des-lyceens-pres-de-trois-sur-quatre-jugent-leurs-revendications-legitimes_AN-202610070622.html",
+    sources: ["elabe-lycee-2026-10-07"],
     field: { from: "2026-10-06", to: "2026-10-07" },
     published: "2026-10-07",
     n: 1_001,
@@ -156,8 +155,7 @@ export const OPINION_POLLS: readonly OpinionPoll[] = [
     subject: "lycee-mobilisation",
     pollster: "Ifop",
     client: "LCI",
-    source: "Les Français et le mouvement des lycéens",
-    url: "https://www.ifopgroup.com/wp-content/uploads/2026/10/122835-rapport-manifestation-lycees-1.pdf",
+    sources: ["ifop-lycee-2026-10-07"],
     field: { from: "2026-10-06", to: "2026-10-07" },
     published: "2026-10-07",
     n: 1_000,
@@ -199,9 +197,7 @@ export const OPINION_POLLS: readonly OpinionPoll[] = [
     subject: "lycee-mobilisation",
     pollster: "Ipsos-BVA Cesi",
     client: "La Tribune dimanche",
-    source:
-      'Le mouvement lycéen approuvé par 54% des Français, 69% souhaitent que le gouvernement "discute avec les lycéens"',
-    url: "https://www.tf1info.fr/societe/le-mouvement-lyceen-approuve-par-54-des-francais-69-souhaitent-que-le-gouvernement-discute-avec-les-lyceens-2469251.html",
+    sources: ["ipsos-bva-cesi-lycee-2026-10-08"],
     field: { from: "2026-10-07", to: "2026-10-08" },
     published: "2026-10-11",
     n: 1_000,
@@ -225,9 +221,7 @@ export const OPINION_POLLS: readonly OpinionPoll[] = [
     subject: "mobilisation-17-octobre",
     pollster: "Elabe",
     client: "BFMTV",
-    source:
-      "SONDAGE BFMTV. Près de sept Français sur dix approuvent la mobilisation du 17 octobre contre la hausse du coût de la vie",
-    url: "https://www.bfmtv.com/societe/manifestations/sondage-bfmtv-pres-de-sept-francais-sur-dix-approuvent-la-mobilisation-du-17-octobre-contre-la-hausse-du-cout-de-la-vie_AN-202610160598.html",
+    sources: ["elabe-17-octobre-2026-10-16"],
     field: { from: "2026-10-14", to: "2026-10-16" },
     published: "2026-10-16",
     n: 1_506,
@@ -284,9 +278,7 @@ export const OPINION_POLLS: readonly OpinionPoll[] = [
     subject: "mobilisation-5-novembre",
     pollster: "Elabe",
     client: "BFMTV",
-    source:
-      "SONDAGE BFMTV. Colère lycéenne et étudiante: plus d'un Français sur deux juge les propositions du gouvernement insuffisantes mais 54% souhaitent que la mobilisation se termine",
-    url: "https://www.bfmtv.com/societe/manifestations/sondage-bfmtv-colere-lyceenne-et-etudiante-plus-d-un-francais-sur-deux-juge-les-propositions-du-gouvernement-insuffisantes-mais-54-souhaitent-que-la-mobilisation-se-termine_AN-202610280689.html",
+    sources: ["elabe-5-novembre-2026-10-28"],
     field: { from: "2026-10-27", to: "2026-10-28" },
     published: "2026-10-28",
     n: 1_002,
@@ -328,9 +320,7 @@ export const OPINION_POLLS: readonly OpinionPoll[] = [
     subject: "mobilisation-5-novembre",
     pollster: "Elabe",
     client: "BFMTV",
-    source:
-      "SONDAGE BFMTV. Plus d'un Français sur deux approuve la mobilisation du 5 novembre",
-    url: "https://www.bfmtv.com/politique/sondages/sondage-bfmtv-plus-d-un-francais-sur-deux-favorable-a-la-mobilisation-du-5-novembre_AN-202611040674.html",
+    sources: ["elabe-5-novembre-2026-11-04"],
     field: { from: "2026-11-03", to: "2026-11-04" },
     published: "2026-11-04",
     n: 1_004,
@@ -368,9 +358,7 @@ export const OPINION_POLLS: readonly OpinionPoll[] = [
     subject: "mobilisations-justifiees",
     pollster: "YouGov",
     client: "Le HuffPost",
-    source:
-      "La mobilisation sociale (très) largement soutenue par les Français - EXCLUSIF",
-    url: "https://www.huffingtonpost.fr/politique/article/la-mobilisation-sociale-tres-largement-soutenue-par-les-francais-exclusif_353102.html",
+    sources: ["yougov-justifiees-2026-11-05"],
     field: { from: "2026-11-02", to: "2026-11-05" },
     published: "2026-11-04",
     n: 1_024,
@@ -390,6 +378,18 @@ export const OPINION_POLLS: readonly OpinionPoll[] = [
     ],
   },
 ];
+
+/* ----- provenance check
+
+   Nothing else ties a poll to a registered source: the ids coincide, and that
+   coincidence is the only thing holding the two files together. Fail loudly at
+   module load rather than render a poll nobody can open. */
+{
+  const known = new Set(POLLS_SOURCES.map((s) => s.id));
+  for (const p of OPINION_POLLS)
+    for (const id of p.sources)
+      if (!known.has(id)) throw new Error(`opinion.ts: unknown source "${id}"`);
+}
 
 /* ── derived views ────────────────────────────────────────────────────────
    Summing published buckets is arithmetic. Averaging published polls is

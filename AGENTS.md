@@ -89,6 +89,12 @@ using the helpers in `record.ts`; `label` is publisher + headline verbatim,
 `src/data/sources/groups.ts` (bilingual `title` and `blurb`); create
 `src/data/sources/<group>.ts`; register it in `src/data/sources/index.ts`.
 
+**Add a poll** — one `OpinionPoll` in `src/data/opinion.ts`, its `sources`
+naming an entry in the `polls` group. Record every bucket with the pollster's
+own word; never rename two pollsters into one vocabulary, and never add a
+bucket the article did not print. Keep `subject` on the question asked, so
+`opinionAverage()` cannot cross two questions. Flag the series derived ("e").
+
 **Change casualty data** — `src/data/casualties/`: cells in `cases.ts`,
 observations in `inputs.ts`, the estimator's arithmetic in `estimate.ts`, the
 invariants in `checks.ts`. `npm run check:casualties` must pass; a failure means

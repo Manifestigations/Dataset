@@ -13,6 +13,7 @@ import { MEDIA_SOURCES } from "./media.ts";
 import { NAHEL_SOURCES } from "./nahel.ts";
 import { OFFICIAL_SOURCES } from "./official.ts";
 import { OVERSEAS_SOURCES } from "./overseas.ts";
+import { POLLS_SOURCES } from "./polls.ts";
 import { PRESS_SOURCES } from "./press.ts";
 import { REF2026_SOURCES } from "./ref2026.ts";
 import { RETRAITES_SOURCES } from "./retraites.ts";
@@ -30,6 +31,7 @@ export const SOURCES: readonly Source[] = [
   ...NAHEL_SOURCES,
   ...COMPARATIVE_SOURCES,
   ...OFFICIAL_SOURCES,
+  ...POLLS_SOURCES,
   ...OVERSEAS_SOURCES,
   ...PRESS_SOURCES,
   ...REF2026_SOURCES,

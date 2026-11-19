@@ -3,6 +3,7 @@ import type { Bi } from "../../copy/index.ts";
 export type GroupId =
   | "official"
   | "comparative"
+  | "polls"
   | "press"
   | "blockades"
   | "cost"

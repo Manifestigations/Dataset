@@ -24,6 +24,17 @@ export const GROUPS: readonly SourceGroup[] = [
     },
   },
   {
+    id: "polls",
+    title: {
+      en: "The 2026 movement — approval in the polls",
+      fr: "Le mouvement de 2026 — l’approbation dans les sondages",
+    },
+    blurb: {
+      en: "One row per published poll, with its fieldwork window and sample size. Three traps this group exists to keep visible. « Indifférents » is not « ne sait pas »: both Elabe and Ifop published indifference, and no pollster here published a non-response bucket. « Approuvent » is not « soutiennent »: Elabe published the aggregate and its components, Ifop only the components. And YouGov's 77 % « justifiées » answers whether the mobilisations are justified, not whether respondents approve of them, so it is not in the approval line. Every percentage here is a share of adults surveyed, never a count of people in the street.",
+      fr: "Une ligne par sondage publié, avec sa fenêtre de terrain et sa taille d’échantillon. Trois pièges que ce groupe rend visibles. « Indifférents » n’est pas « ne sait pas » : Elabe et Ifop publient l’indifférence, et aucun sondeur n’a publié de non-réponse. « Approuvent » n’est pas « soutiennent » : Elabe publie l’agrégat et ses composantes, Ifop seulement les composantes. Et les 77 % « justifiées » de YouGov répondent à la question de la légitimité, non à celle de l’approbation : ils ne sont pas dans la courbe d’approbation. Chaque pourcentage est une part des adultes interrogés, jamais un décompte de personnes dans la rue.",
+    },
+  },
+  {
     id: "strikes",
     title: {
       en: "The 2026 movement — participation in the strikes",
