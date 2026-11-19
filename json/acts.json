@@ -1,5 +1,39 @@
 [
   {
+    "date": "2026-09-15",
+    "category": "schoolBlockade",
+    "low": 1,
+    "high": 1,
+    "unit": "establishments",
+    "sources": [
+      "actu-caen-15sept"
+    ],
+    "derivedFrom": "facts.blockades"
+  },
+  {
+    "date": "2026-09-19",
+    "category": "schoolBlockade",
+    "low": 1,
+    "high": 1,
+    "unit": "establishments",
+    "sources": [
+      "frwiki-mvt-lyceen-2026"
+    ],
+    "derivedFrom": "facts.blockades"
+  },
+  {
+    "date": "2026-09-28",
+    "category": "schoolBlockade",
+    "low": 27,
+    "high": 27,
+    "unit": "establishments",
+    "sources": [
+      "frwiki-mvt-lyceen-2026",
+      "interieur"
+    ],
+    "derivedFrom": "facts.blockades"
+  },
+  {
     "date": "2026-09-29",
     "category": "schoolBlockade",
     "low": 45,
@@ -24,6 +58,18 @@
     "unattributed": [
       "low"
     ]
+  },
+  {
+    "date": "2026-10-02",
+    "category": "schoolBlockade",
+    "low": 400,
+    "high": 400,
+    "unit": "establishments",
+    "sources": [
+      "lefigaro-2oct-1747"
+    ],
+    "derivedFrom": "facts.blockades",
+    "q": "f"
   },
   {
     "date": "2026-10-03",

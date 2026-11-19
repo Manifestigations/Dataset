@@ -106,6 +106,33 @@ export * from "./projections.ts";
 
 export * from "./aggregate.ts";
 export * from "./calendar.ts";
+/* Who pays: damage, concessions, penalties. Deliberately NOT in FACTS — a
+   PayerCost is one (payer, kind, stage) record, not one Obs on one day, so it
+   cannot be a MetricKey cell without losing the payer axis. */
+export {
+  COST_KINDS,
+  COST_UNPRICED,
+  IFRAP_SCENARIOS,
+  INSTRUMENTS,
+  PAYERS,
+  PAYER_COSTS,
+  PAYER_COST_BY_DATE,
+  SCENARIOS,
+  SMIC,
+  STAGES,
+  concessionToDamage,
+  rowsFor,
+  sumRows,
+  type CostKind,
+  type CostNoteRef,
+  type Instrument,
+  type Payer,
+  type PayerCost,
+  type Scenario,
+  type Stage,
+  type UnpricedCost,
+} from "./costs.ts";
+
 export * from "./facts.ts";
 export * from "./helicopters.ts";
 export * from "./opinion.ts";

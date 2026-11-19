@@ -21,6 +21,7 @@ in the files below.
 | The 2026 figures, day by day (turnout, strikers, arrests, injuries, blockaded schools, damages, cost of policing)                  | [`src/data/facts.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/facts.ts) — `FACTS`, one key per ISO date, each cell `{ low, high, q? }`                                                                                                                                                                                                                                     |
 | The derived daily and weekly series, the window and the school-holiday band                                                        | [`src/data/projections.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/projections.ts) (daily), [`src/data/aggregate.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/aggregate.ts) (weekly), [`src/data/calendar.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/calendar.ts) (`START`/`END`, `WEEKS`, `HOLIDAY_START`/`HOLIDAY_END`) |
 | Deployments, force levels, the cost rate, helicopter hours                                                                         | [`src/data/policing.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/policing.ts), [`src/data/helicopters.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/helicopters.ts)                                                                                                                                                                                  |
+| Who pays: damage by payer, the cost of the concessions, what protestors are exposed to                                             | [`src/data/costs.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/costs.ts) — `PAYER_COSTS`, one record per (payer, cost kind, stage); `COST_UNPRICED` for what no source prices                                                                                                                                                                                               |
 | Denominators (populations)                                                                                                         | [`src/data/population.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/population.ts)                                                                                                                                                                                                                                                                                          |
 | Who protests, who polices: age, sex, nationality and the **absence** of ethnic statistics                                          | [`src/data/demographics/`](https://github.com/Manifestigations/Dataset/tree/main/src/data/demographics) — `DemoRow` per source and population, `DemoGap` for what does not exist, `DemoProxy` for what is not ethnicity                                                                                                                                                                           |
 | Approval of the movement, poll by poll (approve / disapprove / indifférents, with the sample size)                                 | [`src/data/opinion.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/opinion.ts) — `OPINION_POLLS`, one `OpinionPoll` per published survey; `topline()` and `opinionAverage()`                                                                                                                                                                                                  |
@@ -30,10 +31,10 @@ in the files below.
 | The casualty data, its severities, observations and estimators                                                                     | [`src/data/casualties/`](https://github.com/Manifestigations/Dataset/tree/main/src/data/casualties)                                                                                                                                                                                                                                                                                               |
 | Disruptive acts by day and by category (official count → widest count)                                                             | [`src/data/disruptive/`](https://github.com/Manifestigations/Dataset/tree/main/src/data/disruptive) — `ACT_ROWS`, one row per (date, category), each with a `unit`                                                                                                                                                                                                                                |
 | The types everything is written against                                                                                            | [`src/model/index.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/model/index.ts)                                                                                                                                                                                                                                                                                                  |
-| Why a figure was chosen, and what was rejected                                                                                     | [`src/data/data.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/data.ts) — the verification record, then the barrel                                                                                                                                                                                                                                                           |
+| Why a figure was chosen, and what was rejected                                                                                     | [`src/data/index.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/index.ts) — the verification record, then the barrel                                                                                                                                                                                                                                                         |
 | Known data problems, and how each was settled                                                                                      | [`content/data-problems.md`](https://github.com/Manifestigations/Protest-Data-Observatory/blob/main/content/data-problems.md) — kept in the Observatory repo, because it is prose about method                                                                                                                                                                                                    |
 
-Every path above goes through [`src/data/data.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/data.ts)
+Every path above goes through [`src/data/index.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/index.ts)
 as its public entry point for the 2026 layer: that file only re-exports, so
 importing from it keeps import paths stable while the modules underneath move.
 
@@ -198,6 +199,30 @@ erDiagram
     EPISODE ||--o{ ROW : "weeks: Row[]"
     SOURCE_GROUP ||--o{ SOURCE : "contains"
 ```
+
+## Costs: committed, disbursed, contingent
+
+`FACTS` answers "how much". `src/data/costs.ts` answers "borne by whom, and
+paid yet", which is a different question and cannot be a `MetricKey` cell.
+
+| Stage        | Means                       | Example                                               |
+| ------------ | --------------------------- | ----------------------------------------------------- |
+| `committed`  | announced, owed or budgeted | the €5bn education package                            |
+| `disbursed`  | actually paid               | nothing, in 2026 — no claims-paid figure is published |
+| `contingent` | neither imposed nor paid    | a €15,000 statutory maximum                           |
+
+Three rules follow, and `npm run check:costs` enforces them:
+
+- **Committed and disbursed are never summed.** A committed euro may be
+  disbursed later; adding the two counts it twice.
+- **A loan is not spending.** `instrument: "loan"` rows never enter a
+  spending total, and the interest subsidy on them is unpublished.
+- **A per-person maximum is not an aggregate.** `unit: "perPerson"` rows are
+  listed, never totalled.
+
+The empty disbursed column is a finding about publication, not a claim that
+nothing was paid.
+a
 
 ## Contributing
 

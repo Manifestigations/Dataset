@@ -1,19 +1,27 @@
 import { both, src } from "./record.ts";
 import type { Source } from "./types.ts";
 
-/* 20 entries, split out of sources.ts. Order and the
+/* 41 entries, split out of sources.ts. Order and the
  * comments annotating each entry are preserved verbatim; the render layer sorts
- * by publication date and never depends on this order. */
+ * by publication date and never depends on this order.
+ *
+ * ── Added 19 Nov 2026: the "who pays" block ────────────────────────────────
+ * Concessions, the insurance split, and the penalties protestors are exposed
+ * to. Five entries carry url: "TODO" — legifrance-431-1, legifrance-431-22,
+ * legifrance-r644-4, legifrance-1242, franceassureurs-2023. A Légifrance
+ * article id cannot be derived from the article number, so pasting it is a
+ * human step: open legifrance.gouv.fr, search the article, copy the canonical
+ * /codes/article_lc/ URL. Do not invent one. grep '"TODO"' before merging. */
 export const COST_SOURCES: readonly Source[] = [
-  /* ------------------------------------------ 2026 — damage and cost */
+  /* ----- 2026 — damage and cost */
   src(
     "ifrap-2026",
     "cost",
     "Fondation IFRAP — « Violences des 17 et 18 octobre 2026 : une facture qui approche le milliard d’euros »",
     "https://www.ifrap.org/etat-et-collectivites/violences-des-17-et-18-octobre-2026-une-facture-qui-approche-le-milliard-deuros",
     both(
-      "the €247M–872M damage range for 17–18 Oct: ~€910M material damage and ~€190M lost turnover in the high estimate, €666M of it retail.",
-      "la fourchette de 247 à 872 M€ de dommages pour les 17–18 oct. : ~910 M€ de dommages matériels et ~190 M€ de chiffre d’affaires perdu dans l’hypothèse haute, dont 666 M€ pour le commerce de détail.",
+      "the 17–18 Oct bill, in three scenarios rather than a range: €309M low, €613M central, €1,101M high — ~€910M of material damage and ~€190M of lost turnover at the top, €666M of the material damage in retail.",
+      "la facture des 17–18 oct., en trois scénarios plutôt qu’en fourchette : 309 M€ bas, 613 M€ central, 1 101 M€ haut — ~910 M€ de dommages matériels et ~190 M€ de chiffre d’affaires perdu au plus haut, dont 666 M€ pour le commerce de détail.",
     ),
     "2026-10-21",
   ),
@@ -109,7 +117,7 @@ export const COST_SOURCES: readonly Source[] = [
     "https://www.leparisien.fr/societe/blocages-des-lycees-plusieurs-millions-deuros-de-degats-materiels-deja-estimes-en-france-02-10-2026-ICDKIV5SEFEA7NXURY45JLAZRA.php",
     both(
       "the first national order of magnitude for the school movement, before 17 Oct.",
-      "le premier ordre de grandeur national pour le mouvement defecé, avant le 17 oct.",
+      "le premier ordre de grandeur national pour le mouvement lycéen, avant le 17 oct.",
     ),
     "2026-10-02",
   ),
@@ -141,7 +149,7 @@ export const COST_SOURCES: readonly Source[] = [
   src(
     "leparisien-451-shops",
     "cost",
-    "Le Parisien — 451 commerces vandalises : la carte des établissements parisiens pillés et dégradés",
+    "Le Parisien — 451 commerces vandalisés : la carte des établissements parisiens pillés et dégradés",
     "https://www.leparisien.fr/paris-75/451-commerces-vandalises-la-carte-des-etablissements-parisiens-pilles-et-degrades-les-17-et-18-octobre-22-10-2026-SBWJHPIKZ5DMZFSEWE4IYYCAIY.php",
     both(
       "the Paris-only shop count (451), marked regional in the table.",
@@ -181,7 +189,7 @@ export const COST_SOURCES: readonly Source[] = [
     "https://www.cnews.fr/videos/france/2026-10-14/blocus-des-lycees-agence-immobiliere-attaquee-feux-de-poubelle-le-bilan",
     both(
       "the 14 Oct incidents, the first damage report of the school movement.",
-      "les incidents du 14 oct., premier bilan de dommages du mouvementlymcéen.",
+      "les incidents du 14 oct., premier bilan de dommages du mouvement lycéen.",
     ),
     "2026-10-14",
   ),
@@ -323,8 +331,187 @@ export const COST_SOURCES: readonly Source[] = [
       "Source des temps de vol mesurés : traces ADS-B, Mode-S et FLARM, avec l'historique par appareil derrière un abonnement.",
     ),
   ),
+
+  /* ----- 2026 — who pays: the education package --------------------------- */
+  src(
+    "reuters-education-2026",
+    "cost",
+    "Reuters — French students vow more protests despite Macron government's concessions",
+    "https://www.reuters.com/world/europe/french-minister-says-halloween-protests-could-turn-violent-2026-10-26/",
+    both(
+      "the 26 Oct package: €4bn of loans for renovating schools, a cap of 28 in some seconde classes, and Parcoursup replaced by 2028. Reuters: there was no overall figure for how much funding the package would require.",
+      "l'annonce du 26 oct. : 4 Md€ de prêts pour rénover les établissements, un plafond de 28 élèves dans certaines secondes, et Parcoursup remplacé d'ici 2028. Reuters : aucun chiffre global n'a été donné sur le financement du paquet.",
+    ),
+    "2026-10-26",
+  ),
+  src(
+    "reuters-education-cost-2026",
+    "cost",
+    "Reuters — French teachers say government education measures to quell protests fall short",
+    "https://www.reuters.com/world/french-teachers-say-government-education-measures-quell-protests-fall-short-2026-10-27/",
+    both(
+      "the costing, from the Budget Minister on TF1: the Monday measures were expected to cost €5bn and would be offset with spending cuts elsewhere. This is the only published total for the package, and it is a cost, not an appropriation.",
+      "le chiffrage, par le ministre du Budget sur TF1 : les mesures du lundi devaient coûter 5 Md€, compensés par des économies ailleurs. C'est le seul total publié pour le paquet, et c'est un coût, non une inscription budgétaire.",
+    ),
+    "2026-10-27",
+  ),
+  src(
+    "france24-education-2026",
+    "cost",
+    "France 24 — French student representatives hail govt's 'concrete measures'",
+    "https://www.france24.com/en/france/20261026-live-france-will-maintain-order-without-state-of-emergency-but-it-s-not-off-the-table-macron-says",
+    both(
+      "the itemised list: Parcoursup reformed in 2027 and replaced in 2028, 15,000 additional higher-education places, the 28-student cap, and a €5bn low-interest loan for educational infrastructure (€4bn secondary schools, €1bn universities).",
+      "la liste détaillée : Parcoursup réformé en 2027 et remplacé en 2028, 15 000 places supplémentaires dans le supérieur, le plafond de 28 élèves, et un prêt à taux réduit de 5 Md€ pour les équipements éducatifs (4 Md€ pour le secondaire, 1 Md€ pour les universités).",
+    ),
+    "2026-10-26",
+  ),
+
+  /* ----- 2026 — who pays: the 9 November social conference ---------------- */
+  src(
+    "gouv-smic-2026",
+    "cost",
+    "info.gouv.fr — Conférence sociale : hausse du SMIC de 1,6 %",
+    "https://www.info.gouv.fr/actualite/conference-sociale-hausse-du-smic-de-1-6",
+    both(
+      "the government's own figure: +1.6% taking the net monthly minimum wage to €1,501.60 from December; +5.3% across 2026, or €75 net over the year. The press rounds this to €1,502.",
+      "le chiffre du gouvernement : +1,6 % portant le SMIC net mensuel à 1 501,60 € dès décembre ; +5,3 % sur 2026, soit 75 € net sur l'année. La presse arrondit à 1 502 €.",
+    ),
+    "2026-11-12",
+  ),
+  src(
+    "franceinfo-conference-sociale-2026",
+    "cost",
+    "franceinfo — Augmentation du SMIC, allègements de charges pour les entreprises : ce qu'il faut retenir des annonces du gouvernement",
+    "https://www.franceinfo.fr/economie/greve/augmentation-du-smic-allegements-de-charges-pour-les-entreprises-ce-qu-il-faut-retenir-des-annonces-du-gouvernement-a-l-issue-de-la-conference-sociale_8274527.html",
+    both(
+      "the round-up of the 9 Nov package: the 1.6% minimum-wage rise and the employer-contribution relief that accompanies it. No aggregate cost is given.",
+      "le récapitulatif du paquet du 9 nov. : la hausse de 1,6 % du SMIC et les allègements de cotisations qui l'accompagnent. Aucun coût global n'est donné.",
+    ),
+    "2026-11-12",
+  ),
+  src(
+    "leparisien-conference-sociale-2026",
+    "cost",
+    "Le Parisien — Augmentation du smic, prime carburant… ce qu'il faut retenir des annonces après la conférence sociale",
+    "https://www.leparisien.fr/politique/augmentation-du-smic-prime-carburant-ce-quil-faut-retenir-des-annonces-du-gouvernement-apres-la-conference-sociale-09-11-2026-4F67DVAXI5GUDD3ZLXEFLU2KTI.php",
+    both(
+      "the overtime ceiling raised from €7,500 to €10,000 and the fuel bonus, alongside the minimum-wage rise.",
+      "le plafond des heures supplémentaires relevé de 7 500 à 10 000 € et la prime carburant, aux côtés de la hausse du SMIC.",
+    ),
+    "2026-11-09",
+  ),
+
+  /* ----- 2026 — who pays: the penalties protestors are exposed to --------- */
+  src(
+    "monde-casseurs-payeurs-2026",
+    "cost",
+    "Le Monde — Mobilisations sociales : le projet de loi « casseurs-payeurs » approuvé et élargi par le Sénat après les violences du 17 octobre",
+    "https://www.lemonde.fr/politique/article/2026/10/28/mobilisations-sociales-le-projet-de-loi-casseurs-payeurs-approuve-et-elargi-par-le-senat-apres-les-violences-du-17-octobre_6801416_823448.html",
+    both(
+      "the Senate vote of 28 Oct: 229 for, 105 against, with the Rassemblement national's support.",
+      "le vote du Sénat du 28 oct. : 229 pour, 105 contre, avec le soutien du Rassemblement national.",
+    ),
+    "2026-10-28",
+  ),
+  src(
+    "publicsenat-casseurs-payeurs-2026",
+    "cost",
+    "Public Sénat — Le Sénat adopte le projet de loi « casseurs-payeurs » après l'avoir largement durci",
+    "https://www.publicsenat.fr/actualites/parlementaire/le-senat-adopte-le-projet-de-loi-casseurs-payeurs-apres-lavoir-largement-durci",
+    both(
+      "what the text does: civil liability for participants in violent gatherings, and seizure of welfare benefits from offenders who cannot pay.",
+      "ce que fait le texte : responsabilité civile des participants à des attroupements violents, et saisie des prestations sociales des responsables insolvables.",
+    ),
+    "2026-10-29",
+  ),
+  src(
+    "clubdesjuristes-casseurs-payeurs-2026",
+    "cost",
+    "Le Club des Juristes — Le Sénat adopte le projet de loi « casseurs-payeurs »",
+    "https://www.leclubdesjuristes.com/en-bref/le-senat-adopte-le-projet-de-loi-casseurs-payeurs-18070/",
+    both(
+      "the status that matters for the dataset: the text still has to go to the National Assembly, so it is not law and creates no obligation yet.",
+      "le statut qui compte pour le jeu de données : le texte doit encore passer devant l'Assemblée nationale ; il n'est pas loi et ne crée donc aucune obligation à ce jour.",
+    ),
+    "2026-10-28",
+  ),
+
+  /* ----- standing law: the statutory maxima, one article per entry -------- */
+  /* ── URLs resolved 19 Nov 2026 ─────────────────────────────────────────────
+   * The four Légifrance links point at the consolidated article page (no date
+   * suffix), so they follow later amendments instead of freezing a version —
+   * except R. 644-4, whose id carries a trailing slash. Art. 431-1 must use
+   * LEGIARTI000043982117 (2021 version): LEGIARTI000006418459 is the 2002 text
+   * and lacks both the teaching-function paragraph and the aggravated tier. */
+  src(
+    "legifrance-431-1",
+    "cost",
+    "Légifrance — Code pénal, art. 431-1 (entrave à l'exercice des libertés)",
+    "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000043982117",
+    both(
+      "obstruction, concerted and by threats, of the freedom of expression, work, association, assembly or demonstration: one year and €15,000. Three years and €45,000 when committed with blows, violence, assault, destruction or damage. In force since 26 August 2021; the paragraph on obstructing the teaching function dates from the 2021 law.",
+      "l'entrave, de manière concertée et à l'aide de menaces, à la liberté d'expression, du travail, d'association, de réunion ou de manifestation : un an et 15 000 €. Trois ans et 45 000 € lorsqu'elle est commise avec coups, violences, voies de fait, destructions ou dégradations. En vigueur depuis le 26 août 2021 ; le alinéa sur l'entrave à la fonction d'enseignant date de la loi de 2021.",
+    ),
+  ),
+  src(
+    "legifrance-431-22",
+    "cost",
+    "Légifrance — Code pénal, art. 431-22 et 431-23 (intrusion dans un établissement scolaire)",
+    "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000021926176",
+    both(
+      "entering or remaining inside a school without authorisation, in order to disturb its tranquillity or good order: one year and €7,500. Art. 431-23 raises this to three years and €45,000 when committed in a group.",
+      "pénétrer ou se maintenir dans l'enceinte d'un établissement scolaire sans autorisation, dans le but d'en troubler la tranquillité ou le bon ordre : un an et 7 500 €. L'article 431-23 porte la peine à trois ans et 45 000 € lorsque le délit est commis en réunion.",
+    ),
+  ),
+  src(
+    "legifrance-r644-4",
+    "cost",
+    "Légifrance — Code pénal, art. R. 644-4 (participation à une manifestation interdite)",
+    "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000038253024/",
+    both(
+      "taking part in a demonstration on the public road that has been banned under art. L. 211-4 of the internal security code: the fine for a 4th-class contravention, €135. It penalises participation in a banned demonstration, not the absence of a declaration.",
+      "participer à une manifestation sur la voie publique interdite sur le fondement de l'article L. 211-4 du code de la sécurité intérieure : l'amende des contraventions de 4e classe, 135 €. Le texte réprime la participation à une manifestation interdite, non l'absence de déclaration.",
+    ),
+  ),
+  src(
+    "legifrance-1242",
+    "cost",
+    "Légifrance — Code civil, art. 1242 (responsabilité du fait d'autrui)",
+    "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000032041559",
+    both(
+      "parental civil liability: parents exercising parental authority are jointly liable as of right for damage caused by their minor children, unless the child has been entrusted to a third party. Reworded by the law of 23 June 2025, which replaced 'the father and the mother' with 'the parents'.",
+      "la responsabilité civile des parents : ceux qui exercent l'autorité parentale sont solidairement responsables de plein droit du dommage causé par leur enfant mineur, sauf si celui-ci a été confié à un tiers. Rédaction modifiée par la loi du 23 juin 2025, qui remplace « le père et la mère » par « les parents ».",
+    ),
+  ),
+  src(
+    "franceassureurs-2023",
+    "cost",
+    "France Assureurs — « Pour une France assurable » : le coût des émeutes de 2023",
+    "https://www.franceassureurs.fr/espace-presse/pour-une-france-assurable/",
+    both(
+      "the 2023 riots cost insurers €793M, more than three times the 2005 and 2018 episodes. A moving figure: €650M at ten days (11,300 claims, July 2023), €730M at two months (15,600 claims, September 2023), €793M in the final balance. Roughly 17,000 claims averaging about €46,600; two-thirds, ~€523M, on shops; about a quarter, ~€200M, on local-authority property.",
+      "les émeutes de 2023 ont coûté 793 M€ aux assureurs, plus de trois fois les épisodes de 2005 et 2018. Un chiffre mouvant : 650 M€ à dix jours (11 300 sinistres, juillet 2023), 730 M€ à deux mois (15 600 sinistres, septembre 2023), 793 M€ au bilan final. Environ 17 000 sinistres, ~46 600 € en moyenne ; deux tiers, ~523 M€, pour les commerces ; environ un quart, ~200 M€, pour les biens des collectivités.",
+    ),
+  ),
+  src(
+    "franceassureurs-2026",
+    "cost",
+    "France Assureurs — « Le coût des violences urbaines des 17 et 18 octobre 2026 pourrait atteindre plus de 200 millions d’euros »",
+    "https://www.franceassureurs.fr/espace-presse/les-communiques-de-presse/cout-violences-urbaines-octobre-2026-200millions/",
+    both(
+      "the first federation estimate, published 19 November from data reported to 12 November: 207M euros of insured damage for 5,280 claims. Professional property 198M (4,050 claims, over 95% of the total), private individuals 3.5M (370), motor 6M (860). No local-authority line. Compared with 209M over four weeks in 2005 and 256M over several months in 2018-2019, for events concentrated on 24 hours. The claim window was extended from five to 30 days on 19 October, and the federation says the figure may be revised as files are processed.",
+      "la première estimation de la fédération, publiée le 19 novembre à partir de données remontées jusqu’au 12 novembre : 207 M€ de dommages assurés pour 5 280 sinistres. Biens professionnels 198 M€ (4 050 sinistres, plus de 95 % du total), particuliers 3,5 M€ (370), automobile 6 M€ (860). Aucune ligne pour les collectivités. À comparer aux 209 M€ sur quatre semaines de 2005 et aux 256 M€ sur plusieurs mois de 2018-2019, pour des événements concentrés sur 24 heures. Le délai de déclaration a été porté de cinq à 30 jours le 19 octobre, et la fédération indique que le chiffre pourra évoluer à mesure que les dossiers seront instruits.",
+    ),
+    "2026-11-19",
+  ),
 ];
 
+/* Kept as it was. Suspected dead: it duplicates the seven helicopter entries
+   above, in French only, which breaks the bilingual rule. Delete only after
+   `grep -rn "from \"./sources/cost" src` and `grep -rn "\bs\b" src/data/sources`
+   show nothing imports the name — an `export const s` in a module under a
+   barrel is easy to collide with. */
 export const s = [
   {
     id: "senat-2026-aerien",

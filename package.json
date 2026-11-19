@@ -18,11 +18,12 @@
     "validate": "node scripts/validate.ts",
     "watch": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
     "check:casualties": "node scripts/check-casualties.ts",
+    "check:costs": "node scripts/check-costs.ts",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "check": "npm run typecheck && npm run validate",
+    "check": "npm run typecheck && npm run validate && npm run check:costs",
     "check:stale": "npm run build && git diff --exit-code -- json schema csv || (echo 'Stale bundle: run npm run build and commit json/, schema/, csv/' && exit 1)",
     "prepare": "npm run build",
     "prepublishOnly": "npm run typecheck && npm run validate && npm run build"

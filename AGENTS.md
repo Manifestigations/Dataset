@@ -6,9 +6,10 @@ the built `docs/`. Nothing here renders.
 
 ## Where things live
 
-Public entry point for the 2026 layer: **`src/data/data.ts`**. It is a barrel —
-a long prose verification record and `export *` statements, no logic. Import
-from it; do not add code to it.
+Public entry point for the 2026 layer: **`src/data/index.ts`**. It is a barrel —
+a long prose verification record and re-export statements, no logic. Import
+from it; do not add code to it. (`src/data/data.ts`, which this file and the
+README used to name, does not exist on `main`.)
 
 - `src/data/facts.ts` — `FACTS: Record<isoDate, Partial<Record<MetricKey, Obs>>>`,
   the only hand-edited 2026 numbers. `Obs` = `{ low, high, q? }`; a point has
@@ -23,6 +24,12 @@ from it; do not add code to it.
 - `src/data/policing.ts` — deployments, the forces-injured stock, the cost
   rate. `src/data/helicopters.ts` — helicopter hours/cost.
   `src/data/population.ts` — denominators.
+- `src/data/costs.ts` — **who pays**. `PAYER_COSTS`, one `PayerCost` per
+  (payer, kind, stage, instrument); `COST_UNPRICED` for figures no source
+  publishes, each with a `cause`. Deliberately not in `FACTS`: a record carries
+  a payer axis, an `Obs` does not, and one day can hold many payers.
+  `src/data/costs-checks.ts` holds its invariants.
+- `scripts/check-costs.ts` — the cost cross-checks (`npm run check:costs`).
 - `src/data/types.ts` — `Obs`, `Pt`, `Series`.
 - `src/data/episodes/<movement>.ts` — one `Episode` per historical movement:
   `mai68.ts`, `cpe.ts`, `gilets-jaunes.ts`, `nahel.ts`, `retraites.ts`,
@@ -63,6 +70,7 @@ npm run typecheck    # tsc --noEmit
 npm run lint         # eslint .
 npm run format:check # prettier --check .
 npm run check:casualties
+npm run check:costs # cost invariants: payer sums, iFRAP arithmetic, no per-person total
 ```
 
 ## Task recipes
@@ -100,6 +108,15 @@ observations in `inputs.ts`, the estimator's arithmetic in `estimate.ts`, the
 invariants in `checks.ts`. `npm run check:casualties` must pass; a failure means
 the data contradicts itself, not that the check is too strict.
 
+**Change a cost or concession record** — edit `PAYER_COSTS` in
+`src/data/costs.ts`. Every row is exactly one (payer, kind, stage, instrument).
+`stage: "contingent"` is only for exposure nobody has been ordered to pay — a
+statutory maximum, or a bill not yet law. Keep a published band a range. Never
+sum across `stage` or `instrument`: `sumRows` throws if you try. A figure
+nobody publishes is a `COST_UNPRICED` entry with a `cause`, never a 0. The
+`ifrap-2026` source carries three scenarios (€309M / €613M / €1,101M), not a
+range — do not reintroduce "247–872". `npm run check:costs` must pass.
+
 **Settle a data problem** — record the decision in
 `content/data-problems.md` in the **Observatory** repo (it is prose about
 method and lives there), then apply it to the cells.
@@ -131,3 +148,6 @@ with its `sources`, or, for a school blockade, add the `blockades` cell to
   `midOf` is for plotting only.
 - The contents of `json/` and `csv/` are automatically generated from the TS files
   on build, so ignore their contents.
+- `src/data/sources/cost.ts` also ends with `export const s = [...]`, a French
+  only duplicate of the seven helicopter sources. It breaks the bilingual rule
+  and may be dead; do not delete it until a grep proves nothing imports `s`.
