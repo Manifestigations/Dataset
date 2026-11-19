@@ -24,7 +24,7 @@
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "check": "npm run typecheck && npm run validate && npm run check:costs",
+    "check": "npm run typecheck && npm run validate && npm run check:costs && npm run check:illegal",
     "check:stale": "npm run build && git diff --exit-code -- json schema csv || (echo 'Stale bundle: run npm run build and commit json/, schema/, csv/' && exit 1)",
     "prepare": "npm run build",
     "prepublishOnly": "npm run typecheck && npm run validate && npm run build"

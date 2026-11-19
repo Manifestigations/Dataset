@@ -8,7 +8,7 @@ import { COMPARATIVE_SOURCES } from "./comparative.ts";
 import { COST_SOURCES } from "./cost.ts";
 import { CPE_SOURCES } from "./cpe.ts";
 import { GJ_SOURCES } from "./gj.ts";
-import { LEGAL } from "./legal.ts";
+import { LEGAL_SOURCES } from "./legal.ts";
 import { MAI68_SOURCES } from "./mai68.ts";
 import { MEDIA_SOURCES } from "./media.ts";
 import { NAHEL_SOURCES } from "./nahel.ts";
@@ -26,7 +26,7 @@ export const SOURCES: readonly Source[] = [
   ...BLOCKADES_SOURCES,
   ...BLOQUONS_SOURCES,
   ...COST_SOURCES,
-  ...LEGAL,
+  ...LEGAL_SOURCES,
   ...CPE_SOURCES,
   ...GJ_SOURCES,
   ...MAI68_SOURCES,

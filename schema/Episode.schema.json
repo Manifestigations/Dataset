@@ -230,6 +230,23 @@
           "properties": {
             "k": {
               "type": "string",
+              "const": "act"
+            },
+            "id": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "k",
+            "id"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "k": {
+              "type": "string",
               "const": "cumulative"
             },
             "days": {
@@ -260,23 +277,6 @@
           "required": [
             "k",
             "p"
-          ],
-          "additionalProperties": false
-        },
-        {
-          "type": "object",
-          "properties": {
-            "k": {
-              "type": "string",
-              "const": "act"
-            },
-            "id": {
-              "type": "string"
-            }
-          },
-          "required": [
-            "k",
-            "id"
           ],
           "additionalProperties": false
         }

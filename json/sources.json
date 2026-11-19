@@ -703,6 +703,138 @@
       "date": "2026-11-19"
     },
     {
+      "id": "reuters-2026-11-14",
+      "group": "legal",
+      "label": "Reuters — Riots in France: How anti-government protests spiralled out of control",
+      "url": "https://www.reuters.com/world/europe/riots-france-how-anti-government-protests-spiralled-out-control-2026-11-14/",
+      "what": {
+        "en": "Court reporting and Interior Ministry figures, 14 Nov 2026",
+        "fr": "Chronique judiciaire et chiffres du ministère de l'Intérieur, 14 nov. 2026"
+      },
+      "date": "2026-11-14"
+    },
+    {
+      "id": "rtl-2026-10-29",
+      "group": "legal",
+      "label": "RTL — 20 enquêtes pour mutilation ouvertes par l'IGPN",
+      "url": "https://www.rtl.fr/actu/justice-faits-divers/info-rtl-mains-arrachees-eborgnements-20-enquetes-pour-mutilation-ouvertes-par-l-igpn-depuis-le-debut-du-mouvement-lyceen-7900690520",
+      "what": {
+        "en": "IGPN enquiry count and case list",
+        "fr": "Nombre d'enquêtes IGPN et liste de cas"
+      },
+      "date": "2026-10-29"
+    },
+    {
+      "id": "fr24-2026-10-10",
+      "group": "legal",
+      "label": "France 24 — Severe injuries at French student protests draw scrutiny to police tactics",
+      "url": "https://www.france24.com/en/france/20261010-injuries-french-student-protests-draw-scrutiny-to-police-tactics",
+      "what": {
+        "en": "24 IGPN investigations as of 10 Oct",
+        "fr": "24 enquêtes IGPN au 10 oct."
+      },
+      "date": "2026-10-10"
+    },
+    {
+      "id": "aljazeera-2026-10-21",
+      "group": "legal",
+      "label": "Al Jazeera — French police accused of brutalising minors",
+      "url": "https://www.aljazeera.com/news/2026/10/21/i-am-still-traumatised-french-police-accused-of-brutalising-minors",
+      "what": {
+        "en": "36 IGPN inquiries as of 21 Oct",
+        "fr": "36 enquêtes IGPN au 21 oct."
+      },
+      "date": "2026-10-21"
+    },
+    {
+      "id": "midilibre-2026-11-18",
+      "group": "legal",
+      "label": "Midi Libre — 104 blessés graves, 11 éborgnés, 7 amputés",
+      "url": "https://www.midilibre.fr/2026/11/18/104-blesses-graves-lors-des-manifestations-11-eborgnes-7-amputes-un-medecin-alerte-et-fait-etat-dune-hecatombe-le-17-octobre-13658589.php",
+      "what": {
+        "en": "Pr. Thines' tally, via Le Quotidien du médecin",
+        "fr": "Bilan du Pr Thines, via Le Quotidien du médecin"
+      },
+      "date": "2026-11-18"
+    },
+    {
+      "id": "lemonde-2026-11-05",
+      "group": "legal",
+      "label": "Le Monde — French government uses anti-terror measures to prevent activists from protesting",
+      "url": "https://www.lemonde.fr/en/france/article/2026/11/05/french-government-uses-anti-terror-measures-to-prevent-activists-from-protesting_6772574_7.html",
+      "what": {
+        "en": "MICAS served on protesters",
+        "fr": "MICAS notifiées à des militants"
+      },
+      "date": "2026-11-05"
+    },
+    {
+      "id": "fr24-2026-11-08",
+      "group": "legal",
+      "label": "France 24 — Menstrual disorders fuel calls to ban tear gas",
+      "url": "https://www.france24.com/en/france/20261108-abnormal-menstraution-periods-fuel-calls-ban-tear-gas-french-protests-police",
+      "what": {
+        "en": "Tear-gas use during the protests",
+        "fr": "Usage de gaz lacrymogène"
+      },
+      "date": "2026-11-08"
+    },
+    {
+      "id": "bernama-2026-11-17",
+      "group": "legal",
+      "label": "Bernama — France reports 7,184 police custody cases, 466 prison sentences",
+      "url": "https://www.bernama.com/en//world/news.php?id=2636395",
+      "what": {
+        "en": "Justice Ministry figures",
+        "fr": "Chiffres du ministère de la Justice"
+      },
+      "date": "2026-11-17"
+    },
+    {
+      "id": "lemonde-2026-10-26",
+      "group": "legal",
+      "label": "Le Monde — Violences de militants d'ultradroite en marge du 24 octobre : plusieurs enquêtes ouvertes",
+      "url": "https://www.lemonde.fr/societe/article/2026/10/26/violences-de-militants-d-ultradroite-en-marge-du-24-octobre-plusieurs-enquete-ouvertes-a-aucun-moment-la-police-ne-les-a-proteges-defend-laurent-nunez_6800799_3224.html",
+      "what": {
+        "en": "Prosecutors' communiqués, Rouen, Montpellier and Nice; the ministry's account",
+        "fr": "Communiqués des parquets de Rouen, Montpellier et Nice ; la version du ministère"
+      },
+      "date": "2026-10-26"
+    },
+    {
+      "id": "franceinfo-2026-10-29",
+      "group": "legal",
+      "label": "franceinfo — Rouen, Clermont-Ferrand, Nice… Des groupuscules d'extrême droite signalés en marge des manifestations",
+      "url": "https://www.franceinfo.fr/societe/manifestations/rouen-clermont-ferrand-nice-des-groupuscules-d-extreme-droite-signales-en-marge-des-manifestations_8253973.html",
+      "what": {
+        "en": "Eyewitness and video account of 24 October",
+        "fr": "Témoignages et vidéos du 24 octobre"
+      },
+      "date": "2026-10-29"
+    },
+    {
+      "id": "lemonde-2026-10-21-en",
+      "group": "legal",
+      "label": "Le Monde (English) — Excuses and hasty procedures at trials of dozens arrested during looting in France",
+      "url": "https://www.lemonde.fr/en/france/article/2026/10/21/excuses-and-hasty-procedures-at-trials-of-dozens-arrested-during-looting-in-france_6760925_7.html",
+      "what": {
+        "en": "Courtroom capacity and dockets, 20 October",
+        "fr": "Capacité et rôle des audiences du 20 octobre"
+      },
+      "date": "2026-10-21"
+    },
+    {
+      "id": "actujuridique-2026-10-20",
+      "group": "legal",
+      "label": "Actu-Juridique — À Paris, les mandats de dépôt pleuvent en comparutions immédiates",
+      "url": "https://www.actu-juridique.fr/penal/emeutes-du-17-octobre-a-paris-les-mandats-de-depots-pleuvent-en-comparutions-immediates/",
+      "what": {
+        "en": "Hearings of 19 October, 23rd chamber",
+        "fr": "Audiences du 19 octobre, 23e chambre"
+      },
+      "date": "2026-10-20"
+    },
+    {
       "id": "wiki-cpe",
       "group": "cpe",
       "label": "Contrat première embauche",

@@ -1,3 +1,5 @@
+import type { Attribution, HearingMode, Side } from "../data/illegal";
+
 export type Lang = "fr" | "en";
 
 export interface Bi {
@@ -44,6 +46,30 @@ export interface ChartCardCopy {
   readonly yRight?: string;
 }
 
+/** Labels for the illegal-act and sitting tables. No prose that belongs in a
+ *  note: a note explains a record, a label names a column. */
+export interface LegalCopy {
+  readonly title: string;
+  readonly standfirst: string;
+  readonly presumption: string;
+  readonly anonymity: string;
+  readonly attributionPrefix: string;
+  readonly sides: Readonly<Record<Side, string>>;
+  readonly modes: Readonly<Record<HearingMode, string>>;
+  readonly terms: Readonly<Record<Attribution["term"], string>>;
+  readonly attributedBy: Readonly<Record<Attribution["by"], string>>;
+  readonly sitting: {
+    readonly court: string;
+    readonly rooms: string;
+    readonly roomsUsual: string;
+    readonly docket: string;
+    readonly nullityRisk: string;
+    readonly modes: string;
+    readonly oneRoom: string;
+    readonly manyRooms: string;
+  };
+}
+
 export interface ChartCopy {
   readonly axisDate: string;
   readonly axisWeek: string;
@@ -63,6 +89,7 @@ export interface ChartCopy {
   readonly actNotes: Readonly<Record<string, string>>;
   /** Rendered when a `{ k: "act" }` ref has no entry above. Never "". */
   readonly actNoteMissing: string;
+  readonly legal: LegalCopy;
   readonly deployNotes: Readonly<Record<string, string>>;
   readonly policingDay: string;
   readonly policingDayPlain: string;

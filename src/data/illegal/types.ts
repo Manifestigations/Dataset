@@ -1,6 +1,6 @@
 /**
- * Case-level register of acts alleged against protesters or against the police
- * during the autumn 2026 movement.
+ * Case-level register of acts alleged against protesters, against the police or
+ * by far-right groups during the autumn 2026 movement.
  *
  * One record is one claim, not one number. This dataset owns no figure that is
  * already published elsewhere: a count of arrests lives in `facts.ts`, a victim
@@ -15,7 +15,43 @@
 import type { MetricKey, NoteRef } from "../../model/index.ts";
 import type { CaveatId, ChargeId, NormId, TacticId } from "./vocabulary.ts";
 
-export type Side = "protesters" | "police";
+export type Side = "police" | "protesters" | "far-right";
+
+/**
+ * A group named by its politics rather than by its role in the event. "Police"
+ * and "protester" describe a position; "far-right" is a characterisation made
+ * by someone, so a record using it must say who made it and in what words. The
+ * interior ministry wrote "far-right activists", the Rouen prosecutor
+ * "identitarian militants", the Nice prosecutor "ultra-right". Those are
+ * different claims and the record keeps them apart instead of normalising both
+ * to a label of our own.
+ */
+export const ATTRIBUTION_TERMS = [
+  "ultra-right",
+  "extreme-right",
+  "far-right",
+  "identitarian",
+  "revolutionary-nationalist",
+  "unattributed",
+] as const;
+
+export type AttributionTerm = (typeof ATTRIBUTION_TERMS)[number];
+
+export const ATTRIBUTED_BY = [
+  "court",
+  "police",
+  "prefecture",
+  "minister",
+  "elected-official",
+  "journalist",
+] as const;
+
+export type AttributedBy = (typeof ATTRIBUTED_BY)[number];
+
+export interface Attribution {
+  readonly term: AttributionTerm;
+  readonly by: AttributedBy;
+}
 
 /** The procedural state of a claim. "hypothetical" exists only for NORMATIVE. */
 export type Status =
@@ -50,12 +86,22 @@ export const ACT_STATUSES = [
 
 export type Track = "criminal" | "administrative";
 
-export type Unit = "persons" | "acts" | "establishments";
+export type Unit = "persons" | "acts" | "establishments" | "cases";
 
-export type Gap = "not-published" | "not-collected" | "not-split" | "not-found";
+export const GAP_REASONS = [
+  "not-published",
+  "not-collected",
+  "not-split",
+  "not-found",
+] as const;
+
+export type Gap = (typeof GAP_REASONS)[number];
 
 /** Same four shapes as a casualty cell: point, published range, documented
- *  floor, or a documented absence. A floor is never rendered as an estimate. */
+ *  floor, or a documented absence. A floor is never rendered as an estimate.
+ *  `a` is a figure the source itself called approximate ("roughly 50"): not a
+ *  range, because no source published a bound, and not a point, because the
+ *  source declined to give one. It is never summed without that word attached. */
 export type Count =
   | { readonly s: "n"; readonly v: number; readonly unit: Unit }
   | {
@@ -65,6 +111,7 @@ export type Count =
       readonly unit: Unit;
     }
   | { readonly s: "f"; readonly v: number; readonly unit: Unit }
+  | { readonly s: "a"; readonly v: number; readonly unit: Unit }
   | { readonly s: "x"; readonly why: Gap };
 
 export type StepKind =
@@ -110,6 +157,8 @@ export interface Refs {
   readonly casualties?: readonly string[];
   /** ids of the disruptive-act categories this act is also counted in */
   readonly disruptive?: readonly string[];
+  /** the sitting at which this act was heard, when it was tried */
+  readonly sitting?: string;
 }
 
 interface RecordBase {
@@ -127,14 +176,33 @@ interface RecordBase {
   readonly noteRef?: NoteRef;
 }
 
-export interface ActRecord extends RecordBase {
-  readonly side: Side;
-  readonly charge: ChargeId;
+interface ActCore extends RecordBase {
+  /**
+   * Every qualification attached to this act. Usually one; two when a single
+   * course of conduct was charged twice (armed participation in a demonstration
+   * and racially aggravated insult, Paris, 17 October).
+   *
+   * Written as an empty array, never omitted, when no qualification has been
+   * published: an enquiry opened "to identify these individuals" is not an
+   * accusation of a named offence, and inventing one is worse than recording
+   * none. `check:illegal` requires a non-empty list from `charged` onwards, and
+   * checks every entry against the record's `side`.
+   */
+  readonly charges: readonly ChargeId[];
   readonly track: Track;
   readonly status: ActStatus;
   /** Final conviction or final acquittal only. */
   readonly final?: true;
 }
+
+/** An act attributed to a political group cannot be built without saying who
+ *  named it: the union makes `attribution` unskippable on the far-right side. */
+export type ActRecord =
+  | (ActCore & { readonly side: "police" | "protesters" })
+  | (ActCore & {
+      readonly side: "far-right";
+      readonly attribution: Attribution;
+    });
 
 export interface NormativeRecord extends RecordBase {
   readonly side: "police";
@@ -142,7 +210,50 @@ export interface NormativeRecord extends RecordBase {
   readonly tactic: TacticId;
   readonly norm: NormId;
   readonly caveat: CaveatId;
-  /** Often none: the act may be lawful in domestic law and only interesting
+  /** Often absent: the act may be lawful in domestic law and only interesting
    *  under the counterfactual. */
-  readonly charge?: ChargeId;
+  readonly charges?: readonly ChargeId[];
+}
+
+export const HEARING_MODES = [
+  "comparution-immediate",
+  "crpc",
+  "renvoi",
+  "detention-hearing",
+] as const;
+
+export type HearingMode = (typeof HEARING_MODES)[number];
+
+/**
+ * A court sitting, not a claim. It records the conditions under which claims
+ * were heard — how many rooms, how many cases, on which track — because a
+ * throughput figure and a severity figure answer different questions, and the
+ * 20 October hearings produced both.
+ *
+ * A sitting is never summed with an act: one act can appear at one sitting, and
+ * a docket counts cases, some of which concern no act in this register.
+ */
+export interface Sitting {
+  readonly id: string;
+  readonly date: string;
+  readonly court: string;
+  readonly place: Place;
+  /** Every track sat that day, so four immediate-appearance rooms and a
+   *  guilty-plea room are not described as one thing. */
+  readonly modes: readonly HearingMode[];
+  readonly rooms: Count;
+  /** The court's ordinary complement, when reported, so `rooms` reads as a
+   *  multiple rather than an absolute. */
+  readonly roomsUsual?: Count;
+  /** One entry per track. Two tracks, two counts: merging them would invent a
+   *  figure neither source published. */
+  readonly dockets?: readonly {
+    readonly mode: HearingMode;
+    readonly cases: Count;
+  }[];
+  /** Reported risk that procedures would be annulled for breach of the delay
+   *  within which a detained person must be brought before the court. */
+  readonly nullityRisk?: true;
+  readonly sources: readonly string[];
+  readonly noteRef?: NoteRef;
 }

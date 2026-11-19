@@ -19,6 +19,7 @@ export type ChargeId =
   | "violences-volontaires"
   | "degradations"
   | "incendie"
+  | "tentative-homicide"
   | "arme-prohibee"
   | "association-malfaiteurs"
   // police
@@ -28,7 +29,10 @@ export type ChargeId =
   | "non-assistance"
   | "sequestration"
   | "discrimination"
-  | "vie-privee";
+  | "vie-privee"
+  // far-right
+  | "violences-aggravees"
+  | "association-malfaiteurs-violences";
 
 export type TacticId =
   | "tear-gas"

@@ -3,19 +3,28 @@ export { CHARGE_OF, CHARGES, chargesOf, isChargeOf } from "./charges.ts";
 export type { Charge } from "./charges.ts";
 export { CAVEATS, isCaveat, isNorm, NORMS } from "./norms.ts";
 export type { Norm } from "./norms.ts";
+export { SITTINGS } from "./sittings.ts";
 export { isTactic, TACTICS } from "./tactics.ts";
 export * from "./types.ts";
 export * from "./vocabulary.ts";
 
 import { ILLEGAL_ACTS } from "./acts.ts";
-import type { ActRecord, ActStatus, NormativeRecord, Side } from "./types.ts";
+import { SITTINGS } from "./sittings.ts";
+import type {
+  ActRecord,
+  ActStatus,
+  NormativeRecord,
+  Side,
+  Sitting,
+} from "./types.ts";
 import { ACT_STATUSES } from "./types.ts";
 
 /**
  * A census counts RECORDS, never people and never crimes. `unquantified` is the
  * number of records whose figure is unknown: it is printed next to the count,
  * because a partial sum presented as a total is the one error this dataset
- * exists to avoid.
+ * exists to avoid. `approx` counts figures a source itself called approximate,
+ * so they can be labelled wherever the total is printed.
  */
 export interface Census {
   readonly records: number;
@@ -23,18 +32,21 @@ export interface Census {
   readonly unquantified: number;
   readonly floored: number;
   readonly ranged: number;
+  readonly approx: number;
 }
 
 const census = (rs: readonly (ActRecord | NormativeRecord)[]): Census => {
   let quantified = 0;
   let floored = 0;
   let ranged = 0;
+  let approx = 0;
   for (const r of rs) {
     const c = r.count;
     if (c === undefined || c.s === "x") continue;
     quantified += 1;
     if (c.s === "f") floored += 1;
     if (c.s === "r") ranged += 1;
+    if (c.s === "a") approx += 1;
   }
   return {
     records: rs.length,
@@ -42,6 +54,7 @@ const census = (rs: readonly (ActRecord | NormativeRecord)[]): Census => {
     unquantified: rs.length - quantified,
     floored,
     ranged,
+    approx,
   };
 };
 
@@ -83,6 +96,19 @@ export const linkedToFact = (
 
 export const linkedToCasualty = (caseId: string): readonly ActRecord[] =>
   ILLEGAL_ACTS.filter((a) => a.refs?.casualties?.includes(caseId));
+
+/* ----- sittings: conditions, not claims ----- */
+
+export const sittingsOn = (date: string): readonly Sitting[] =>
+  SITTINGS.filter((s) => s.date === date);
+
+export const sittingOf = (id: string): Sitting | undefined =>
+  SITTINGS.find((s) => s.id === id);
+
+/** Acts heard at a sitting. The link lives on the act, so this reads forward
+ *  rather than storing the same relationship twice. */
+export const actsAtSitting = (id: string): readonly ActRecord[] =>
+  ILLEGAL_ACTS.filter((a) => a.refs?.sitting === id);
 
 /**
  * Deliberately absent: totalVictims(), crimeCount(), convictionRate(). A count
