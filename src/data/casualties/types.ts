@@ -45,7 +45,7 @@ export type Cell =
   | { readonly s: "c"; readonly n: number }
   | { readonly s: "x"; readonly why: Why };
 
-export type Population =
+export type CasualtyPopulation =
   "forces" | "protesters" | "bystanders" | "educationDeclared" | "mixed";
 
 export type Participation = "participating" | "non-participating" | "unknown";
@@ -64,7 +64,7 @@ export interface SevRow {
   readonly light: Cell;
   /** Not light, not broken down further — the file's second category. */
   readonly other: Cell;
-  readonly population: Population;
+  readonly population: CasualtyPopulation;
   readonly participation?: Participation;
   readonly sources: readonly string[];
 }
@@ -87,7 +87,7 @@ export interface InjuryObs {
   /** Key in casualties.observations. */
   readonly id: string;
   readonly date: string;
-  readonly population: Population;
+  readonly population: CasualtyPopulation;
   readonly participation: Participation;
   readonly selection: Selection;
   readonly window: "day" | "month" | "movement";
@@ -123,7 +123,7 @@ export interface Estimate {
   readonly id: string;
   /** Key in casualties.estimates. */
   readonly key: string;
-  readonly population: Population | "all";
+  readonly population: CasualtyPopulation | "all";
   readonly unit: "count" | "share";
   readonly value?: {
     readonly lo: number;

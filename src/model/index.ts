@@ -94,9 +94,9 @@ export type NoteRef =
   | { k: "obs"; date: string; metric: MetricKey }
   | { k: "policing"; low: number; high: number; date: string }
   | { k: "heli"; hoursLow: number; hoursHigh: number; date: string }
+  | { k: "act"; id: string }
   | { k: "cumulative"; days: number; added: boolean }
   | { k: "week"; p: WeekNoteParts };
-
 export type EpisodeId =
   "may68" | "cpe" | "gj" | "nahel" | "pensions" | "bt" | "students26";
 

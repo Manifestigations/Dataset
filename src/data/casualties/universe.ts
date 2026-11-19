@@ -20,9 +20,9 @@ import {
   THINES,
   TOULOUSE,
 } from "./inputs.ts";
-import type { InjuryObs, Population } from "./types.ts";
+import type { CasualtyPopulation, InjuryObs } from "./types.ts";
 
-export const POPULATION_ORDER: readonly Population[] = [
+export const POPULATION_ORDER: readonly CasualtyPopulation[] = [
   "forces",
   "protesters",
   "bystanders",

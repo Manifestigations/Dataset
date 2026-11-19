@@ -141,12 +141,11 @@ export * from "./population.ts";
 // Must come before `episodes/index.ts`
 export * from "./student-weeks.ts";
 
-// @ts-expect-error FIXME For some reason TS thinks there are two exports named
-// `POPULATION`, but there aren't.
 export * from "./casualties/index.ts";
 export * from "./demographics/index.ts";
 export * from "./disruptive/index.ts";
 export * from "./episodes/index.ts";
+export * from "./illegal/index.ts";
 
 export * from "./sources/index.ts";
 export * from "./types.ts";

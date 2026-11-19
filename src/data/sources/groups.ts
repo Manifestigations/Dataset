@@ -1,3 +1,4 @@
+import { both } from "./record.ts";
 import type { SourceGroup } from "./types.ts";
 
 export const GROUPS: readonly SourceGroup[] = [
@@ -88,6 +89,14 @@ export const GROUPS: readonly SourceGroup[] = [
       en: "Encyclopaedia and aggregator pages used to cross-check the 2026 chronology. Secondary: never used for a figure that a primary report in the groups above carries.",
       fr: "Pages encyclopédiques et agrégateurs servant à recouper la chronologie de 2026. Secondaires : jamais utilisées pour un chiffre qu’un article primaire des groupes précédents porte déjà.",
     },
+  },
+  {
+    id: "legal",
+    title: both("Legal records", "Sources judiciaires"),
+    blurb: both(
+      "Court decisions, prosecutors' communiqués, police oversight reports and press investigations used for the procedural state of a claim.",
+      "Décisions de justice, communiqués du parquet, rapports de l'IGPN et enquêtes de presse utilisés pour établir l'état d'une procédure.",
+    ),
   },
   {
     id: "comparative",

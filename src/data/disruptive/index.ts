@@ -3,10 +3,10 @@
 import type { Flag } from "../../model/index.ts";
 import { FACTS } from "../facts.ts";
 import { SOURCES } from "../sources/index.ts";
-import { ACTS } from "./acts.ts";
+import { DISRUPTIVE_ACTS } from "./acts.ts";
 import type { ActCategory, ActRow, ActUnit } from "./types.ts";
 
-export { ACTS } from "./acts.ts";
+export { DISRUPTIVE_ACTS } from "./acts.ts";
 export * from "./categories.ts";
 export * from "./types.ts";
 
@@ -162,7 +162,7 @@ function schoolBlockadeActs(): ActRow[] {
 
 /** Every category row, derived and hand-written, in date order. */
 export const ACT_ROWS: readonly ActRow[] = [
-  ...ACTS,
+  ...DISRUPTIVE_ACTS,
   ...schoolBlockadeActs(),
 ].sort(order);
 

@@ -9,7 +9,7 @@
 
 import type { ActRow } from "./types.ts";
 
-export const ACTS: readonly ActRow[] = [
+export const DISRUPTIVE_ACTS: readonly ActRow[] = [
   /* Sat 17 Oct — a figure about the 17th, published on the 25th, inside a
      document about the 24th. The communiqué is "Bilan de la journée de
      mobilisation nationale du 24 octobre 2026" (interieur-24oct-bilan, dated

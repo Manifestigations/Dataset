@@ -57,6 +57,12 @@ export interface ChartCopy {
   readonly suffixWrap: string;
   readonly dayNotes: Readonly<Record<string, string>>;
   readonly obsNotes: Readonly<Record<string, Readonly<Record<string, string>>>>;
+  /** Per-record notes for the illegal-act register, keyed by `ActRecord.id`.
+   *  Like `obsNotes`, a note explains provenance and limits; it never restates
+   *  the status or the count, which are fields and would then have two homes. */
+  readonly actNotes: Readonly<Record<string, string>>;
+  /** Rendered when a `{ k: "act" }` ref has no entry above. Never "". */
+  readonly actNoteMissing: string;
   readonly deployNotes: Readonly<Record<string, string>>;
   readonly policingDay: string;
   readonly policingDayPlain: string;

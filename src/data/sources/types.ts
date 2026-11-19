@@ -17,7 +17,8 @@ export type GroupId =
   | "retraites"
   | "rn2024"
   | "bloquons"
-  | "media";
+  | "media"
+  | "legal";
 
 export interface Source {
   readonly id: string;

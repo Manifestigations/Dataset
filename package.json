@@ -18,6 +18,7 @@
     "validate": "node scripts/validate.ts",
     "watch": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
     "check:casualties": "node scripts/check-casualties.ts",
+    "check:illegal": "node scripts/check-illegal.ts",
     "check:costs": "node scripts/check-costs.ts",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
