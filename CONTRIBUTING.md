@@ -68,31 +68,34 @@ git clone https://github.com/Manifestigations/Dataset.git
 cd Dataset
 npm install   # Node ≥ 22.18
 npm run typecheck
+npm run build
 ```
 
-No dev server, and no build: this is a data package, not a site, and the data
-is consumed as TypeScript source. The checks you have are `typecheck`, `lint`,
-`format:check` and `check:casualties`.
+This is a data package, not a site, and the built data is consumed as TypeScript source.
+The build process also generates CSV and JSON copies of the dataset, for consumption in other
+tools.
+The available checks are `typecheck`, `lint`, `format:check` and `check:casualties`.
 
 ### 2.2 Find the right file
 
-| You are changing                                  | File                                                                                                                                                  |
-| ------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| An autumn 2026 figure (any day)                   | `src/data/facts.ts` — `FACTS`, one key per ISO date                                                                                                   |
-| An autumn 2026 deployment, force level, cost rate | `src/data/policing.ts`                                                                                                                                |
-| A denominator (population)                        | `src/data/population.ts`                                                                                                                              |
-| The window, the week grid, the school holidays    | `src/data/calendar.ts`                                                                                                                                |
-| A historical movement                             | `src/data/episodes/<movement>.ts` (one file per movement)                                                                                             |
-| A source (URL, headline, date, what it supports)  | `src/data/sources/<group>.ts`                                                                                                                         |
-| A group of sources                                | `src/data/sources/{types,groups,index}.ts`                                                                                                            |
-| Casualty cells, observations, estimators          | `src/data/casualties/{cases,inputs,estimate}.ts`                                                                                                      |
-| A known, unresolved data problem                  | `content/data-problems.md` in the [Observatory repo](https://github.com/Manifestigations/Protest-Data-Observatory/blob/main/content/data-problems.md) |
-| Why a figure was chosen                           | the verification record at the top of `src/data/data.ts` (read-only history)                                                                          |
-| A demographic share, or a demographic gap         | `src/data/demographics/`                                                                                                                              |
+| You are changing                                                         | File                                                                                                                                                  |
+| ------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| An autumn 2026 figure (any day)                                          | `src/data/facts.ts` — `FACTS`, one key per ISO date                                                                                                   |
+| A disruptive act in a category (road blockade, péage gratuit, sabotage…) | `src/data/disruptive/acts.ts` — one `ActRow` per (date, category); school blockades are derived, not written here                                     |
+| An autumn 2026 deployment, force level, cost rate                        | `src/data/policing.ts`                                                                                                                                |
+| A denominator (population)                                               | `src/data/population.ts`                                                                                                                              |
+| The window, the week grid, the school holidays                           | `src/data/calendar.ts`                                                                                                                                |
+| A historical movement                                                    | `src/data/episodes/<movement>.ts` (one file per movement)                                                                                             |
+| A source (URL, headline, date, what it supports)                         | `src/data/sources/<group>.ts`                                                                                                                         |
+| A group of sources                                                       | `src/data/sources/{types,groups,index}.ts`                                                                                                            |
+| Casualty cells, observations, estimators                                 | `src/data/casualties/{cases,inputs,estimate}.ts`                                                                                                      |
+| A known, unresolved data problem                                         | `content/data-problems.md` in the [Observatory repo](https://github.com/Manifestigations/Protest-Data-Observatory/blob/main/content/data-problems.md) |
+| Why a figure was chosen                                                  | the verification record at the top of `src/data/data.ts` (read-only history)                                                                          |
+| A demographic share, or a demographic gap                                | `src/data/demographics/                                                                                                                               |
 
 ### 2.3 Add or correct a cell
 
-Two shapes, one per data kind.
+Three shapes, one per data kind.
 
 **2026 figures** — day-keyed cells in `FACTS`. Each cell is an `Obs`,
 `{ low, high, q? }`, where `q` is the flag and a point figure has
@@ -121,7 +124,7 @@ The daily and weekly series are _computed_ from `FACTS` in `projections.ts` and
 
 `p` turnout · `a` arrests · `f` forces injured · `i` protesters injured.
 
-Rules for both:
+Rules for all three:
 
 - Keep ISO dates (`YYYY-MM-DD`).
 - Keep the published range as a range. Do not compute a midpoint.
@@ -148,7 +151,22 @@ Rules for both:
   where published. A figure that does not exist is a `DemoGap` with a `cause`
   (`not-collected`, `not-published`, `not-split`, `not-found`) — never a 0, never
   an empty cell. `poll` figures measure support, not participation, and must say
-  so in their `population` string.d
+  so in their `population` string.
+- **Disruptive acts** — one `ActRow` per (date, category), never a total. Category
+  ids and their `unit` live in `src/data/disruptive/categories.ts`; rows go in
+  `src/data/disruptive/acts.ts`:
+
+  ```ts
+  { date: "2026-10-24", category: "looting", low: 24, high: 24,
+    unit: "premises", sources: ["interieur-24oct-bilan"] },
+  ```
+
+  `sources` names every `Source.id` the band rests on — `low` and `high` may come
+  from different publishers. `unit` is `actions`, `establishments`, `premises` or
+  `incidents`; rows of different units are never summed. A school-blockade row is
+  never written by hand: `src/data/disruptive/index.ts` derives it from
+  `FACTS.blockades`, so a correction in `facts.ts` cannot leave a stale copy.
+
 - A day or week with no published figure stays empty. Do not interpolate.
 - If the cell needs explaining, attach a `noteRef` — an id, not wording. The
   explanation itself is authored with the site's copy, in both languages; it is

@@ -117,6 +117,7 @@ export * from "./student-weeks.ts";
 // `POPULATION`, but there aren't.
 export * from "./casualties/index.ts";
 export * from "./demographics/index.ts";
+export * from "./disruptive/index.ts";
 export * from "./episodes/index.ts";
 
 export * from "./sources/index.ts";

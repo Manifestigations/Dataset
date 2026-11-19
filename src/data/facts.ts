@@ -274,7 +274,11 @@ export const FACTS: Readonly<Record<string, Partial<Record<MetricKey, Obs>>>> =
        Damages: IFRAP conditional estimate for the 17–18 Oct weekend,
        €244M low / €463M central / €866M high for MATERIAL damage; the
        €294M–€1.1bn variant includes lost turnover and is a different measure.
-       IFRAP excludes marginal order-maintenance and curfew costs. */
+       IFRAP excludes marginal order-maintenance and curfew costs.
+       Sat 17 Oct — "110 → 430 → 441 actions". The band keeps the two settled
+       vintages: 441 as first published, 430 consolidated. 110 is the early
+       count of the day and is not a bound for the final figure. A count of
+       ACTS, not of people: turnout is the cell above. */
     "2026-10-17": {
       turnout: { low: 550_000, high: 800_000 },
       arrests: { low: 2_397, high: 2_628 },
@@ -282,6 +286,7 @@ export const FACTS: Readonly<Record<string, Partial<Record<MetricKey, Obs>>>> =
       /* 54 x 13 = 702 — see E8/E10 in casualties/estimate.ts. */
       protesterInjured: { low: 55, high: 702, q: "e" },
       damagesCost: { low: 244, high: 866, q: "e" },
+      disruptiveActs: { low: 430, high: 441 },
     },
 
     /* Sun 18 Oct — Paris curfew only, 108 interpellations.
@@ -319,6 +324,9 @@ export const FACTS: Readonly<Record<string, Partial<Record<MetricKey, Obs>>>> =
       forcesInjured: { low: 267, high: 267 },
       protesterInjured: { low: 150, high: 150 },
       damagesCost: { low: 1_000, high: 1_000, q: "c" },
+      /* "289 actions" in the ministry communiqué of 25 Oct. No organiser
+         count of actions was published, so the band is a point. */
+      disruptiveActs: { low: 289, high: 289 },
     },
 
     /* Sat 31 Oct — 291 actions → 227 consolidated.
@@ -331,6 +339,8 @@ export const FACTS: Readonly<Record<string, Partial<Record<MetricKey, Obs>>>> =
       arrests: { low: 565, high: 779 },
       forcesInjured: { low: 116, high: 159 },
       damagesCost: { low: 0.4, high: 3.3, q: "e" },
+      /* 291 actions → 227 consolidated, same vintage pattern as arrests. */
+      disruptiveActs: { low: 227, high: 291 },
     },
 
     "2026-11-02": { blockades: { low: 41, high: 41 } },
@@ -350,6 +360,7 @@ export const FACTS: Readonly<Record<string, Partial<Record<MetricKey, Obs>>>> =
       forcesInjured: { low: 53, high: 112 },
       protesterInjured: { low: 18, high: 18, q: "f" },
       blockades: { low: 81, high: 1_000 },
+      disruptiveActs: { low: 193, high: 193 },
     },
 
     /* Sat 7 Nov — 141 actions; ~70,000 officers, 25 blindés, 15 water-cannon
@@ -360,6 +371,7 @@ export const FACTS: Readonly<Record<string, Partial<Record<MetricKey, Obs>>>> =
     "2026-11-07": {
       turnout: { low: 146_000, high: 250_000 },
       arrests: { low: 350, high: 360 },
+      disruptiveActs: { low: 141, high: 141 },
     },
 
     /* Mon 9 Nov — regional only: Bègles 4, Lyon 8, Strasbourg 5 = 17.

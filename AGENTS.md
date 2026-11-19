@@ -37,6 +37,11 @@ from it; do not add code to it.
   invariants), plus levels/universe/vocabulary, all re-exported from `index.ts`
   as `CASES`, `SEVERITY_LEVELS`, `SEVERITY_WEEKS`, `CaseRow`, `Cell`, `SevRow`,
   `Why`.
+- `src/data/disruptive/` — the disruptive-act register. `types.ts` (`ActRow`,
+  `ActCategory`, `ActUnit`), `categories.ts` (`ACT_CATEGORIES`, bilingual id →
+  title + definition + unit), `acts.ts` (the hand-written rows), `index.ts`
+  (`ACT_ROWS` = hand-written + school blockades derived from `FACTS.blockades`,
+  plus `actsOn`, `actSeriesOf`, `assertSingleUnit`, `dayActionCategories`).
 - `src/model/index.ts` — pure types and definitions; everything depends on it:
   `Flag`, `Band`, `Metric`, `MetricKey`, `Row`, `Episode`, `EpisodeId`,
   `NoteRef`, `isDetached`, `bandOf`, `midOf`.
@@ -59,9 +64,6 @@ npm run lint         # eslint .
 npm run format:check # prettier --check .
 npm run check:casualties
 ```
-
-There is no `build`, no `validate`, no `json/`, no `schema/` and no published
-package. Do not write tasks that call them.
 
 ## Task recipes
 
@@ -103,9 +105,14 @@ that does not exist goes in `DEMOGRAPHIC_GAPS` with a `cause`, never in a row
 as 0; a variable that is not ethnicity goes in `ETHNICITY_PROXIES` with its
 caveat; `npm run typecheck`.
 
+**Add a disruptive act** — append an `ActRow` to `src/data/disruptive/acts.ts`
+with its `sources`, or, for a school blockade, add the `blockades` cell to
+`facts.ts` and add nothing here: the row is derived. Never write a
+`schoolBlockade` row by hand. Keep one `unit` per total.
+
 ## Gotchas
 
-- `src/data/data.ts` imports nothing at runtime; its comment block is the
+- `src/data/index.ts` imports nothing at runtime; its comment block is the
   audit trail (passes, FIX numbers, arithmetic cross-checks). Do not delete or
   reflow it — and do not copy a number out of the comment into a cell.
 - That comment also describes the _site_ ("chart 1 of sections A and B"). That
@@ -114,3 +121,5 @@ caveat; `npm run typecheck`.
   will reorder your imports on `npm run format`.
 - `bandOf` / `midOf` exist so no caller has to test which band shape it holds;
   `midOf` is for plotting only.
+- The contents of `json/` and `csv/` are automatically generated from the TS files
+  on build, so ignore their contents.

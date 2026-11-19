@@ -121,6 +121,7 @@ export const DAILY: Readonly<Record<string, Series>> = {
   protesterInjured: projectDaily("protesterInjured"),
   damagesCost: projectDaily("damagesCost"),
   blockades: projectDaily("blockades"),
+  disruptiveActs: projectDaily("disruptiveActs"),
   policing: projectPolicingDaily(),
   policingCumulative: projectPolicingCumulative(),
 };

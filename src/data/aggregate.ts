@@ -182,7 +182,11 @@ function aggregateBlockades(): Series {
 
 /* A strike is a level, so the weekly figure is the week's peak — never a sum.
    The "w" flag is remapped to "e" so the weekly tooltip still says "modelled";
-   `detach` is left alone so the point stays solid. */
+   `detach` is left alone so the point stays solid.
+   `disruptiveActs` is NOT in WEEKLY, on purpose. The same roundabout held for
+   three days would be counted three times by a sum, and a peak would report
+   one action as the week's level. Neither is a defensible weekly figure, so
+   the weekly cell stays empty. Daily only. */
 export const WEEKLY: Readonly<Record<string, Series>> = {
   turnout: aggregate("turnout", "max"),
   strikers: aggregate("strikers", "max").map((p): Pt =>

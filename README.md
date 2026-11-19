@@ -26,6 +26,7 @@ in the files below.
 | Past movements for comparison (Mai 68, CPE, Gilets Jaunes, Nahel, pensions 2023, « Bloquons tout », students 2026 — one file each) | [`src/data/episodes/`](https://github.com/Manifestigations/Dataset/tree/main/src/data/episodes)                                                                                                                                                                                                                                                                                                   |
 | The catalogue of every source (who published what, on which date)                                                                  | [`src/data/sources/`](https://github.com/Manifestigations/Dataset/tree/main/src/data/sources) — one file per group                                                                                                                                                                                                                                                                                |
 | The casualty data, its severities, observations and estimators                                                                     | [`src/data/casualties/`](https://github.com/Manifestigations/Dataset/tree/main/src/data/casualties)                                                                                                                                                                                                                                                                                               |
+| Disruptive acts by day and by category (official count → widest count)                                                             | [`src/data/disruptive/`](https://github.com/Manifestigations/Dataset/tree/main/src/data/disruptive) — `ACT_ROWS`, one row per (date, category), each with a `unit`                                                                                                                                                                                                                                |
 | The types everything is written against                                                                                            | [`src/model/index.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/model/index.ts)                                                                                                                                                                                                                                                                                                  |
 | Why a figure was chosen, and what was rejected                                                                                     | [`src/data/data.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/data.ts) — the verification record, then the barrel                                                                                                                                                                                                                                                           |
 | Known data problems, and how each was settled                                                                                      | [`content/data-problems.md`](https://github.com/Manifestigations/Protest-Data-Observatory/blob/main/content/data-problems.md) — kept in the Observatory repo, because it is prose about method                                                                                                                                                                                                    |
@@ -109,6 +110,18 @@ A missing metric means "no published figure" — never zero.
 joined to the national line": `r`, `p`, `e`, `c`. `bandOf()` flattens a band to
 `[low, high]`; `midOf()` is the plotting midpoint only — a drawing convention,
 never an estimate, never to be averaged.
+
+### Disruptive acts: two units, never one total
+
+A day's `disruptiveActs` is the ministry's count of _actions de voie publique_ —
+an act count. A `schoolBlockade` row is a count of _establishments_ where pupils
+could not be received. Premises hit are _premises_; clashes are _incidents_.
+`assertSingleUnit()` throws if a caller tries to add across them, and
+`dayActionCategories()` returns a category sum flagged `c`, because the
+categories are a subset of the day's total and must never be added to it.
+
+The average of `low` and `high` is nowhere in this repository. It is `midOf()`
+at render time, and it is a drawing convention.
 
 ## Invariants (do not violate)
 
@@ -209,19 +222,10 @@ flowchart TD
 > interpolating a gap, re-flagging a point to make a series continuous, or
 > adding a `c` cell to the total it is a subset of.
 
-## What this repository does not (yet) do
+## What this repository does and does not do
 
-Stated plainly, because the previous version of this file promised it:
-
-- There is **no `json/` bundle and no `schema/`**, no `npm run build`, and no
-  `validate` script. The data is consumed as TypeScript source.
-- There is **no published npm package**. `package.json` is
-  `"name": "@manifestigations/dataset"`, `"private": true`.
-- CI runs `.github/workflows/style.yml` only (typecheck, lint, formatting).
-  `npm run check:casualties` is the one data-integrity check in the repo today,
-  and it covers the casualty data.
-
-If the JSON export + JSON-schema + published package is wanted, it is a good
-target — but it has to be built before it is documented.
-
-See `LICENSE` for terms of use.
+- `json/` and `schema/` exist and are maintained; `scripts/build.ts` writes the
+  bundle, `scripts/validate.ts` checks it against the schemas.
+- `package.json` is `"name": "@manifestigations/dataset"`, `"private": true`.
+- CI runs `.github/workflows/style.yml`; `npm run check:casualties` is the one
+  data-integrity check, and it covers casualties only.

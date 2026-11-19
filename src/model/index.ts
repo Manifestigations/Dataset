@@ -23,8 +23,11 @@ export type Band = number | [number, number];
 
 /* A superset of the four short metrics. METRICS/METRIC_OF stay four-measure
    because the trellis grids and the data table are built on them; add a key
-   here when a page needs a measure those four do not cover. */
-
+   here when a page needs a measure those four do not cover.
+   `disruptiveActs` is the ministry's own count of actions de voie publique for
+   the day — a count of ACTS, not of people, and never the sum of the
+   categories in ./data/disruptive/: those are a subset, and the school
+   blockades are counted in establishments. */
 export type MetricKey =
   | "turnout"
   | "strikers"
@@ -35,7 +38,8 @@ export type MetricKey =
   | "damagesCost"
   | "policingCost"
   | "heliCost"
-  | "blockades";
+  | "blockades"
+  | "disruptiveActs";
 
 /** Short code used by sections B/C → long key used by the dashboards. */
 export const METRIC_OF: Readonly<Record<Metric, MetricKey>> = {
