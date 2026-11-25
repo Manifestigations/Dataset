@@ -3,5 +3,5 @@ title: "Protest Data Observatory — Dataset (2026 Autumn protests in France)"
 type: dataset
 authors: [{ name: "Manifestigations" }]
 version: v0.1.0
-url: https://github.com/Manifestigations/Dataset
+url: https://framagit.org/manifestigations/Dataset
 license: CC0-1.0

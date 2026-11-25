@@ -1,8 +1,20 @@
 # AGENTS.md
 
 This repository holds the **data**, not the site. The
-`Manifestigations/Protest-Data-Observatory` repo holds the charts, the copy and
+`manifestigations/Protest-Data-Observatory` repo holds the charts, the copy and
 the built `docs/`. Nothing here renders.
+
+## Two remotes, one canonical
+
+| Remote                                  | Role                                                                                 |
+| --------------------------------------- | ------------------------------------------------------------------------------------ |
+| `framagit.org/manifestigations/Dataset` | canonical — issues, merge requests, CI                                               |
+| `github.com/manifestigations/Dataset`   | automatic **push mirror**, and the `@manifestigations/dataset` package registry host |
+
+**Never commit, push or open a pull request on GitHub.** A commit written there
+is overwritten by the next mirror push. The mirror is authenticated as a user
+(not `GITHUB_TOKEN`), which is why a mirrored tag does start the release
+workflow — that is intended, and it is the only thing that runs on GitHub.
 
 ## Where things live
 
@@ -84,21 +96,60 @@ README used to name, does not exist on `main`.)
   is live.
 - `scripts/check-casualties.ts` — the casualty cross-checks
   (`npm run check:casualties`).
-- `.github/workflows/style.yml` — CI. `.github/ISSUE_TEMPLATE/report-a-figure.yml`
-  — the public reporting form.
+- `.gitlab-ci.yml` — CI. `.gitlab/issue_templates/report-a-figure.md` — the
+  public reporting template.
+- `.github/workflows/release-package.yml` — the **only** thing that runs on
+  GitHub: publishes the package on a `v*` tag. It is not the CI; do not add
+  checks there.
 
 ## Commands
 
 ```bash
 npm install # Node ≥ 22.18 (the scripts run under Node's type stripping)
-npm run typecheck # tsc --noEmit
+npm run typecheck # tsc -p tsconfig.json
 npm run lint # eslint .
 npm run format:check # prettier --check .
+npm run validate # the JSON/schema bundle
 npm run check:casualties
 npm run check:costs # cost invariants: payer sums, iFRAP arithmetic, no per-person total
 npm run check:illegal # the illegal-act register: ids, statuses, charges, refs, sittings
-npm run check # all three data checks
+npm run check:stale # rebuilds and fails if json/, schema/ or csv/ are out of date
+npm run check # typecheck + validate + check:costs + check:illegal
 ```
+
+**`npm run check` does not include `check:casualties`.** It is
+`typecheck && validate && check:costs && check:illegal`. CI runs
+`check:casualties` as its own job, so a green `check` locally is not a green
+pipeline.
+
+## CI and release
+
+`.gitlab-ci.yml` runs on merge requests and on the default branch:
+
+| Job               | Command                                        |
+| ----------------- | ---------------------------------------------- |
+| `typecheck`       | `npm run typecheck`                            |
+| `lint`            | `npm run lint`, `npm run format:check`         |
+| `data-checks`     | `npm run validate`, `npm run check:casualties` |
+| `register-checks` | `npm run check:costs`, `npm run check:illegal` |
+| `bundle-stale`    | `npm run check:stale`                          |
+
+Releasing is the one flow that leaves Framagit:
+
+1. bump `version` in `package.json`;
+2. `git tag v<version>` and push the tag to **Framagit**;
+3. the push mirror carries the tag to GitHub;
+4. `release-package.yml` there publishes `@manifestigations/dataset` to GitHub
+   Packages with `GITHUB_TOKEN` (`packages: write`).
+
+The tag must equal `v` + the `package.json` version: `npm publish` publishes
+whatever `package.json` says, and a second publish of an existing version fails
+with `E409`. Never re-tag, never move a tag. Then, and only then, bump the
+dependency in the Observatory — the mirror and the publish are asynchronous
+with respect to the Framagit tag pipeline, so a data merge here is live on the
+site only after the package exists and the pin and version have both moved.
+
+Framagit has no package registry; that is the whole reason GitHub is kept.
 
 ## Task recipes
 
@@ -224,8 +275,9 @@ with its `sources`, or, for a school blockade, add the `blockades` cell to
   will reorder your imports on `npm run format`.
 - `bandOf` / `midOf` exist so no caller has to test which band shape it holds;
   `midOf` is for plotting only.
-- The contents of `json/` and `csv/` are automatically generated from the TS files
-  on build, so ignore their contents.
+- The contents of `json/`, `schema/` and `csv/` are generated from the TS files
+  on build — **and committed**. Ignore their contents, but never ignore their
+  diff: `npm run check:stale` fails when a rebuild changes them.
 - `src/data/sources/cost.ts` also ends with `export const s = [...]`, a French
   only duplicate of the seven helicopter sources. It breaks the bilingual rule
   and may be dead; do not delete it until a grep proves nothing imports `s`.
@@ -241,9 +293,20 @@ with its `sources`, or, for a school blockade, add the `blockades` cell to
   has an English and a French note, and every `ChargeId` has a label, is checked
   where those strings live. A green run here is not a green site.
 - The Observatory vendors this repository as a git submodule at
-  `vendor/dataset`. A change merged here is **not live** there until the pin is
-  bumped; conversely, a type error over there in `src/copy/legal.ts` usually
-  means the pin is older than the vocabulary.
+  `vendor/dataset` **and** depends on the published package. A change merged
+  here is **not live** there until both the pin and the
+  `@manifestigations/dataset` version are bumped; conversely, a type error over
+  there in `src/copy/legal.ts` usually means the pin is older than the
+  vocabulary.
+- **A tag is a release, not a bookmark.** Pushing `v*` triggers
+  `release-package.yml` through the mirror. Do not tag to mark a merge point or
+  to test the mirror: publish a throwaway tag only on a scratch branch, and
+  remember that GitHub Packages will not let you reuse the version.
+- **The mirror token needs `workflow` scope.** The push credential is a
+  fine-grained PAT with **Contents: read/write** and **Workflows: read/write** —
+  GitHub rejects a push that would modify `.github/workflows/` otherwise. Such
+  tokens expire within a year, and when this one lapses the mirror stops
+  silently while everything on Framagit stays green.
 - **An ICD-10 code in `coding.ts` is admissible for a label, not assigned to a
   person.** `assignment` has one member (`"none"`) on purpose: no record here
   carries a diagnosis. ISS, NISS and TRISS each need three AIS codes in three ISS

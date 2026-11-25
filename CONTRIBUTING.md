@@ -3,18 +3,23 @@
 Two rules cover most of it:
 
 1. **A figure without a source does not go in.** One number, one date, one link.
-2. **Open an issue before a large pull request.** Settling the data question
+2. **Open an issue before a large merge request.** Settling the data question
    first usually halves the code.
 
-French or English, whichever is easier for you. A free GitHub account is the
-only requirement for reporting.
+French or English, whichever is easier for you. A free **Framagit** account is
+the only requirement for reporting.
+
+framagit.org is canonical — issues, merge requests and CI. The GitHub project of
+the same name is an automatic push mirror, kept because it hosts the
+`@manifestigations/dataset` package registry. A pull request opened there is
+overwritten by the next mirror push: open a merge request here instead.
 
 ---
 
 ## 1. Reporting a figure (no code, no install)
 
 Open an issue in this repository — the
-[report-a-figure form](https://github.com/Manifestigations/Dataset/issues/new?template=report-a-figure.yml)
+[report-a-figure template](https://framagit.org/manifestigations/Dataset/issues/new?issuable_template=report-a-figure)
 asks for exactly this. Include:
 
 | Field                    | What we need                                                                                                         |
@@ -24,6 +29,10 @@ asks for exactly this. Include:
 | The number as published  | keep the range if the publisher gives one; do not average two publishers for us                                      |
 | The source               | a URL, a report title and page, or outlet and date. Paywalled or PDF is not an obstacle: say so and we will fetch it |
 | Who published it         | and whether it is a **count** or an **estimate** — the data distinguishes the two                                    |
+
+The template is a Markdown file, `.gitlab/issue_templates/report-a-figure.md`,
+not a web form: Framagit has no equivalent of GitHub's YAML issue forms, so the
+fields above are headings you fill in.
 
 If you are reporting something from the illegal-act register — an act alleged
 against someone, a charge, a hearing — add two fields, because the register
@@ -52,7 +61,7 @@ Also welcome as issues here:
 wrong on the _website_ — a chart drawn from a single publisher, an interpolated
 gap that should be empty, a detached point joined to the line, tab order, canvas
 descriptions, contrast — open that issue in the
-[Protest-Data-Observatory repository](https://github.com/Manifestigations/Protest-Data-Observatory/issues)
+[Protest-Data-Observatory repository](https://framagit.org/manifestigations/Protest-Data-Observatory/issues)
 and cite the figure here.
 
 If you count in the street (street medic, legal observer, anyone keeping a
@@ -80,7 +89,7 @@ the framework or Chart.js, and there is nothing to build.
 ### 2.1 Set up
 
 ```bash
-git clone https://github.com/Manifestigations/Dataset.git
+git clone https://framagit.org/manifestigations/Dataset.git
 cd Dataset
 npm install   # Node ≥ 22.18
 npm run typecheck
@@ -88,10 +97,21 @@ npm run build
 ```
 
 This is a data package, not a site, and the built data is consumed as TypeScript source.
-The build process also generates CSV and JSON copies of the dataset, for consumption in other
-tools.
-The available checks are `typecheck`, `lint`, `format:check`, `check:casualties`,
-`check:costs` and `check:illegal`. `npm run check` runs all three data checks.
+The build process also generates CSV, JSON and schema copies of the dataset, for
+consumption in other tools — those are committed, and `npm run check:stale`
+fails if they no longer match the source.
+
+The available checks are `typecheck`, `lint`, `format:check`, `validate`,
+`check:casualties`, `check:costs`, `check:illegal` and `check:stale`.
+
+**`npm run check` does not run all of them.** It is
+`typecheck && validate && check:costs && check:illegal` — `check:casualties` is
+missing from it. Run it separately whenever you touch `src/data/casualties/`;
+the CI job does, so a missed run will surface on the merge request rather than
+locally.
+
+Nothing in this repository needs the GitHub token: it does not depend on
+`@manifestigations/dataset`. Only the Observatory does.
 
 ### 2.2 Find the right file
 
@@ -112,7 +132,7 @@ The available checks are `typecheck`, `lint`, `format:check`, `check:casualties`
 | Casualty cells, observations, estimators                                                          | `src/data/casualties/{cases,inputs,estimate}.ts`                                                                                                                        |
 | A published casualty label, or its severity rung                                                  | `src/data/casualties/vocabulary.ts` — `LADDER`, one `NativeLabel` per published wording                                                                                 |
 | The ICD-10 / AIS classification of a label                                                        | `src/data/casualties/coding.ts` — `CODE_SPANS`, one span per label                                                                                                      |
-| A known, unresolved data problem                                                                  | `content/data-problems.md` in the [Observatory repo](https://github.com/Manifestigations/Protest-Data-Observatory/blob/main/content/data-problems.md)                   |
+| A known, unresolved data problem                                                                  | `content/data-problems.md` in the [Observatory repo](https://framagit.org/manifestigations/Protest-Data-Observatory/blob/main/content/data-problems.md)                 |
 | Why a figure was chosen                                                                           | the verification record at the top of `src/data/index.ts` (read-only history)                                                                                           |
 | A demographic share, or a demographic gap                                                         | `src/data/demographics/`                                                                                                                                                |
 
@@ -369,21 +389,28 @@ registering it in `src/data/sources/index.ts`.
 npm run typecheck
 npm run lint
 npm run format:check
+npm run check:stale        # if you ran the build: json/, schema/, csv/ must match
 npm run check:casualties   # if you touched casualties/
-npm run check:costs # if you touched costs.ts
-npm run check:illegal # if you touched illegal/
+npm run check:costs        # if you touched costs.ts
+npm run check:illegal      # if you touched illegal/
 
 git add -A
 git commit -m "data: 2026 arrests for 8 Nov corrected to 412 (prefecture)"
 ```
 
-There is no generated output to stage: everything is source. A check failure
-means the data contradicts itself, not that the check is too strict — fix the
-data.
+Everything is source, but the build products are committed: if you ran
+`npm run build`, `json/`, `schema/` and `csv/` change with it and belong in the
+same commit — `npm run check:stale` is what catches a forgotten one. A check
+failure means the data contradicts itself, not that the check is too strict —
+fix the data.
+
+Then open a **merge request against `main`**. The description should say which
+figures changed and which sources they rest on; CI runs the same checks, plus
+the stale-bundle comparison.
 
 ---
 
-## 3. Pull request checklist
+## 3. Merge request checklist
 
 - [ ] Every new or changed figure has a `Source` entry, and `label` is verbatim.
 - [ ] Comparative movements need a verdict and a per-demand state, because the map and the outcome tables read them directly; a movement without a stated verdict does not merge.
@@ -397,6 +424,7 @@ data.
 - [ ] `npm run check:costs` passes if a cost record changed.
 - [ ] `npm run check:illegal` passes if anything under `src/data/illegal/`
       changed.
+- [ ] `npm run check:stale` passes if `npm run build` was run.
 - [ ] `content/data-problems.md` (Observatory repo) updated if you settled a
       known data problem.
 - [ ] Every `ActRow.sources` id resolves in `src/data/sources/`; a derived
@@ -416,6 +444,41 @@ data.
 We will not merge: a figure with no source, a silently interpolated gap, a
 translated source label, a flag removed to smooth a line, or a charge id added
 in one repository only.
+
+---
+
+## 4. Releasing
+
+Only a maintainer does this, and only after the merge request is merged.
+
+```bash
+git checkout main && git pull
+# edit "version" in package.json — one version per release
+git commit -am "release: 0.1.1"
+git tag v0.1.1
+git push origin main --follow-tags
+```
+
+What happens next is not on Framagit: the push mirror carries the tag to
+GitHub, and `.github/workflows/release-package.yml` publishes
+`@manifestigations/dataset` to GitHub Packages from the base repository — not
+from a fork — using `GITHUB_TOKEN` with `packages: write`. Framagit has no
+package registry, so this is the one step that cannot be moved.
+
+Four rules:
+
+- **The tag must equal `v` + the `package.json` version.** `npm publish`
+  publishes whatever `package.json` says; if the tag names a different version,
+  either the workflow publishes the old one again (`E409`) or the release is
+  filed under the wrong name. The workflow asserts the match before publishing.
+- **One tag, one publish.** Never re-tag or move a tag: the second `npm publish`
+  of an existing version fails, and a moved tag may not be mirrored at all.
+- **Check the mirror status page**, then the Actions tab on GitHub. Publishing
+  is not part of the Framagit pipeline, so a green Framagit tag pipeline says
+  nothing about whether the package was released.
+- **Only after the package exists**, bump the dependency in
+  `Protest-Data-Observatory` and rebuild `docs/`. Doing both in one step races
+  the publish.
 
 ---
 

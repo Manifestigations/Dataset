@@ -6,36 +6,42 @@
 The core dataset for the 2026 Autumn protests in France (student protests /
 Gilets Jaunes × Gen Z). Every figure carries its source, quoted verbatim —
 nothing here is averaged, imputed, or "approximately." The
-[Protest Data Observatory](https://manifestigations.github.io/Protest-Data-Observatory/)
+[Protest Data Observatory](https://manifestigations.frama.io/Protest-Data-Observatory/)
 draws its charts from this data; **this repository is the source of truth**,
 the site only displays it.
 
-Everything is TypeScript you can read on GitHub. There is no build step to run
+Everything is TypeScript you can read on Framagit. There is no build step to run
 and no package to install in order to _read_ the data — the values are literals
 in the files below.
 
+framagit.org is canonical: issues, merge requests and CI live there.
+`github.com/manifestigations/Dataset` is an automatic **push mirror**, kept for
+one reason — it hosts the `@manifestigations/dataset` package registry. Do not
+open pull requests there; a review happens in a merge request on Framagit, and
+anything pushed to GitHub is overwritten.
+
 ## Read the data without installing anything
 
-| You want                                                                                                                                                                        | Look in                                                                                                                                                                                                                                                                                                                                                                                           |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| The 2026 figures, day by day (turnout, strikers, arrests, injuries, blockaded schools, damages, cost of policing)                                                               | [`src/data/facts.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/facts.ts) — `FACTS`, one key per ISO date, each cell `{ low, high, q? }`                                                                                                                                                                                                                                     |
-| The derived daily and weekly series, the window and the school-holiday band                                                                                                     | [`src/data/projections.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/projections.ts) (daily), [`src/data/aggregate.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/aggregate.ts) (weekly), [`src/data/calendar.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/calendar.ts) (`START`/`END`, `WEEKS`, `HOLIDAY_START`/`HOLIDAY_END`) |
-| Deployments, force levels, the cost rate, helicopter hours                                                                                                                      | [`src/data/policing.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/policing.ts), [`src/data/helicopters.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/helicopters.ts)                                                                                                                                                                                  |
-| Who pays: damage by payer, the cost of the concessions, what protestors are exposed to                                                                                          | [`src/data/costs.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/costs.ts) — `PAYER_COSTS`, one record per (payer, cost kind, stage); `COST_UNPRICED` for what no source prices                                                                                                                                                                                               |
-| Denominators (populations)                                                                                                                                                      | [`src/data/population.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/population.ts)                                                                                                                                                                                                                                                                                          |
-| Who protests, who polices: age, sex, nationality and the **absence** of ethnic statistics                                                                                       | [`src/data/demographics/`](https://github.com/Manifestigations/Dataset/tree/main/src/data/demographics) — `DemoRow` per source and population, `DemoGap` for what does not exist, `DemoProxy` for what is not ethnicity                                                                                                                                                                           |
-| Approval of the movement, poll by poll (approve / disapprove / indifférents, with the sample size)                                                                              | [`src/data/opinion.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/opinion.ts) — `OPINION_POLLS`, one `OpinionPoll` per published survey; `topline()` and `opinionAverage()`                                                                                                                                                                                                  |
-| Cross-country movements overlapping 2026 (dates, turnout, demands, outcomes)                                                                                                    | [`src/data/comparative/`](https://github.com/Manifestigations/Dataset/tree/main/src/data/comparative) — `Movement` per country, `Action` per mobilisation day, `stats()` for peak/median/totals                                                                                                                                                                                                   |
-| Past movements for comparison (Mai 68, CPE, Gilets Jaunes, Nahel, pensions 2023, « Bloquons tout », students 2026 — one file each)                                              | [`src/data/episodes/`](https://github.com/Manifestigations/Dataset/tree/main/src/data/episodes)                                                                                                                                                                                                                                                                                                   |
-| What is alleged against whom, and where the case stands: acts against protesters, against the police, by far-right groups; the court sittings that heard the 17 October arrests | [`src/data/illegal/`](https://github.com/Manifestigations/Dataset/tree/main/src/data/illegal) — `ILLEGAL_ACTS` (one record per claim), `NORMATIVE` (a police tactic read against the laws of war), `SITTINGS` (court capacity and dockets), `CHARGES` (each `ChargeId` and the sides it can be brought against)                                                                                   |
-| The catalogue of every source (who published what, on which date)                                                                                                               | [`src/data/sources/`](https://github.com/Manifestigations/Dataset/tree/main/src/data/sources) — one file per group                                                                                                                                                                                                                                                                                |
-| The casualty data: the severity ladder, its observations and estimators, and the ICD-10 / AIS codebook behind each published label                                              | [`src/data/casualties/`](https://github.com/Manifestigations/Dataset/tree/main/src/data/casualties) — `CASES` per cell, `LADDER` per published label, `CODE_SPANS` per label's admissible ICD-10 set, AIS region and AIS range                                                                                                                                                                    |
-| Disruptive acts by day and by category (official count → widest count)                                                                                                          | [`src/data/disruptive/`](https://github.com/Manifestigations/Dataset/tree/main/src/data/disruptive) — `ACT_ROWS`, one row per (date, category), each with a `unit`                                                                                                                                                                                                                                |
-| The types everything is written against                                                                                                                                         | [`src/model/index.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/model/index.ts)                                                                                                                                                                                                                                                                                                  |
-| Why a figure was chosen, and what was rejected                                                                                                                                  | [`src/data/index.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/index.ts) — the verification record, then the barrel                                                                                                                                                                                                                                                         |
-| Known data problems, and how each was settled                                                                                                                                   | [`content/data-problems.md`](https://github.com/Manifestigations/Protest-Data-Observatory/blob/main/content/data-problems.md) — kept in the Observatory repo, because it is prose about method                                                                                                                                                                                                    |
+| You want                                                                                                                                                                        | Look in                                                                                                                                                                                                                                                                                                                                                                                                 |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| The 2026 figures, day by day (turnout, strikers, arrests, injuries, blockaded schools, damages, cost of policing)                                                               | [`src/data/facts.ts`](https://framagit.org/manifestigations/Dataset/blob/main/src/data/facts.ts) — `FACTS`, one key per ISO date, each cell `{ low, high, q? }`                                                                                                                                                                                                                                         |
+| The derived daily and weekly series, the window and the school-holiday band                                                                                                     | [`src/data/projections.ts`](https://framagit.org/manifestigations/Dataset/blob/main/src/data/projections.ts) (daily), [`src/data/aggregate.ts`](https://framagit.org/manifestigations/Dataset/blob/main/src/data/aggregate.ts) (weekly), [`src/data/calendar.ts`](https://framagit.org/manifestigations/Dataset/blob/main/src/data/calendar.ts) (`START`/`END`, `WEEKS`, `HOLIDAY_START`/`HOLIDAY_END`) |
+| Deployments, force levels, the cost rate, helicopter hours                                                                                                                      | [`src/data/policing.ts`](https://framagit.org/manifestigations/Dataset/blob/main/src/data/policing.ts), [`src/data/helicopters.ts`](https://framagit.org/manifestigations/Dataset/blob/main/src/data/helicopters.ts)                                                                                                                                                                                    |
+| Who pays: damage by payer, the cost of the concessions, what protestors are exposed to                                                                                          | [`src/data/costs.ts`](https://framagit.org/manifestigations/Dataset/blob/main/src/data/costs.ts) — `PAYER_COSTS`, one record per (payer, cost kind, stage); `COST_UNPRICED` for what no source prices                                                                                                                                                                                                   |
+| Denominators (populations)                                                                                                                                                      | [`src/data/population.ts`](https://framagit.org/manifestigations/Dataset/blob/main/src/data/population.ts)                                                                                                                                                                                                                                                                                              |
+| Who protests, who polices: age, sex, nationality and the **absence** of ethnic statistics                                                                                       | [`src/data/demographics/`](https://framagit.org/manifestigations/Dataset/tree/main/src/data/demographics) — `DemoRow` per source and population, `DemoGap` for what does not exist, `DemoProxy` for what is not ethnicity                                                                                                                                                                               |
+| Approval of the movement, poll by poll (approve / disapprove / indifférents, with the sample size)                                                                              | [`src/data/opinion.ts`](https://framagit.org/manifestigations/Dataset/blob/main/src/data/opinion.ts) — `OPINION_POLLS`, one `OpinionPoll` per published survey; `topline()` and `opinionAverage()`                                                                                                                                                                                                      |
+| Cross-country movements overlapping 2026 (dates, turnout, demands, outcomes)                                                                                                    | [`src/data/comparative/`](https://framagit.org/manifestigations/Dataset/tree/main/src/data/comparative) — `Movement` per country, `Action` per mobilisation day, `stats()` for peak/median/totals                                                                                                                                                                                                       |
+| Past movements for comparison (Mai 68, CPE, Gilets Jaunes, Nahel, pensions 2023, « Bloquons tout », students 2026 — one file each)                                              | [`src/data/episodes/`](https://framagit.org/manifestigations/Dataset/tree/main/src/data/episodes)                                                                                                                                                                                                                                                                                                       |
+| What is alleged against whom, and where the case stands: acts against protesters, against the police, by far-right groups; the court sittings that heard the 17 October arrests | [`src/data/illegal/`](https://framagit.org/manifestigations/Dataset/tree/main/src/data/illegal) — `ILLEGAL_ACTS` (one record per claim), `NORMATIVE` (a police tactic read against the laws of war), `SITTINGS` (court capacity and dockets), `CHARGES` (each `ChargeId` and the sides it can be brought against)                                                                                       |
+| The catalogue of every source (who published what, on which date)                                                                                                               | [`src/data/sources/`](https://framagit.org/manifestigations/Dataset/tree/main/src/data/sources) — one file per group                                                                                                                                                                                                                                                                                    |
+| The casualty data: the severity ladder, its observations and estimators, and the ICD-10 / AIS codebook behind each published label                                              | [`src/data/casualties/`](https://framagit.org/manifestigations/Dataset/tree/main/src/data/casualties) — `CASES` per cell, `LADDER` per published label, `CODE_SPANS` per label's admissible ICD-10 set, AIS region and AIS range                                                                                                                                                                        |
+| Disruptive acts by day and by category (official count → widest count)                                                                                                          | [`src/data/disruptive/`](https://framagit.org/manifestigations/Dataset/tree/main/src/data/disruptive) — `ACT_ROWS`, one row per (date, category), each with a `unit`                                                                                                                                                                                                                                    |
+| The types everything is written against                                                                                                                                         | [`src/model/index.ts`](https://framagit.org/manifestigations/Dataset/blob/main/src/model/index.ts)                                                                                                                                                                                                                                                                                                      |
+| Why a figure was chosen, and what was rejected                                                                                                                                  | [`src/data/index.ts`](https://framagit.org/manifestigations/Dataset/blob/main/src/data/index.ts) — the verification record, then the barrel                                                                                                                                                                                                                                                             |
+| Known data problems, and how each was settled                                                                                                                                   | [`content/data-problems.md`](https://framagit.org/manifestigations/Protest-Data-Observatory/blob/main/content/data-problems.md) — kept in the Observatory repo, because it is prose about method                                                                                                                                                                                                        |
 
-Every path above goes through [`src/data/index.ts`](https://github.com/Manifestigations/Dataset/blob/main/src/data/index.ts)
+Every path above goes through [`src/data/index.ts`](https://framagit.org/manifestigations/Dataset/blob/main/src/data/index.ts)
 as its public entry point for the 2026 layer: that file only re-exports, so
 importing from it keeps import paths stable while the modules underneath move.
 
@@ -343,14 +349,82 @@ Three rules follow, and `npm run check:costs` enforces them:
 The empty disbursed column is a finding about publication, not a claim that
 nothing was paid.
 
+## Consuming the package
+
+The published package is `@manifestigations/dataset`, served by **GitHub
+Packages** at `https://npm.pkg.github.com`. Framagit has no package registry,
+which is why this one artefact lives on GitHub.
+
+```bash
+npm install @manifestigations/dataset
+```
+
+That needs a credential, and the constraint is unusual enough to state plainly:
+
+- GitHub requires an access token to install from Packages **even when the
+  package is public**. There is no anonymous read path.
+- It must be a **classic** personal access token with `read:packages`.
+  Fine-grained tokens are not accepted by the npm registry.
+- The token goes in your own `~/.npmrc`:
+
+```
+//npm.pkg.github.com/:_authToken=<classic PAT>
+@manifestigations:registry=https://npm.pkg.github.com
+```
+
+Consumers commit the scope line, never the token — a committed
+`_authToken=${VAR}` line makes `npm install` fail for anyone without the
+variable, which breaks the public dependencies too.
+
+The package ships `dist/`, `json/`, `schema/`, `docs/`, `README.md` and
+`LICENSE`; `publishConfig` already points the registry at GitHub Packages, so
+`npm publish` needs no `--registry` flag.
+
+## Releases
+
+The order is fixed, because publishing happens on the far side of a mirror:
+
+1. **Merge the data change** to `main` on Framagit, checks green.
+2. **Bump the version** in `package.json` — one version per release, no reuse.
+3. **Tag and push the tag to Framagit**: `git tag v0.1.1 && git push origin v0.1.1`.
+4. **The mirror carries the tag to GitHub**, authenticated as a user, so it
+   fires the `release-package` workflow.
+5. **Actions publishes** the package: `npm publish` under
+   `.github/workflows/release-package.yml`, using `GITHUB_TOKEN` with
+   `packages: write`.
+6. **Only then** bump the dependency in the Observatory.
+
+Three rules, each of which has a failure mode:
+
+| Rule                                                                  | If you break it                                                                                 |
+| --------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| The tag must be `v` + the `package.json` version                      | `npm publish` republishes the old version and fails `E409 Cannot publish over existing version` |
+| Never move or re-push a tag                                           | a second publish of the same version fails the same way; a moved tag may not be mirrored at all |
+| Never bump the Observatory's dependency in the same commit as the tag | its CI resolves the new tarball before the publish job has run                                  |
+
+Check the mirror's status page after each tag, then the Actions tab. A tag that
+reached GitHub but whose workflow failed is the silent case — the Framagit
+pipeline will be green, because publishing is not part of it.
+
+The mirror authenticates with a **fine-grained** token scoped to this
+repository, with **Contents: read/write and Workflows: read/write** — the second
+is required because the repository contains `.github/workflows/`, and GitHub
+rejects a push that a token without that permission would make. Fine-grained
+tokens expire after at most a year; when this one lapses the mirror stops
+quietly.
+
 ## Contributing
 
-- **Report a figure** (no code, no install — a GitHub account is enough): open
-  an issue here, using the
-  [report-a-figure form](https://github.com/Manifestigations/Dataset/issues/new?template=report-a-figure.yml).
+- **Report a figure** (no code, no install — a free Framagit account is
+  enough): open an issue here, using the
+  [report-a-figure template](https://framagit.org/manifestigations/Dataset/issues/new?issuable_template=report-a-figure).
   See [CONTRIBUTING, §1](CONTRIBUTING.md#1-reporting-a-figure-no-code-no-install).
 - **Edit the data** (Node ≥ 22.18; you are editing literal values in TypeScript
   files): [CONTRIBUTING, §2](CONTRIBUTING.md#2-editing-data).
+
+The template is Markdown, not a web form: Framagit has no YAML issue forms, so
+its headings are what you fill in. Rename the file and the URL follows —
+`issuable_template` takes the filename without `.md`.
 
 ## How one number gets in
 
@@ -366,8 +440,9 @@ flowchart TD
   D1 --> F["Set the right Flag<br/>only if it is not a plain national count"]
   F --> G
   E --> G["npm run typecheck && npm run check:casualties"]
-  G --> H["Commit src/ · merge to main · tag vYYYY.n"]
-  H --> I["Follow-up PR in Protest-Data-Observatory:<br/>bump vendor/dataset, rebuild docs/"]
+  G --> H["Commit src/ · merge request · merge to main · tag vX.Y.Z"]
+  H --> I["Mirror carries the tag to GitHub · Actions publishes the package"]
+  I --> J["Follow-up MR in Protest-Data-Observatory:<br/>bump vendor/dataset and the dependency, rebuild docs/"]
 ```
 
 > The loop you must **not** do: averaging two publishers, mid-pointing a band,
@@ -376,14 +451,24 @@ flowchart TD
 
 ## What this repository does and does not do
 
-- `json/` and `schema/` exist and are maintained; `scripts/build.ts` writes the
-  bundle, `scripts/validate.ts` checks it against the schemas.
-- `package.json` is `"name": "@manifestigations/dataset"`, `"private": true`.
-- CI runs `.github/workflows/style.yml`. Three data-integrity checks exist and
-  all of them are in `npm run check`: `check:casualties` (casualty cells and the
-  injury codebook), `check:costs` (payer sums, no per-person total),
-  `check:illegal` (the illegal-act register, its statuses, charges, refs and
-  sittings).
+- `json/`, `schema/` and `csv/` exist and are maintained; `scripts/build.ts`
+  writes the bundle, `scripts/validate.ts` checks it against the schemas. They
+  are **generated and committed**: `npm run check:stale` rebuilds and fails if
+  the committed copies differ from the source.
+- `package.json` is `"name": "@manifestigations/dataset"` and carries no
+  `"private"` field, so it is publishable; `publishConfig` points both the
+  default registry and the `@manifestigations` scope at
+  `https://npm.pkg.github.com`.
+- CI runs on Framagit, in `.gitlab-ci.yml`: `typecheck`, `lint`,
+  `format:check`, `validate`, `check:casualties`, `check:costs`,
+  `check:illegal`, and `check:stale` for the committed bundle.
+- **`npm run check` is not all four checks.** It is
+  `typecheck && validate && check:costs && check:illegal` — it does **not**
+  include `check:casualties`. Run that one explicitly, and rely on the
+  `data-checks` CI job rather than on memory.
+- Publishing is the one thing that does not happen on Framagit. Framagit has no
+  package registry, so `.github/workflows/release-package.yml` publishes to
+  GitHub Packages when a `v*` tag reaches the GitHub mirror.
 - `check:illegal` cannot see the Observatory's copy. Whether every
   `{ k: "act" }` has an English and a French note is checked there, next to the
   strings.
